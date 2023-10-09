@@ -1,4 +1,6 @@
-﻿namespace BusinessOject.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BusinessOject.Models
 {
     public class Curricolum
     {
@@ -6,8 +8,9 @@
         {
             SubjectCurricolums = new HashSet<SubjectCurricolum>();
         }
-
+        [Key]
         public int Id { get; set; }
+        [MaxLength(80)]
         public string? CurricolumName { get; set; }
         public int? MajorId { get; set; }
 

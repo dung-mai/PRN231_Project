@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataAccess.Models
 {
-    public partial class PRN221_ProjectContext : DbContext
+    public partial class FAPDbContext : DbContext
     {
-        public PRN221_ProjectContext()
+        public FAPDbContext()
         {
         }
 
-        public PRN221_ProjectContext(DbContextOptions<PRN221_ProjectContext> options)
+        public FAPDbContext(DbContextOptions<FAPDbContext> options)
             : base(options)
         {
         }

@@ -10,6 +10,7 @@ namespace BusinessOject.Models
         }
         [Key]
         public int Id { get; set; }
+        [MaxLength(50)]
         public string? ClassName { get; set; }
         public int? SemesterId { get; set; }
 
