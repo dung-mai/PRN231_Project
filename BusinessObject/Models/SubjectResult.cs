@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessOject.Models
+namespace BusinessObject.Models
 {
     public class SubjectResult
     {

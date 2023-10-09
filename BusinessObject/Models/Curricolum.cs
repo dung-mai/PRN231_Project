@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessOject.Models
+namespace BusinessObject.Models
 {
     public class Curricolum
     {

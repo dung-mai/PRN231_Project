@@ -1,4 +1,4 @@
-﻿namespace BusinessOject.Models
+﻿namespace BusinessObject.Models
 {
     public class DetailScore
     {
