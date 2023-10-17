@@ -1,4 +1,6 @@
-﻿namespace Bussiness.DTO
+﻿using DTO.Request.Account;
+
+namespace Bussiness.DTO
 {
     public class StudentDTO
     {
@@ -11,7 +13,7 @@
         public int? MajorId { get; set; }
         public int? AccountId { get; set; }
 
-        public virtual AccountDTO? Account { get; set; }
+        public virtual AccountCreateDTO? Account { get; set; }
         public virtual MajorDTO? Major { get; set; }
         public virtual ICollection<StudyCourseDTO> StudyCourses { get; set; }
         public List<SemesterDTO> GetSemesters()

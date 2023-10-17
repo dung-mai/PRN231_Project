@@ -1,5 +1,6 @@
 ﻿using Bussiness.DTO;
 using DataAccess.Models;
+using DTO.Request.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Bussiness.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Account, AccountDTO>().ReverseMap();
+            CreateMap<Account, AccountCreateDTO>().ReverseMap();
             CreateMap<Class, ClassDTO>().ReverseMap();
             CreateMap<DetailScore, DetailScoreDTO>().ReverseMap();
             CreateMap<GradeComponent, GradeComponentDTO>().ReverseMap();
