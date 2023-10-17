@@ -13,7 +13,7 @@ namespace Bussiness.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Account, AccountCreateDTO>().ReverseMap();
+            CreateMap<Account, AccountResponseDTO>().ReverseMap();
             CreateMap<Class, ClassDTO>().ReverseMap();
             CreateMap<DetailScore, DetailScoreDTO>().ReverseMap();
             CreateMap<GradeComponent, GradeComponentDTO>().ReverseMap();

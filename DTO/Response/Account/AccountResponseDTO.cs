@@ -4,7 +4,7 @@ using Bussiness.DTO;
 
 namespace DTO.Request.Account
 {
-    public class AccountCreateDTO
+    public class AccountResponseDTO
     {
         public int Id { get; set; }
         public string Email { get; set; } = null!;

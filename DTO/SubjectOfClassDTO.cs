@@ -21,7 +21,7 @@ namespace Bussiness.DTO
 
         public virtual ClassDTO? Class { get; set; }
         public virtual SubjectDTO? Subject { get; set; }
-        public virtual AccountCreateDTO? Teacher { get; set; }
+        public virtual AccountResponseDTO? Teacher { get; set; }
         public virtual ICollection<StudyCourseDTO> StudyCourses { get; set; }
     }
 }

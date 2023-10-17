@@ -13,7 +13,7 @@ namespace Bussiness.DTO
         public int? MajorId { get; set; }
         public int? AccountId { get; set; }
 
-        public virtual AccountCreateDTO? Account { get; set; }
+        public virtual AccountResponseDTO? Account { get; set; }
         public virtual MajorDTO? Major { get; set; }
         public virtual ICollection<StudyCourseDTO> StudyCourses { get; set; }
         public List<SemesterDTO> GetSemesters()
