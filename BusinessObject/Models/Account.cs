@@ -7,7 +7,6 @@ namespace BusinessObject.Models
         public Account()
         {
             Students = new HashSet<Student>();
-            SubjectOfClasses = new HashSet<SubjectOfClass>();
         }
 
         [Key]
@@ -40,6 +39,5 @@ namespace BusinessObject.Models
 
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<Student> Students { get; set; }
-        public virtual ICollection<SubjectOfClass> SubjectOfClasses { get; set; }
     }
 }

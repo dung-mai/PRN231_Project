@@ -21,7 +21,7 @@ namespace BusinessObject.Models
 
         public virtual Class? Class { get; set; }
         public virtual Subject? Subject { get; set; }
-        public virtual Account? Teacher { get; set; }
+        public virtual Teacher? Teacher { get; set; }
         public virtual ICollection<StudyCourse> StudyCourses { get; set; }
     }
 }
