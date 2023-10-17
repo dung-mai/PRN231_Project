@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Bussiness.DTO
+﻿namespace Bussiness.DTO
 {
     public class SubjectCurricolumDTO
     {

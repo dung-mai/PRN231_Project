@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Bussiness.DTO;
-
-namespace DTO.Request.Account
+﻿namespace DTO.Request.Account
 {
     public class AccountCreateDTO
     {
-        public int Id { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public int Roleid { get; set; }
@@ -20,14 +15,8 @@ namespace DTO.Request.Account
         public string? Address { get; set; }
         public string? Image { get; set; }
         public short Status { get; set; }
-        public string? Fullname
-        {
-            get
-            {
-                return $"{Firstname} {Middlename} {Lastname}";
-            }
-        }
-
-        public virtual RoleDTO Role { get; set; } = null!;
+        public DateTime? UpdatedAt { get; set; }
+        public int? UpdatedBy { get; set; }
+        public bool IsDelete { get; set; } = false;
     }
 }
