@@ -33,7 +33,10 @@ namespace BusinessObject.Models
         public string? Address { get; set; }
         [MaxLength(150)]
         public string? Image { get; set; }
-        public short Status { get; set; }
+        public short Status { get; set; } = 1;
+        public DateTime? UpdatedAt { get; set; }
+        public int? UpdatedBy { get; set; }
+        public bool IsDelete { get; set; } = false;
 
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<Student> Students { get; set; }

@@ -13,6 +13,9 @@ namespace BusinessObject.Models
         [MaxLength(50)]
         public string? ClassName { get; set; }
         public int? SemesterId { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public int? UpdatedBy { get; set; }
+        public bool IsDelete { get; set; } = false;
 
         public virtual Semester? Semester { get; set; }
         public virtual ICollection<SubjectOfClass> SubjectOfClasses { get; set; }

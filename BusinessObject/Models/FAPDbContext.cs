@@ -40,6 +40,8 @@ namespace BusinessObject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.ToTable("Account");
@@ -434,10 +436,7 @@ namespace BusinessObject.Models
                     .HasForeignKey(d => d.StudyCourseId)
                     .HasConstraintName("FK_SubjectResult_StudyCourse");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

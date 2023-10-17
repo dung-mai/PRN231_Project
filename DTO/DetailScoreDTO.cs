@@ -1,21 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace BusinessObject.Models
+namespace Bussiness.DTO
 {
-    public class DetailScore
+    public class DetailScoreDTO
     {
-        [Key]
         public int Id { get; set; }
         public int? GradeComponentId { get; set; }
         public int? SubjectResultId { get; set; }
         public double? Mark { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
-        [MaxLength(200)]
         public string? Comment { get; set; }
-        public bool IsDelete { get; set; } = false;
+        public string? Rollnumber { get; set; }
+        public string? Fullname { get; set; }
 
-        public virtual GradeComponent? GradeComponent { get; set; }
-        public virtual SubjectResult? SubjectResult { get; set; }
+        public virtual GradeComponentDTO? GradeComponent { get; set; }
     }
 }
