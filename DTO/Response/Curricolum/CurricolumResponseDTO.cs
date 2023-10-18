@@ -11,6 +11,5 @@ namespace DTO.Response.Curricolum
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
         public virtual MajorDTO? Major { get; set; }
-
     }
 }

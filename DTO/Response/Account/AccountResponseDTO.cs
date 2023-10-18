@@ -1,4 +1,4 @@
-﻿namespace DTO.Request.Account
+﻿namespace DTO.Response.Account
 {
     public class AccountResponseDTO
     {

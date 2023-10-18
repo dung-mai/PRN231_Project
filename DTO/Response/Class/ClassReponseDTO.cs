@@ -2,7 +2,7 @@
 
 namespace DTO.Response.Class
 {
-    public class ClassReponseDTO
+    public class ClassResponseDTO
     {
         public int Id { get; set; }
         public string? ClassName { get; set; }

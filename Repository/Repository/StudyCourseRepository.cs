@@ -2,6 +2,8 @@
 using BusinessObject.Models;
 using Bussiness.DTO;
 using DataAccess.DAO;
+using DTO.Request.StudyCourse;
+using DTO.Response.StudyCourse;
 using Repository.IRepository;
 
 namespace Repository.Repository
@@ -17,15 +19,15 @@ namespace Repository.Repository
             _mapper = mapper;
         }
 
-        public List<StudyCourseDTO> GetStudyCourseByClass(int classId)
+        public List<StudyCourseResponseDTO> GetStudyCourseByClass(int classId)
         {
             StudyCourseDAO studyCourseManager = new StudyCourseDAO(_context);
             return studyCourseManager.GetStudyCourseByClass(classId)
-                                        .Select(course => _mapper.Map<StudyCourseDTO>(course))
+                                        .Select(course => _mapper.Map<StudyCourseResponseDTO>(course))
                                         .ToList();
         }
 
-        public List<StudyCourseDTO> GetStudyCourseByStudent(int classId, string? rolenumber)
+        public List<StudyCourseResponseDTO> GetStudyCourseByStudent(int classId, string? rolenumber)
         {
             if (String.IsNullOrEmpty(rolenumber))
             {
@@ -33,33 +35,90 @@ namespace Repository.Repository
             }
             StudyCourseDAO studyCourseManager = new StudyCourseDAO(_context);
             return studyCourseManager.GetStudyCourseByStudent(classId, rolenumber)
-                                        .Select(course => _mapper.Map<StudyCourseDTO>(course))
+                                        .Select(course => _mapper.Map<StudyCourseResponseDTO>(course))
                                         .ToList();
         }
 
-        public StudyCourseDTO? GetStudyCourseBySubject(int? semesterId, string rollnumber, int? courseId)
+        public StudyCourseResponseDTO? GetStudyCourseBySubject(int? semesterId, string rollnumber, int? courseId)
         {
             if(semesterId == null || courseId == null)
             {
                 return null;
             }
             StudyCourseDAO studyCourseManager = new StudyCourseDAO(_context);
-            return _mapper.Map<StudyCourseDTO>(studyCourseManager.GetStudyCourseOfStudentBySubject((int)semesterId, rollnumber, (int)courseId));
+            return _mapper.Map<StudyCourseResponseDTO>(studyCourseManager.GetStudyCourseOfStudentBySubject((int)semesterId, rollnumber, (int)courseId));
         }
 
-        public List<StudyCourseDTO> GetStudyCourseOfStudentBySemester(int semesterId, string rollNumber)
+        public List<StudyCourseResponseDTO> GetStudyCourseOfStudentBySemester(int semesterId, string rollNumber)
         {
             StudyCourseDAO studyCourseManager = new StudyCourseDAO(_context);
             return studyCourseManager.GetStudyCourseOfStudentBySemester(semesterId, rollNumber)
-                                        .Select(course => _mapper.Map<StudyCourseDTO>(course))
+                                        .Select(course => _mapper.Map<StudyCourseResponseDTO>(course))
                                         .ToList();
         }
 
-        public SubjectOfClassDTO? GetSubjectClassById(int classId)
+        //public SubjectOfClassDTO? GetSubjectClassById(int classId)
+        //{
+        //    SubjectOfClassDAO subjectOfClassManager = new SubjectOfClassDAO(_context);
+        //    SubjectOfClass? subjectOfClass = subjectOfClassManager.GetSubjectClassById(classId);
+        //    return subjectOfClass != null ? _mapper.Map<SubjectOfClassDTO>(subjectOfClass) : null;
+        //}
+
+        public bool DeleteStudyCourse(int id)
         {
-            SubjectOfClassDAO subjectOfClassManager = new SubjectOfClassDAO(_context);
-            SubjectOfClass? subjectOfClass = subjectOfClassManager.GetSubjectClassById(classId);
-            return subjectOfClass != null ? _mapper.Map<SubjectOfClassDTO>(subjectOfClass) : null;
+            try
+            {
+                StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+                studyCourseDAO.DeleteStudyCourse(id);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public StudyCourseResponseDTO? GetStudyCourse(int id)
+        {
+            StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+            return _mapper.Map<StudyCourseResponseDTO>(studyCourseDAO.GetStudyCourse(id));
+        }
+
+        public IQueryable<StudyCourseResponseDTO> GetStudyCourses()
+        {
+            StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+            List<StudyCourse> studyCourses = studyCourseDAO.GetStudyCourses();
+            return studyCourses.Select(sc => _mapper.Map<StudyCourseResponseDTO>(sc)).AsQueryable();
+        }
+
+        public bool SaveStudyCourse(StudyCourseCreateDTO studyCourse)
+        {
+            try
+            {
+                StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+                int result = studyCourseDAO.AddStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
+                if (result > 0)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public void UpdateStudyCourse(StudyCourseUpdateDTO studyCourse)
+        {
+            StudyCourseDAO studyCourseDAO = new(_context);
+            studyCourseDAO.UpdateStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
+            _context.SaveChanges();
         }
     }
 }
