@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Bussiness.DTO;
+using DTO.Response.Teacher;
 
 namespace DTO.Response.SubjectOfClass
 {
@@ -17,6 +18,6 @@ namespace DTO.Response.SubjectOfClass
 
         public virtual ClassDTO? Class { get; set; }
         public virtual SubjectDTO? Subject { get; set; }
-        public virtual Teacher? Teacher { get; set; }
+        public virtual TeacherResponseDTO? Teacher { get; set; }
     }
 }

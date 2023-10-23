@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DTO.Response.StudyCourse;
+using DTO.Response.Teacher;
 
 namespace DTO.Response.SubjectResult
 {
@@ -16,6 +17,6 @@ namespace DTO.Response.SubjectResult
         public bool IsDelete { get; set; } = false;
 
         public virtual StudyCourseResponseDTO? StudyCourse { get; set; }
-        public virtual Teacher? Teacher { get; set; }
+        public virtual TeacherResponseDTO? Teacher { get; set; }
     }
 }

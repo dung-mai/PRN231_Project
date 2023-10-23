@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DTO.Request.Account;
+﻿using DTO.Response.Account;
 
 namespace Bussiness.DTO
 {
