@@ -51,8 +51,14 @@ namespace FAPAplicationAPI.Controllers
                 return BadRequest();
             }
 
-            _curricolumRepository.UpdateCurricolum(curricolum);
-            return NoContent();
+            if (_curricolumRepository.UpdateCurricolum(curricolum))
+            {
+                return NoContent();
+            }
+            else
+            {
+                return Problem("Problem when Update Curricolum");
+            }
         }
 
         // POST: api/Curricolums
@@ -80,8 +86,14 @@ namespace FAPAplicationAPI.Controllers
                 return NotFound();
             }
 
-            _curricolumRepository.DeleteCurricolum(id);
-            return NoContent();
+            if (_curricolumRepository.DeleteCurricolum(id))
+            {
+                return NoContent();
+            }
+            else
+            {
+                return Problem("Problem when Delete Curricolum");
+            }
         }
     }
 }

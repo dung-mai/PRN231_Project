@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace DataAccess.Managers
 {
@@ -14,46 +15,47 @@ namespace DataAccess.Managers
         public Account? GetAccountByEmail(string email)
         {
             return _context.Accounts.Include(a => a.Role)
-                                    .FirstOrDefault(a => a.Email == email);
+                                    .FirstOrDefault(a => a.Email == email && !a.IsDelete);
         }
 
         public List<Account> GetAccounts()
         {
             return _context.Accounts
+                .Where(a => !a.IsDelete)
                 .ToList();
         }
 
         public Account? GetAccount(int id)
         {
             return _context.Accounts
-                .FirstOrDefault(a => a.Id == id);
+                .FirstOrDefault(a => a.Id == id && !a.IsDelete);
         }
 
-        public int AddAccount(Account account)
+        public bool AddAccount(Account account)
         {
             if (account != null)
             {
                 _context.Accounts.Add(account);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteAccount(int accountId)
+        public bool DeleteAccount(int accountId)
         {
-            Account? account = _context.Accounts.FirstOrDefault(a => a.Id == accountId);
+            Account? account = _context.Accounts.FirstOrDefault(a => a.Id == accountId && !a.IsDelete);
             if (account != null)
             {
-                _context.Accounts.Remove(account);
-                return 1;
+                account.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateAccount(Account _account)
+        public bool UpdateAccount(Account _account)
         {
             Account? account = _context.Accounts
-                .FirstOrDefault(a => a.Id == _account.Id);
+                .FirstOrDefault(a => a.Id == _account.Id && !a.IsDelete);
             if (account != null)
             {
                 account.Email = _account.Email;
@@ -70,9 +72,9 @@ namespace DataAccess.Managers
                 account.UpdatedAt = _account.UpdatedAt;
                 account.UpdatedBy = _account.UpdatedBy;
                 account.IsDelete = _account.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }

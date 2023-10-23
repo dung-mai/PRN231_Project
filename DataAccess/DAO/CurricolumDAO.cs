@@ -12,39 +12,42 @@ namespace DataAccess.DAO
 
         public List<Curricolum> GetCurricolums()
         {
-            return _context.Curricolums.ToList();
+            return _context.Curricolums
+                .Where(c => !c.IsDelete)
+                .ToList();
         }
 
         public Curricolum? GetCurricolum(int id)
         {
-            return _context.Curricolums.FirstOrDefault(c => c.Id == id);
+            return _context.Curricolums
+                .FirstOrDefault(c => c.Id == id && !c.IsDelete);
         }
 
-        public int AddCurricolum(Curricolum curricolum)
+        public bool AddCurricolum(Curricolum curricolum)
         {
             if (curricolum != null)
             {
                 _context.Curricolums.Add(curricolum);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteCurricolum(int curricolumId)
+        public bool DeleteCurricolum(int curricolumId)
         {
-            Curricolum? curricolum = _context.Curricolums.FirstOrDefault(c => c.Id == curricolumId);
+            Curricolum? curricolum = _context.Curricolums.FirstOrDefault(c => c.Id == curricolumId && !c.IsDelete);
             if (curricolum != null)
             {
-                _context.Curricolums.Remove(curricolum);
-                return 1;
+                curricolum.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateCurricolum(Curricolum _curricolum)
+        public bool UpdateCurricolum(Curricolum _curricolum)
         {
             Curricolum? curricolum = _context.Curricolums
-                .FirstOrDefault(c => c.Id == _curricolum.Id);
+                .FirstOrDefault(c => c.Id == _curricolum.Id && !c.IsDelete);
             if (curricolum != null)
             {
                 curricolum.CurricolumName = _curricolum.CurricolumName;
@@ -52,9 +55,9 @@ namespace DataAccess.DAO
                 curricolum.UpdatedAt = _curricolum.UpdatedAt;
                 curricolum.UpdatedBy = _curricolum.UpdatedBy;
                 curricolum.IsDelete = _curricolum.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }

@@ -80,39 +80,42 @@ namespace DataAccess.DAO
 
         public List<StudyCourse> GetStudyCourses()
         {
-            return _context.StudyCourses.ToList();
+            return _context.StudyCourses
+                .Where(sc => !sc.IsDelete)
+                .ToList();
         }
 
         public StudyCourse? GetStudyCourse(int id)
         {
-            return _context.StudyCourses.FirstOrDefault(sc => sc.Id == id);
+            return _context.StudyCourses
+                .FirstOrDefault(sc => sc.Id == id && !sc.IsDelete);
         }
 
-        public int AddStudyCourse(StudyCourse studyCourse)
+        public bool AddStudyCourse(StudyCourse studyCourse)
         {
             if (studyCourse != null)
             {
                 _context.StudyCourses.Add(studyCourse);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteStudyCourse(int studyCourseId)
+        public bool DeleteStudyCourse(int studyCourseId)
         {
-            StudyCourse? studyCourse = _context.StudyCourses.FirstOrDefault(sc => sc.Id == studyCourseId);
+            StudyCourse? studyCourse = _context.StudyCourses.FirstOrDefault(sc => sc.Id == studyCourseId && !sc.IsDelete);
             if (studyCourse != null)
             {
-                _context.StudyCourses.Remove(studyCourse);
-                return 1;
+                studyCourse.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateStudyCourse(StudyCourse _studyCourse)
+        public bool UpdateStudyCourse(StudyCourse _studyCourse)
         {
             StudyCourse? studyCourse = _context.StudyCourses
-                .FirstOrDefault(sc => sc.Id == _studyCourse.Id);
+                .FirstOrDefault(sc => sc.Id == _studyCourse.Id && !sc.IsDelete);
             if (studyCourse != null)
             {
                 studyCourse.Rollnumber = _studyCourse.Rollnumber;
@@ -121,9 +124,9 @@ namespace DataAccess.DAO
                 studyCourse.UpdatedAt = _studyCourse.UpdatedAt;
                 studyCourse.UpdatedBy = _studyCourse.UpdatedBy;
                 studyCourse.IsDelete = _studyCourse.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
     }
