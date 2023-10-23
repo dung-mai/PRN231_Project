@@ -13,12 +13,12 @@ namespace DataAccess.DAO
 
         public Teacher? GetTeacherById(int id)
         {
-            return _context.Teachers.FirstOrDefault(m => m.AccountId == id);
+            return _context.Teachers.FirstOrDefault(t => t.AccountId == id && t.IsDelete == false);
         }
 
         public List<Teacher> GetTeachers()
         {
-            return _context.Teachers.ToList();
+            return _context.Teachers.Where(t => t.IsDelete == false).ToList();
         }
 
         public Boolean AddTeacher(Teacher teacher)
@@ -35,13 +35,19 @@ namespace DataAccess.DAO
             }
         }
 
-        public Boolean DeleteTeacher(Teacher teacher)
+        public Boolean DeleteTeacher(int id)
         {
             try
             {
-                _context.Teachers.Remove(teacher);
-                _context.SaveChanges();
-                return true;
+                Teacher? teacherUpdate = GetTeacherById(id);
+                if (teacherUpdate != null)
+                {
+                    teacherUpdate.IsDelete = true;
+                    _context.Teachers.Remove(teacherUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using System.Data;
 
 namespace DataAccess.DAO
 {
@@ -13,12 +14,12 @@ namespace DataAccess.DAO
 
         public Role? GetRoleById(int id)
         {
-            return _context.Roles.FirstOrDefault(m => m.Roleid == id);
+            return _context.Roles.FirstOrDefault(r => r.Roleid == id && r.IsDelete == false);
         }
 
         public List<Role> GetRoles()
         {
-            return _context.Roles.ToList();
+            return _context.Roles.Where(r => r.IsDelete == false).ToList();
         }
 
         public Boolean AddRole(Role role)
@@ -35,13 +36,19 @@ namespace DataAccess.DAO
             }
         }
 
-        public Boolean DeleteRole(Role role)
+        public Boolean DeleteRole(int id)
         {
             try
             {
-                _context.Roles.Remove(role);
-                _context.SaveChanges();
-                return true;
+                Role? roleUpdate = GetRoleById(id);
+                if (roleUpdate != null)
+                {
+                    roleUpdate.IsDelete = true;
+                    _context.Roles.Update(roleUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

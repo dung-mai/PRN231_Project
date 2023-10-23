@@ -24,9 +24,9 @@ namespace Repository.Repository
             return studentDAO.AddStudent(_mapper.Map<Student>(student));
         }
 
-        public bool DeleteStudent(StudentUpdateDTO student)
+        public bool DeleteStudent(string roleNumber)
         {
-            return studentDAO.DeleteStudent(_mapper.Map<Student>(student));
+            return studentDAO.DeleteStudent(roleNumber);
         }
 
         public StudentResponseDTO? GetStudentById(string roleNumber)

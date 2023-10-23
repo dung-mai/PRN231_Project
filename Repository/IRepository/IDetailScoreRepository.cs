@@ -8,7 +8,7 @@ namespace Repository.IRepository
 
         bool AddDetailScore(DetailScoreAddDTO detailScore);
         DetailScoreResponseDTO? GetDetailScoreById(int id);
-        bool DeleteDetailScore(DetailScoreUpdateDTO detailScore);
+        bool DeleteDetailScore(int id);
         bool UpdateDetailScore(DetailScoreUpdateDTO detailScore);
         List<DetailScoreResponseDTO> GetDetailScores();
 

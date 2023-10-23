@@ -20,12 +20,12 @@ namespace DataAccess.Managers
 
         public GradeComponent? GetGradeComponentById(int id)
         {
-            return _context.GradeComponents.FirstOrDefault(gc => gc.Id == id);
+            return _context.GradeComponents.FirstOrDefault(gc => gc.Id == id && gc.IsDelete == false);
         }
 
         public List<GradeComponent> GetGradeComponents()
         {
-            return _context.GradeComponents.ToList();
+            return _context.GradeComponents.Where(gc => gc.IsDelete == false).ToList();
         }
 
         public Boolean AddGradeComponent(GradeComponent gradeComponent)
@@ -42,13 +42,19 @@ namespace DataAccess.Managers
             }
         }
 
-        public Boolean DeleteGradeComponent(GradeComponent gradeComponent)
+        public Boolean DeleteGradeComponent(int id)
         {
             try
             {
-                _context.GradeComponents.Remove(gradeComponent);
-                _context.SaveChanges();
-                return true;
+                GradeComponent? gradeComponentUpdate = GetGradeComponentById(id);
+                if (gradeComponentUpdate != null)
+                {
+                    gradeComponentUpdate.IsDelete = true;
+                    _context.GradeComponents.Update(gradeComponentUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

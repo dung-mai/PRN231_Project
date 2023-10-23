@@ -23,9 +23,9 @@ namespace Repository.Repository
             return majorDAO.AddRole(_mapper.Map<Role>(major));
         }
 
-        public bool DeleteRole(RoleUpdateDTO major)
+        public bool DeleteRole(int id)
         {
-            return majorDAO.DeleteRole(_mapper.Map<Role>(major));
+            return majorDAO.DeleteRole(id);
         }
 
         public RoleResponseDTO? GetRoleById(int id)

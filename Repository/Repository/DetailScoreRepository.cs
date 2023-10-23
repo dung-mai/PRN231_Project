@@ -54,9 +54,9 @@ namespace Repository.Repository
             return _mapper.Map<DetailScoreResponseDTO>(detailScoreDAO.GetGetDetailScoreById(id));
         }
 
-        public bool DeleteDetailScore(DetailScoreUpdateDTO detailScore)
+        public bool DeleteDetailScore(int id)
         {
-            return detailScoreDAO.DeleteDetailScore(_mapper.Map<DetailScore>(detailScore));
+            return detailScoreDAO.DeleteDetailScore(id);
         }
 
         public bool UpdateDetailScore(DetailScoreUpdateDTO detailScore)

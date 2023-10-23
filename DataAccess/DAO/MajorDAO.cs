@@ -13,12 +13,12 @@ namespace DataAccess.DAO
 
         public Major? GetMajorById(int id)
         {
-            return _context.Majors.FirstOrDefault(m => m.Id == id);
+            return _context.Majors.FirstOrDefault(m => m.Id == id && m.IsDelete == false);
         }
 
         public List<Major> GetMajors()
         {
-            return _context.Majors.ToList();
+            return _context.Majors.Where(m => m.IsDelete == false).ToList();
         }
 
         public Boolean AddMajor(Major major)
@@ -35,13 +35,19 @@ namespace DataAccess.DAO
             }
         }
 
-        public Boolean DeleteMajor(Major major)
+        public Boolean DeleteMajor(int id)
         {
             try
             {
-                _context.Majors.Remove(major);
-                _context.SaveChanges();
-                return true;
+                Major? majorUpdate = GetMajorById(id);
+                if (majorUpdate != null)
+                {
+                    majorUpdate.IsDelete = true;
+                    _context.Majors.Update(majorUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

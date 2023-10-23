@@ -11,7 +11,7 @@ namespace Repository.IRepository
 
         bool AddSemester(SemesterAddDTO semester);
         SemesterResponseDTO? GetSemesterById(int id);
-        bool DeleteSemester(SemesterUpdateDTO semester);
+        bool DeleteSemester(int id);
         bool UpdateSemester(SemesterUpdateDTO semester);
         List<SemesterResponseDTO> GetSemesters();
     }

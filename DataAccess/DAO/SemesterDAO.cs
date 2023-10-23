@@ -17,12 +17,12 @@ namespace DataAccess.Managers
 
         public Semester? GetCurrentSemester()
         {
-            return _context.Semesters.FirstOrDefault(s => DateTime.Compare((DateTime)s.EndDate, DateTime.Now) >= 0 );
+            return _context.Semesters.FirstOrDefault(s => DateTime.Compare((DateTime)s.EndDate, DateTime.Now) >= 0);
         }
 
         public List<Semester> GetTeachingSemester(int teacherId)
         {
-            return _context.Semesters.Where(s => s.Classes.FirstOrDefault(c => 
+            return _context.Semesters.Where(s => s.Classes.FirstOrDefault(c =>
                                                         (c.SubjectOfClasses.FirstOrDefault(s => s.TeacherId == teacherId) != null)) != null)
                                     .ToList();
         }
@@ -30,12 +30,12 @@ namespace DataAccess.Managers
 
         public Semester? GetSemesterById(int id)
         {
-            return _context.Semesters.FirstOrDefault(s => s.Id == id);
+            return _context.Semesters.FirstOrDefault(s => s.Id == id && s.IsDelete == false);
         }
 
         public List<Semester> GetSemesters()
         {
-            return _context.Semesters.ToList();
+            return _context.Semesters.Where(s => s.IsDelete == false).ToList();
         }
 
         public Boolean AddSemester(Semester semester)
@@ -52,13 +52,19 @@ namespace DataAccess.Managers
             }
         }
 
-        public Boolean DeleteSemester(Semester semester)
+        public Boolean DeleteSemester(int id)
         {
             try
             {
-                _context.Semesters.Remove(semester);
-                _context.SaveChanges();
-                return true;
+                Semester? semesterUpdate = GetSemesterById(id);
+                if (semesterUpdate != null)
+                {
+                    semesterUpdate.IsDelete = true;
+                    _context.Semesters.Update(semesterUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {
