@@ -48,7 +48,6 @@ namespace BusinessObject.Models
                 entity.ToTable("Account");
 
                 entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
                     .HasColumnName("id");
 
                 entity.Property(e => e.Address)

@@ -1,17 +1,34 @@
 ﻿using BusinessObject.Models;
 using DataAccess.DAO;
+using DTO.Request.Account;
+using DTO.Request.Class;
+using DTO.Request.Curricolum;
 using DTO.Request.DetailScore;
 using DTO.Request.GradeComponent;
 using DTO.Request.Major;
+using DTO.Request.Role;
 using DTO.Request.Semester;
 using DTO.Request.Student;
+using DTO.Request.StudyCourse;
+using DTO.Request.Subject;
+using DTO.Request.SubjectCurricolum;
+using DTO.Request.SubjectOfClass;
 using DTO.Request.SubjectResult;
+using DTO.Request.Teacher;
+using DTO.Response.Account;
+using DTO.Response.Class;
+using DTO.Response.Curricolum;
 using DTO.Response.DetailScore;
 using DTO.Response.GradeComponent;
 using DTO.Response.Major;
+using DTO.Response.Role;
 using DTO.Response.Semester;
 using DTO.Response.Student;
+using DTO.Response.StudyCourse;
 using DTO.Response.Subject;
+using DTO.Response.SubjectCurricolum;
+using DTO.Response.SubjectOfClass;
+using DTO.Response.Teacher;
 
 namespace Bussiness.Mapping
 {
@@ -37,8 +54,33 @@ namespace Bussiness.Mapping
             CreateMap<SubjectResult, SubjectResponseDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultAddDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultUpdateDTO>().ReverseMap();
-
-
+            CreateMap<Account, AccountResponseDTO>().ReverseMap();
+            CreateMap<Account, AccountUpdateDTO>().ReverseMap();
+            CreateMap<Account, AccountResponseDTO>().ReverseMap();
+            CreateMap<Class, ClassResponseDTO>().ReverseMap();
+            CreateMap<Class, ClassUpdateDTO>().ReverseMap();
+            CreateMap<Class, ClassResponseDTO>().ReverseMap();
+            CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
+            CreateMap<Curricolum, CurricolumUpdateDTO>().ReverseMap();
+            CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
+            CreateMap<Role, RoleResponseDTO>().ReverseMap();
+            CreateMap<Role, RoleUpdateDTO>().ReverseMap();
+            CreateMap<Role, RoleResponseDTO>().ReverseMap();
+            CreateMap<StudyCourse, StudyCourseResponseDTO>().ReverseMap();
+            CreateMap<StudyCourse, StudyCourseUpdateDTO>().ReverseMap();
+            CreateMap<StudyCourse, StudyCourseResponseDTO>().ReverseMap();
+            CreateMap<Subject, SubjectResponseDTO>().ReverseMap();
+            CreateMap<Subject, SubjectUpdateDTO>().ReverseMap();
+            CreateMap<Subject, SubjectResponseDTO>().ReverseMap();
+            CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
+            CreateMap<SubjectCurricolum, SubjectCurricolumUpdateDTO>().ReverseMap();
+            CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
+            CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
+            CreateMap<SubjectOfClass, SubjectOfClassUpdateDTO>().ReverseMap();
+            CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherResponseDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherUpdateDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherResponseDTO>().ReverseMap();
         }
 
     }
