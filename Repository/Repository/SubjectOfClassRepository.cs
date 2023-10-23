@@ -57,10 +57,10 @@ namespace Repository.Repository
             return _mapper.Map<SubjectOfClassResponseDTO>(subjectOfClassDAO.GetSubjectOfClass(id));
         }
 
-        public IQueryable<SubjectOfClassResponseDTO> GetSubjectOfClasss()
+        public IQueryable<SubjectOfClassResponseDTO> GetSubjectOfClasses()
         {
             SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
-            List<SubjectOfClass> subjectOfClasss = subjectOfClassDAO.GetSubjectOfClasss();
+            List<SubjectOfClass> subjectOfClasss = subjectOfClassDAO.GetSubjectOfClasses();
             return subjectOfClasss.Select(sc => _mapper.Map<SubjectOfClassResponseDTO>(sc)).AsQueryable();
         }
 
@@ -69,8 +69,8 @@ namespace Repository.Repository
             try
             {
                 SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
-                int result = subjectOfClassDAO.AddSubjectOfClass(_mapper.Map<SubjectOfClass>(subjectOfClass));
-                if (result > 0)
+                bool result = subjectOfClassDAO.AddSubjectOfClass(_mapper.Map<SubjectOfClass>(subjectOfClass));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -86,11 +86,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateSubjectOfClass(SubjectOfClassUpdateDTO subjectOfClass)
+        public bool UpdateSubjectOfClass(SubjectOfClassUpdateDTO subjectOfClass)
         {
-            SubjectOfClassDAO subjectOfClassDAO = new(_context);
-            subjectOfClassDAO.UpdateSubjectOfClass(_mapper.Map<SubjectOfClass>(subjectOfClass));
-            _context.SaveChanges();
+            try
+            {
+                SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
+                bool result = subjectOfClassDAO.UpdateSubjectOfClass(_mapper.Map<SubjectOfClass>(subjectOfClass));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

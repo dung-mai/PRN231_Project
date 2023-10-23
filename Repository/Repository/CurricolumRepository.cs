@@ -51,8 +51,8 @@ namespace Repository.Repository
             try
             {
                 CurricolumDAO curricolumDAO = new CurricolumDAO(_context);
-                int result = curricolumDAO.AddCurricolum(_mapper.Map<Curricolum>(curricolum));
-                if (result > 0)
+                bool result = curricolumDAO.AddCurricolum(_mapper.Map<Curricolum>(curricolum));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -68,11 +68,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateCurricolum(CurricolumUpdateDTO curricolum)
+        public bool UpdateCurricolum(CurricolumUpdateDTO curricolum)
         {
-            CurricolumDAO curricolumDAO = new(_context);
-            curricolumDAO.UpdateCurricolum(_mapper.Map<Curricolum>(curricolum));
-            _context.SaveChanges();
+            try
+            {
+                CurricolumDAO curricolumDAO = new CurricolumDAO(_context);
+                bool result = curricolumDAO.UpdateCurricolum(_mapper.Map<Curricolum>(curricolum));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

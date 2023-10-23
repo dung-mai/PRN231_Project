@@ -5,9 +5,9 @@ namespace Repository.IRepository
 {
     public interface IClassRepository
     {
-        IQueryable<ClassResponseDTO> GetClasss();
+        IQueryable<ClassResponseDTO> GetClasses();
         ClassResponseDTO? GetClass(int id);
-        void UpdateClass(ClassUpdateDTO oldclass);
+        bool UpdateClass(ClassUpdateDTO oldclass);
         bool SaveClass(ClassCreateDTO newclass);
         bool DeleteClass(int id);
     }

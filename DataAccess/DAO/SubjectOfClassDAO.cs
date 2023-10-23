@@ -42,41 +42,44 @@ namespace DataAccess.DAO
             return (_context.SubjectOfClasses.FirstOrDefault(sc => sc.TeacherId == teacherId && sc.Id == classId)) != null;
         }
 
-        public List<SubjectOfClass> GetSubjectOfClasss()
+        public List<SubjectOfClass> GetSubjectOfClasses()
         {
-            return _context.SubjectOfClasses.ToList();
+            return _context.SubjectOfClasses
+                .Where(sc => !sc.IsDelete)
+                .ToList();
         }
 
         public SubjectOfClass? GetSubjectOfClass(int id)
         {
-            return _context.SubjectOfClasses.FirstOrDefault(sc => sc.Id == id);
+            return _context.SubjectOfClasses
+                .FirstOrDefault(sc => sc.Id == id && !sc.IsDelete);
         }
 
-        public int AddSubjectOfClass(SubjectOfClass subjectOfClass)
+        public bool AddSubjectOfClass(SubjectOfClass subjectOfClass)
         {
             if (subjectOfClass != null)
             {
                 _context.SubjectOfClasses.Add(subjectOfClass);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteSubjectOfClass(int subjectOfClassId)
+        public bool DeleteSubjectOfClass(int subjectOfClassId)
         {
-            SubjectOfClass? subjectOfClass = _context.SubjectOfClasses.FirstOrDefault(sc => sc.Id == subjectOfClassId);
+            SubjectOfClass? subjectOfClass = _context.SubjectOfClasses.FirstOrDefault(sc => sc.Id == subjectOfClassId && !sc.IsDelete);
             if (subjectOfClass != null)
             {
-                _context.SubjectOfClasses.Remove(subjectOfClass);
-                return 1;
+                subjectOfClass.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateSubjectOfClass(SubjectOfClass _subjectOfClass)
+        public bool UpdateSubjectOfClass(SubjectOfClass _subjectOfClass)
         {
             SubjectOfClass? subjectOfClass = _context.SubjectOfClasses
-                .FirstOrDefault(sc => sc.Id == _subjectOfClass.Id);
+                .FirstOrDefault(sc => sc.Id == _subjectOfClass.Id && !sc.IsDelete);
             if (subjectOfClass != null)
             {
                 subjectOfClass.TeacherId = _subjectOfClass.TeacherId;
@@ -87,9 +90,9 @@ namespace DataAccess.DAO
                 subjectOfClass.UpdatedAt = _subjectOfClass.UpdatedAt;
                 subjectOfClass.UpdatedBy = _subjectOfClass.UpdatedBy;
                 subjectOfClass.IsDelete = _subjectOfClass.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }

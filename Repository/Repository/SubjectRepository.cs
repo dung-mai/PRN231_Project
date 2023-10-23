@@ -51,8 +51,8 @@ namespace Repository.Repository
             try
             {
                 SubjectDAO subjectDAO = new SubjectDAO(_context);
-                int result = subjectDAO.AddSubject(_mapper.Map<Subject>(subject));
-                if (result > 0)
+                bool result = subjectDAO.AddSubject(_mapper.Map<Subject>(subject));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -68,11 +68,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateSubject(SubjectUpdateDTO subject)
+        public bool UpdateSubject(SubjectUpdateDTO subject)
         {
-            SubjectDAO subjectDAO = new(_context);
-            subjectDAO.UpdateSubject(_mapper.Map<Subject>(subject));
-            _context.SaveChanges();
+            try
+            {
+                SubjectDAO subjectDAO = new SubjectDAO(_context);
+                bool result = subjectDAO.UpdateSubject(_mapper.Map<Subject>(subject));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

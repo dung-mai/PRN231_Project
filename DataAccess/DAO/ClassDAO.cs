@@ -10,41 +10,43 @@ namespace DataAccess.DAO
             _context = context;
         }
 
-        public List<Class> GetClasss()
+        public List<Class> GetClasses()
         {
-            return _context.Classes.ToList();
+            return _context.Classes
+                .Where(c => !c.IsDelete)
+                .ToList();
         }
 
         public Class? GetClass(int id)
         {
-            return _context.Classes.FirstOrDefault(c => c.Id == id);
+            return _context.Classes.FirstOrDefault(c => c.Id == id && !c.IsDelete);
         }
 
-        public int AddClass(Class newclass)
+        public bool AddClass(Class newclass)
         {
             if (newclass != null)
             {
                 _context.Classes.Add(newclass);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteClass(int classId)
+        public bool DeleteClass(int classId)
         {
-            Class? classToDeleted = _context.Classes.FirstOrDefault(c => c.Id == classId);
+            Class? classToDeleted = _context.Classes.FirstOrDefault(c => c.Id == classId && !c.IsDelete);
             if (classToDeleted != null)
             {
-                _context.Classes.Remove(classToDeleted);
-                return 1;
+                classToDeleted.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateClass(Class _class)
+        public bool UpdateClass(Class _class)
         {
             Class? oldClass = _context.Classes
-                .FirstOrDefault(c => c.Id == _class.Id);
+                .FirstOrDefault(c => c.Id == _class.Id && !c.IsDelete);
             if (oldClass != null)
             {
                 oldClass.ClassName = _class.ClassName;
@@ -52,9 +54,9 @@ namespace DataAccess.DAO
                 oldClass.UpdatedAt = _class.UpdatedAt;
                 oldClass.UpdatedBy = _class.UpdatedBy;
                 oldClass.IsDelete = _class.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }

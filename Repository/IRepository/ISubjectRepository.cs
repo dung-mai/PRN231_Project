@@ -7,7 +7,7 @@ namespace Repository.IRepository
     {
         IQueryable<SubjectResponseDTO> GetSubjects();
         SubjectResponseDTO? GetSubject(int id);
-        void UpdateSubject(SubjectUpdateDTO subject);
+        bool UpdateSubject(SubjectUpdateDTO subject);
         bool SaveSubject(SubjectCreateDTO subject);
         bool DeleteSubject(int id);
     }

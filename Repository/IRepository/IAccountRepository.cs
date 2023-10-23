@@ -8,7 +8,7 @@ namespace Repository.IRepository
         AccountResponseDTO? GetAccountByEmail(string email);
         IQueryable<AccountResponseDTO> GetAccounts();
         AccountResponseDTO? GetAccount(int id);
-        void UpdateAccount(AccountUpdateDTO account);
+        bool UpdateAccount(AccountUpdateDTO account);
         bool SaveAccount(AccountCreateDTO account);
         bool DeleteAccount(int id);
     }

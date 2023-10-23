@@ -39,10 +39,10 @@ namespace Repository.Repository
             return _mapper.Map<ClassResponseDTO>(classDAO.GetClass(id));
         }
 
-        public IQueryable<ClassResponseDTO> GetClasss()
+        public IQueryable<ClassResponseDTO> GetClasses()
         {
             ClassDAO classDAO = new ClassDAO(_context);
-            List<Class> classs = classDAO.GetClasss();
+            List<Class> classs = classDAO.GetClasses();
             return classs.Select(c => _mapper.Map<ClassResponseDTO>(c)).AsQueryable();
         }
 
@@ -51,8 +51,8 @@ namespace Repository.Repository
             try
             {
                 ClassDAO classDAO = new ClassDAO(_context);
-                int result = classDAO.AddClass(_mapper.Map<Class>(newclass));
-                if (result > 0)
+                bool result = classDAO.AddClass(_mapper.Map<Class>(newclass));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -68,11 +68,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateClass(ClassUpdateDTO newclass)
+        public bool UpdateClass(ClassUpdateDTO newclass)
         {
-            ClassDAO classDAO = new(_context);
-            classDAO.UpdateClass(_mapper.Map<Class>(newclass));
-            _context.SaveChanges();
+            try
+            {
+                ClassDAO classDAO = new ClassDAO(_context);
+                bool result = classDAO.UpdateClass(_mapper.Map<Class>(newclass));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

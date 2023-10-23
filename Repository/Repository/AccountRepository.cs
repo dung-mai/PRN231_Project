@@ -58,8 +58,8 @@ namespace Repository.Repository
             try
             {
                 AccountDAO accountDAO = new AccountDAO(_context);
-                int result = accountDAO.AddAccount(_mapper.Map<Account>(account));
-                if (result > 0)
+                bool result = accountDAO.AddAccount(_mapper.Map<Account>(account));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -75,11 +75,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateAccount(AccountUpdateDTO account)
+        public bool UpdateAccount(AccountUpdateDTO account)
         {
-            AccountDAO accountDAO = new(_context);
-            accountDAO.UpdateAccount(_mapper.Map<Account>(account));
-            _context.SaveChanges();
+            try
+            {
+                AccountDAO accountDAO = new AccountDAO(_context);
+                bool result = accountDAO.UpdateAccount(_mapper.Map<Account>(account));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
