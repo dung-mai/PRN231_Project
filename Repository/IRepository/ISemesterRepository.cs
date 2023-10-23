@@ -1,9 +1,18 @@
-﻿namespace Repository.IRepository
+﻿using DTO.Request.Semester;
+using DTO.Response.Semester;
+
+namespace Repository.IRepository
 {
     public interface ISemesterRepository
     {
-        List<SemesterDTO> GetAllSemester();
-        SemesterDTO? GetCurrentSemester();
-        List<SemesterDTO> GetTeachSemester(int id);
+        //List<SemesterDTO> GetAllSemester();
+        //SemesterDTO? GetCurrentSemester();
+        //List<SemesterDTO> GetTeachSemester(int id);
+
+        bool AddSemester(SemesterAddDTO semester);
+        SemesterResponseDTO? GetSemesterById(int id);
+        bool DeleteSemester(SemesterUpdateDTO semester);
+        bool UpdateSemester(SemesterUpdateDTO semester);
+        List<SemesterResponseDTO> GetSemesters();
     }
 }

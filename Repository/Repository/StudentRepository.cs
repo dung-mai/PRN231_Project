@@ -1,27 +1,54 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
+using DataAccess.DAO;
 using DataAccess.Managers;
+using DTO.Request.Student;
+using DTO.Response.Student;
 using Repository.IRepository;
 
 namespace Repository.Repository
 {
     public class StudentRepository : IStudentRepository
     {
-        FAPDbContext _context;
+        StudentDAO studentDAO;
         IMapper _mapper;
 
         public StudentRepository(FAPDbContext context, IMapper mapper)
         {
-            _context = context;
+            studentDAO = new StudentDAO(context);
             _mapper = mapper;
         }
 
-        public StudentDTO? GetStudentWithGradeResults(int accountId)
+        public bool AddStudent(StudentAddDTO student)
         {
-            StudentDAO manager = new StudentDAO(_context);
-            Student? student = manager.GetStudentWithGradeResults(accountId);
-            return student is null ? null : _mapper.Map<StudentDTO>(student);
+            return studentDAO.AddStudent(_mapper.Map<Student>(student));
         }
+
+        public bool DeleteStudent(StudentUpdateDTO student)
+        {
+            return studentDAO.DeleteStudent(_mapper.Map<Student>(student));
+        }
+
+        public StudentResponseDTO? GetStudentById(string roleNumber)
+        {
+            return _mapper.Map<StudentResponseDTO>(studentDAO.GetStudentById(roleNumber));
+        }
+        public List<StudentResponseDTO> GetStudents()
+        {
+            return _mapper.Map<List<StudentResponseDTO>>(studentDAO.GetStudents());
+        }
+
+        public bool UpdateStudent(StudentUpdateDTO student)
+        {
+            return studentDAO.UpdateStudent(_mapper.Map<Student>(student));
+        }
+
+        //public StudentDTO? GetStudentWithGradeResults(int accountId)
+        //{
+        //    StudentDAO manager = new StudentDAO(_context);
+        //    Student? student = manager.GetStudentWithGradeResults(accountId);
+        //    return student is null ? null : _mapper.Map<StudentDTO>(student);
+        //}
 
     }
 }

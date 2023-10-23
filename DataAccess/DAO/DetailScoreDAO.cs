@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
@@ -9,6 +10,74 @@ namespace DataAccess.DAO
         {
             _context = context;
         }
+
+        public DetailScore? GetGetDetailScoreById(int id)
+        {
+            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).FirstOrDefault(ds => ds.Id == id);
+        }
+
+        public List<DetailScore> GetDetailScores()
+        {
+            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).ToList();
+        }
+
+        public Boolean AddDetailScore(DetailScore detailScore)
+        {
+            try
+            {
+                _context.DetailScores.Add(detailScore);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Boolean DeleteDetailScore(DetailScore detailScore)
+        {
+            try
+            {
+                _context.DetailScores.Remove(detailScore);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Boolean UpdateDetailScore(DetailScore detailScore)
+        {
+            try
+            {
+                DetailScore? detailScoreUpdate = GetGetDetailScoreById(detailScore.Id);
+                if (detailScoreUpdate != null)
+                {
+                    detailScoreUpdate.Mark = detailScore.Mark;
+                    detailScoreUpdate.UpdatedAt = detailScore.UpdatedAt;
+                    detailScoreUpdate.UpdatedBy = detailScore.UpdatedBy;
+                    detailScoreUpdate.Comment = detailScore.Comment;
+                    detailScoreUpdate.IsDelete = detailScore.IsDelete;
+                    _context.DetailScores.Update(detailScoreUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+
+
+
+
+        //
 
         public void AddOrUpdateScore(DetailScore detailScoreInput)
         {

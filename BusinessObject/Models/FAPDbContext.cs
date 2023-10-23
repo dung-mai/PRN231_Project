@@ -23,6 +23,7 @@ namespace BusinessObject.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Semester> Semesters { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
+        public virtual DbSet<Teacher> Teachers { get; set; } = null!;
         public virtual DbSet<StudyCourse> StudyCourses { get; set; } = null!;
         public virtual DbSet<Subject> Subjects { get; set; } = null!;
         public virtual DbSet<SubjectCurricolum> SubjectCurricolums { get; set; } = null!;
