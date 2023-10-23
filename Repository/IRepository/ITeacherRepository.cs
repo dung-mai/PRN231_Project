@@ -7,7 +7,7 @@ namespace Repository.IRepository
     {
         bool AddTeacher(TeacherAddDTO teacher);
         TeacherResponseDTO? GetTeacherById(int id);
-        bool DeleteTeacher(TeacherUpdateDTO teacher);
+        bool DeleteTeacher(int id);
         bool UpdateTeacher(TeacherUpdateDTO teacher);
         List<TeacherResponseDTO> GetTeachers();
     }

@@ -13,12 +13,12 @@ namespace DataAccess.DAO
 
         public SubjectResult? GetSubjectResultById(int id)
         {
-            return _context.SubjectResults.FirstOrDefault(m => m.Id == id);
+            return _context.SubjectResults.FirstOrDefault(sr => sr.Id == id);
         }
 
         public List<SubjectResult> GetSubjectResults()
         {
-            return _context.SubjectResults.ToList();
+            return _context.SubjectResults.Where(sr => sr.IsDelete == false).ToList();
         }
 
         public Boolean AddSubjectResult(SubjectResult subjectResult)
@@ -35,13 +35,19 @@ namespace DataAccess.DAO
             }
         }
 
-        public Boolean DeleteSubjectResult(SubjectResult subjectResult)
+        public Boolean DeleteSubjectResult(int id)
         {
             try
             {
-                _context.SubjectResults.Remove(subjectResult);
-                _context.SaveChanges();
-                return true;
+                SubjectResult? subjectResultUpdate = GetSubjectResultById(id);
+                if (subjectResultUpdate != null)
+                {
+                    subjectResultUpdate.IsDelete = true;
+                    _context.SubjectResults.Remove(subjectResultUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

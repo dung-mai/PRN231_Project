@@ -23,9 +23,9 @@ namespace Repository.Repository
             return majorDAO.AddMajor(_mapper.Map<Major>(major));
         }
 
-        public bool DeleteMajor(MajorUpdateDTO major)
+        public bool DeleteMajor(int id)
         {
-            return majorDAO.DeleteMajor(_mapper.Map<Major>(major));
+            return majorDAO.DeleteMajor(id);
         }
 
         public MajorResponseDTO? GetMajorById(int id)

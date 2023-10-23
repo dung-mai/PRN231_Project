@@ -23,9 +23,9 @@ namespace Repository.Repository
             return teacherDAO.AddTeacher(_mapper.Map<Teacher>(teacher));
         }
 
-        public bool DeleteTeacher(TeacherUpdateDTO teacher)
+        public bool DeleteTeacher(int id)
         {
-            return teacherDAO.DeleteTeacher(_mapper.Map<Teacher>(teacher));
+            return teacherDAO.DeleteTeacher(id);
         }
 
         public TeacherResponseDTO? GetTeacherById(int id)

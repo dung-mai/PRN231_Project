@@ -28,9 +28,9 @@ namespace Repository.Repository
             return subjectResultDAO.AddSubjectResult(_mapper.Map<SubjectResult>(subjectResult));
         }
 
-        public bool DeleteSubjectResult(SubjectResultUpdateDTO subjectResult)
+        public bool DeleteSubjectResult(int id)
         {
-            return subjectResultDAO.DeleteSubjectResult(_mapper.Map<SubjectResult>(subjectResult));
+            return subjectResultDAO.DeleteSubjectResult(id);
         }
 
         public SubjectResultResponseDTO? GetSubjectResultById(int id)

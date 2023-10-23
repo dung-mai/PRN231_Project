@@ -8,7 +8,7 @@ namespace Repository.IRepository
         //StudentDTO? GetStudentWithGradeResults(int accountId);
         bool AddStudent(StudentAddDTO student);
         StudentResponseDTO? GetStudentById(string roleNumber);
-        bool DeleteStudent(StudentUpdateDTO student);
+        bool DeleteStudent(string roleNumber);
         bool UpdateStudent(StudentUpdateDTO student);
         List<StudentResponseDTO> GetStudents();
     }

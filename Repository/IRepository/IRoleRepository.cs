@@ -7,7 +7,7 @@ namespace Repository.IRepository
     {
         bool AddRole(RoleAddDTO role);
         RoleResponseDTO? GetRoleById(int id);
-        bool DeleteRole(RoleUpdateDTO role);
+        bool DeleteRole(int id);
         bool UpdateRole(RoleUpdateDTO role);
         List<RoleResponseDTO> GetRoles();
     }

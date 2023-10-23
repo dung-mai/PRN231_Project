@@ -28,12 +28,12 @@ namespace DataAccess.Managers
 
         public Student? GetStudentById(string rollNumber)
         {
-            return _context.Students.FirstOrDefault(m => m.Rollnumber == rollNumber);
+            return _context.Students.FirstOrDefault(s => s.Rollnumber == rollNumber && s.IsDelete == false);
         }
 
         public List<Student> GetStudents()
         {
-            return _context.Students.ToList();
+            return _context.Students.Where(s => s.IsDelete == false).ToList();
         }
 
         public Boolean AddStudent(Student student)
@@ -50,13 +50,19 @@ namespace DataAccess.Managers
             }
         }
 
-        public Boolean DeleteStudent(Student student)
+        public Boolean DeleteStudent(string rollNumber)
         {
             try
             {
-                _context.Students.Remove(student);
-                _context.SaveChanges();
-                return true;
+                Student? studentUpdate = GetStudentById(rollNumber);
+                if (studentUpdate != null)
+                {
+                    studentUpdate.IsDelete = true;
+                    _context.Students.Update(studentUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

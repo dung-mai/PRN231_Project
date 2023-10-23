@@ -10,7 +10,7 @@ namespace Repository.IRepository
 
         bool AddGradeComponent(GradeComponentAddDTO gradeComponent);
         GradeComponentResponseDTO? GetGradeComponentById(int id);
-        bool DeleteGradeComponent(GradeComponentUpdateDTO gradeComponent);
+        bool DeleteGradeComponent(int id);
         bool UpdateGradeComponent(GradeComponentUpdateDTO gradeComponent);
         List<GradeComponentResponseDTO> GetGradeComponents();
     }

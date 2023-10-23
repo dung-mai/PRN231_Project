@@ -1,7 +1,5 @@
 ﻿using DTO.Request.Curricolum;
 using DTO.Response.Curricolum;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Repository.IRepository;

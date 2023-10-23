@@ -25,9 +25,9 @@ namespace Repository.Repository
             return gradeComponentDAO.AddGradeComponent(_mapper.Map<GradeComponent>(gradeComponent));
         }
 
-        public bool DeleteGradeComponent(GradeComponentUpdateDTO gradeComponent)
+        public bool DeleteGradeComponent(int id)
         {
-            return gradeComponentDAO.DeleteGradeComponent(_mapper.Map<GradeComponent>(gradeComponent));
+            return gradeComponentDAO.DeleteGradeComponent(id);
         }
 
         public GradeComponentResponseDTO? GetGradeComponentById(int id)

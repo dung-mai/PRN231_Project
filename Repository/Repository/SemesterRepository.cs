@@ -24,9 +24,9 @@ namespace Repository.Repository
             return semesterDAO.AddSemester(_mapper.Map<Semester>(semester));
         }
 
-        public bool DeleteSemester(SemesterUpdateDTO semester)
+        public bool DeleteSemester(int id)
         {
-            return semesterDAO.DeleteSemester(_mapper.Map<Semester>(semester));
+            return semesterDAO.DeleteSemester(id);
         }
 
         public SemesterResponseDTO? GetSemesterById(int id)

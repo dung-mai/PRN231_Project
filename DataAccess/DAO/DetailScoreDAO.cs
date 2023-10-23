@@ -13,12 +13,12 @@ namespace DataAccess.DAO
 
         public DetailScore? GetGetDetailScoreById(int id)
         {
-            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).FirstOrDefault(ds => ds.Id == id);
+            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).FirstOrDefault(ds => ds.Id == id && ds.IsDelete == false);
         }
 
         public List<DetailScore> GetDetailScores()
         {
-            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).ToList();
+            return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).Where(ds => ds.IsDelete == false).ToList();
         }
 
         public Boolean AddDetailScore(DetailScore detailScore)
@@ -35,13 +35,19 @@ namespace DataAccess.DAO
             }
         }
 
-        public Boolean DeleteDetailScore(DetailScore detailScore)
+        public Boolean DeleteDetailScore(int id)
         {
+            DetailScore? detailScoreUpdate = GetGetDetailScoreById(id);
             try
             {
-                _context.DetailScores.Remove(detailScore);
-                _context.SaveChanges();
-                return true;
+                if (detailScoreUpdate != null)
+                {
+                    detailScoreUpdate.IsDelete = true;
+                    _context.DetailScores.Update(detailScoreUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception e)
             {

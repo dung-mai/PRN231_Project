@@ -7,7 +7,7 @@ namespace Repository.IRepository
     {
         bool AddMajor(MajorAddDTO major);
         MajorResponseDTO? GetMajorById(int id);
-        bool DeleteMajor(MajorUpdateDTO major);
+        bool DeleteMajor(int id);
         bool UpdateMajor(MajorUpdateDTO major);
         List<MajorResponseDTO> GetMajors();
     }
