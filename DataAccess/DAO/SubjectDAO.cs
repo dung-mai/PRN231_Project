@@ -5,6 +5,7 @@ namespace DataAccess.DAO
     public class SubjectDAO
     {
         FAPDbContext _context;
+
         public SubjectDAO(FAPDbContext context)
         {
             _context = context;
@@ -12,39 +13,42 @@ namespace DataAccess.DAO
 
         public List<Subject> GetSubjects()
         {
-            return _context.Subjects.ToList();
+            return _context.Subjects
+                .Where(s => !s.IsDelete)
+                .ToList();
         }
 
         public Subject? GetSubject(int id)
         {
-            return _context.Subjects.FirstOrDefault(s => s.Id == id);
+            return _context.Subjects
+                .FirstOrDefault(s => s.Id == id && !s.IsDelete);
         }
 
-        public int AddSubject(Subject subject)
+        public bool AddSubject(Subject subject)
         {
             if (subject != null)
             {
                 _context.Subjects.Add(subject);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteSubject(int subjectId)
+        public bool DeleteSubject(int subjectId)
         {
-            Subject? subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId);
+            Subject? subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId && !s.IsDelete);
             if (subject != null)
             {
-                _context.Subjects.Remove(subject);
-                return 1;
+                subject.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateSubject(Subject _subject)
+        public bool UpdateSubject(Subject _subject)
         {
             Subject? subject = _context.Subjects
-                .FirstOrDefault(s => s.Id == _subject.Id);
+                .FirstOrDefault(s => s.Id == _subject.Id && !s.IsDelete);
             if (subject != null)
             {
                 subject.SubjectName = _subject.SubjectName;
@@ -56,9 +60,9 @@ namespace DataAccess.DAO
                 subject.UpdatedAt = _subject.UpdatedAt;
                 subject.UpdatedBy = _subject.UpdatedBy;
                 subject.IsDelete = _subject.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Repository.IRepository
         //StudyCourseResponseDTO? GetSubjectClassById(int classId);
         IQueryable<StudyCourseResponseDTO> GetStudyCourses();
         StudyCourseResponseDTO? GetStudyCourse(int id);
-        void UpdateStudyCourse(StudyCourseUpdateDTO studyCourse);
+        bool UpdateStudyCourse(StudyCourseUpdateDTO studyCourse);
         bool SaveStudyCourse(StudyCourseCreateDTO studyCourse);
         bool DeleteStudyCourse(int id);
     }

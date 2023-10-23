@@ -7,7 +7,7 @@ namespace Repository.IRepository
     {
         IQueryable<SubjectCurricolumResponseDTO> GetSubjectCurricolums();
         SubjectCurricolumResponseDTO? GetSubjectCurricolum(int id);
-        void UpdateSubjectCurricolum(SubjectCurricolumUpdateDTO subjectCurricolum);
+        bool UpdateSubjectCurricolum(SubjectCurricolumUpdateDTO subjectCurricolum);
         bool SaveSubjectCurricolum(SubjectCurricolumCreateDTO subjectCurricolum);
         bool DeleteSubjectCurricolum(int id);
     }

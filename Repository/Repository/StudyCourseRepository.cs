@@ -97,8 +97,8 @@ namespace Repository.Repository
             try
             {
                 StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
-                int result = studyCourseDAO.AddStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
-                if (result > 0)
+                bool result = studyCourseDAO.AddStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
+                if (result)
                 {
                     _context.SaveChanges();
                     return true;
@@ -114,11 +114,26 @@ namespace Repository.Repository
             }
         }
 
-        public void UpdateStudyCourse(StudyCourseUpdateDTO studyCourse)
+        public bool UpdateStudyCourse(StudyCourseUpdateDTO studyCourse)
         {
-            StudyCourseDAO studyCourseDAO = new(_context);
-            studyCourseDAO.UpdateStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
-            _context.SaveChanges();
+            try
+            {
+                StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+                bool result = studyCourseDAO.UpdateStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

@@ -12,39 +12,42 @@ namespace DataAccess.DAO
 
         public List<SubjectCurricolum> GetSubjectCurricolums()
         {
-            return _context.SubjectCurricolums.ToList();
+            return _context.SubjectCurricolums
+                .Where(sc => !sc.IsDelete)
+                .ToList();
         }
 
         public SubjectCurricolum? GetSubjectCurricolum(int id)
         {
-            return _context.SubjectCurricolums.FirstOrDefault(sc => sc.Id == id);
+            return _context.SubjectCurricolums
+                .FirstOrDefault(sc => sc.Id == id && !sc.IsDelete);
         }
 
-        public int AddSubjectCurricolum(SubjectCurricolum subjectCurricolum)
+        public bool AddSubjectCurricolum(SubjectCurricolum subjectCurricolum)
         {
             if (subjectCurricolum != null)
             {
                 _context.SubjectCurricolums.Add(subjectCurricolum);
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int DeleteSubjectCurricolum(int subjectCurricolumId)
+        public bool DeleteSubjectCurricolum(int subjectCurricolumId)
         {
-            SubjectCurricolum? subjectCurricolum = _context.SubjectCurricolums.FirstOrDefault(sc => sc.Id == subjectCurricolumId);
+            SubjectCurricolum? subjectCurricolum = _context.SubjectCurricolums.FirstOrDefault(sc => sc.Id == subjectCurricolumId && !sc.IsDelete);
             if (subjectCurricolum != null)
             {
-                _context.SubjectCurricolums.Remove(subjectCurricolum);
-                return 1;
+                subjectCurricolum.IsDelete = true;
+                return true;
             }
-            return 0;
+            return false;
         }
 
-        public int UpdateSubjectCurricolum(SubjectCurricolum _subjectCurricolum)
+        public bool UpdateSubjectCurricolum(SubjectCurricolum _subjectCurricolum)
         {
             SubjectCurricolum? subjectCurricolum = _context.SubjectCurricolums
-                .FirstOrDefault(sc => sc.Id == _subjectCurricolum.Id);
+                .FirstOrDefault(sc => sc.Id == _subjectCurricolum.Id && !sc.IsDelete);
             if (subjectCurricolum != null)
             {
                 subjectCurricolum.SubjectId = _subjectCurricolum.SubjectId;
@@ -54,9 +57,9 @@ namespace DataAccess.DAO
                 subjectCurricolum.UpdatedAt = _subjectCurricolum.UpdatedAt;
                 subjectCurricolum.UpdatedBy = _subjectCurricolum.UpdatedBy;
                 subjectCurricolum.IsDelete = _subjectCurricolum.IsDelete;
-                return 1;
+                return true;
             }
-            return 0;
+            return false;
         }
     }
 }
