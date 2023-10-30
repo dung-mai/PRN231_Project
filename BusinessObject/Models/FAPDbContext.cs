@@ -246,6 +246,21 @@ namespace BusinessObject.Models
                     .HasColumnName("role_name");
             });
 
+            modelBuilder.Entity<Teacher>(entity =>
+            {
+                entity.HasKey(e => e.AccountId);
+
+                entity.ToTable("Teacher");
+
+                entity.HasIndex(e => e.AccountId, "AccountId");
+
+                entity.Property(e => e.TeacherCode).HasMaxLength(20);
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Teachers)
+                    .HasForeignKey(d => d.AccountId);
+            });
+
             modelBuilder.Entity<Semester>(entity =>
             {
                 entity.ToTable("Semester");

@@ -1,5 +1,6 @@
 using BusinessObject.Models;
 using Bussiness.Mapping;
+using Microsoft.AspNetCore.OData;
 using Repository.IRepository;
 using Repository.Repository;
 
@@ -28,7 +29,9 @@ builder.Services.AddScoped<ISubjectOfClassRepository, SubjectOfClassRepository>(
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISubjectResultRepository, SubjectResultRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
-
+builder.Services.AddControllers().AddOData(option => option.Select()
+.Filter().OrderBy().Expand().SetMaxTop(100)
+.Expand());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

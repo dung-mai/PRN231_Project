@@ -27,10 +27,10 @@ namespace FAPAplicationAPI.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult PutStudent(string id, StudentUpdateDTO student)
+        [HttpPut("{rollnumber}")]
+        public IActionResult PutStudent(string rollnumber, StudentUpdateDTO student)
         {
-            if (id != student.Rollnumber)
+            if (rollnumber != student.Rollnumber)
             {
                 return BadRequest();
             }
@@ -55,7 +55,7 @@ namespace FAPAplicationAPI.Controllers
         }
 
         // DELETE: api/Student/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{rollnumber}")]
         public IActionResult DeleteStudent(string rollnumber)
         {
             var student = _studentRepository.GetStudentById(rollnumber);

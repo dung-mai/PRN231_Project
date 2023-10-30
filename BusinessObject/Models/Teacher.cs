@@ -12,6 +12,7 @@ namespace BusinessObject.Models
         public Teacher()
         {
             SubjectOfClasses = new HashSet<SubjectOfClass>();
+            SubjectResults = new HashSet<SubjectResult>();
         }
 
         [Key]
@@ -24,5 +25,6 @@ namespace BusinessObject.Models
 
         public virtual Account? Account { get; set; }
         public virtual ICollection<SubjectOfClass> SubjectOfClasses { get; set; }
+        public virtual ICollection<SubjectResult> SubjectResults { get; set; }
     }
 }
