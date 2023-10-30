@@ -28,6 +28,7 @@ using DTO.Response.StudyCourse;
 using DTO.Response.Subject;
 using DTO.Response.SubjectCurricolum;
 using DTO.Response.SubjectOfClass;
+using DTO.Response.SubjectResult;
 using DTO.Response.Teacher;
 
 namespace Bussiness.Mapping
@@ -36,7 +37,7 @@ namespace Bussiness.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<DetailScore, DetailScoreDAO>().ReverseMap();
+            CreateMap<DetailScore, DetailScoreAddDTO>().ReverseMap();
             CreateMap<DetailScore, DetailScoreUpdateDTO>().ReverseMap();
             CreateMap<DetailScore, DetailScoreResponseDTO>().ReverseMap();
             CreateMap<GradeComponent, GradeComponentAddDTO>().ReverseMap();
@@ -51,7 +52,7 @@ namespace Bussiness.Mapping
             CreateMap<Student, StudentAddDTO>().ReverseMap();
             CreateMap<Student, StudentUpdateDTO>().ReverseMap();
             CreateMap<Student, StudentResponseDTO>().ReverseMap();
-            CreateMap<SubjectResult, SubjectResponseDTO>().ReverseMap();
+            CreateMap<SubjectResult, SubjectResultResponseDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultAddDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultUpdateDTO>().ReverseMap();
             CreateMap<Account, AccountResponseDTO>().ReverseMap();
@@ -59,7 +60,7 @@ namespace Bussiness.Mapping
             CreateMap<Account, AccountCreateDTO>().ReverseMap();
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Class, ClassUpdateDTO>().ReverseMap();
-            CreateMap<Class, ClassResponseDTO>().ReverseMap();
+            CreateMap<Class, ClassCreateDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumUpdateDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumCreateDTO>().ReverseMap();
@@ -74,7 +75,7 @@ namespace Bussiness.Mapping
             CreateMap<Subject, SubjectCreateDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumUpdateDTO>().ReverseMap();
-            CreateMap<SubjectCurricolum, SubjectCreateDTO>().ReverseMap();
+            CreateMap<SubjectCurricolum, SubjectCurricolumCreateDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassUpdateDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassCreateDTO>().ReverseMap();

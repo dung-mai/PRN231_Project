@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Bussiness.DTO;
+using DTO.Response.GradeComponent;
 using DTO.Response.SubjectResult;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,7 +18,7 @@ namespace DTO.Response.DetailScore
         public string? Comment { get; set; }
         public bool IsDelete { get; set; } = false;
 
-        public virtual GradeComponentDTO? GradeComponent { get; set; }
+        public virtual GradeComponentResponseDTO? GradeComponent { get; set; }
         public virtual SubjectResultResponseDTO? SubjectResult { get; set; }
     }
 }
