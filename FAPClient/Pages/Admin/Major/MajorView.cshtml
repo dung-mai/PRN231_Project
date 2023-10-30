@@ -1,0 +1,167 @@
+﻿@page "/admin/major"
+@using DTO.Response.Major;
+@model FAPClient.Pages.Admin.Major.MajorViewModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<!-- Button trigger modal create Major -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createMajorModal" onclick="$('#createMajorModal').modal('show')">
+    Create Major
+</button>
+
+<!-- Modal Create Major -->
+<div class="modal fade" id="createMajorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page="/Admin/Major/MajorView" asp-page-handler="Create" method="POST">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Major</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <p>Major Name</p>
+                    <input type="text" name="MajorName"  class="w-100"/>
+                    <br/>
+                    <p>Major Code</p>
+                    <input type="date" name="MajorCode" class="w-100" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                <button type="submit"  class="btn btn-primary">Create</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!-- List table major -->
+<div>
+    
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+        <tr>
+            <th>Major Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+         @foreach (MajorResponseDTO major in Model.Majors)
+    {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@major.MajorName</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@major.MajorCode</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@major.UpdatedAt</p>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopupDelete('@major.Id')">
+                            Delete
+                        </button>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopup('@major.MajorName','@major.MajorCode','@major.UpdatedAt')">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+      
+    }
+    </tbody>
+    </table>
+   
+</div>
+
+
+<!-- Modal Update Major -->
+<div class="modal fade" id="updateMajorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Update" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Major</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateMajorModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Major Name</p>
+                    <input id="updateMajorName" type="text" name="majorName" class="w-100" />
+                    <p>Major Start Date</p>
+                    <input id="updateMajorStartDate" type="date" name="majorStartDate" class="w-100" />
+                    <p>Major End Date</p>
+                    <input id="updateMajorEndDate" type="date" name="majorEndDate" class="w-100" />
+                    <input id="updateMajorid" type="hidden" name="majorId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateMajorModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Delete Major -->
+<div class="modal fade" id="deleteMajorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Major</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteMajorModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteMajorid" type="hidden" name="majorId" />
+                    <p> Do you want Delete this Major ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('deleteMajorModal')">Cancle</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+    function openPopup(majorName, startDate, endDate, majorId) {
+        var inputName = document.getElementById("updateMajorName");
+        inputName.value = majorName;
+       
+        var inputStartDate = document.getElementById("updateMajorStartDate");
+        inputStartDate.value = formatDate(new Date(startDate));
+
+        var inputEndDate = document.getElementById("updateMajorEndDate");
+        inputEndDate.value = formatDate(new Date(endDate));
+
+        var inputId = document.getElementById("updateMajorid");
+        inputId.value = majorId;
+
+        $('#updateMajorModal').modal('show');
+    }
+
+    function openPopupDelete(majorId) {
+        var inputId = document.getElementById("deleteMajorid");
+        inputId.value = majorId;
+        $('#deleteMajorModal').modal('show');
+    }
+
+  
+</script>
