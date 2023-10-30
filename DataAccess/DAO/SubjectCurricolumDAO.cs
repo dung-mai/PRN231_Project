@@ -39,6 +39,7 @@ namespace DataAccess.DAO
             if (subjectCurricolum != null)
             {
                 subjectCurricolum.IsDelete = true;
+                subjectCurricolum.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -54,7 +55,7 @@ namespace DataAccess.DAO
                 subjectCurricolum.CurricolumId = _subjectCurricolum.CurricolumId;
                 subjectCurricolum.Status = _subjectCurricolum.Status;
                 subjectCurricolum.TermNo = _subjectCurricolum.TermNo;
-                subjectCurricolum.UpdatedAt = _subjectCurricolum.UpdatedAt;
+                subjectCurricolum.UpdatedAt = DateTime.Now;
                 subjectCurricolum.UpdatedBy = _subjectCurricolum.UpdatedBy;
                 subjectCurricolum.IsDelete = _subjectCurricolum.IsDelete;
                 return true;

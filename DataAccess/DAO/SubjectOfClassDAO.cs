@@ -71,6 +71,7 @@ namespace DataAccess.DAO
             if (subjectOfClass != null)
             {
                 subjectOfClass.IsDelete = true;
+                subjectOfClass.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -87,7 +88,7 @@ namespace DataAccess.DAO
                 subjectOfClass.ClassId = _subjectOfClass.ClassId;
                 subjectOfClass.StartDate = _subjectOfClass.StartDate;
                 subjectOfClass.EndDate = _subjectOfClass.EndDate;
-                subjectOfClass.UpdatedAt = _subjectOfClass.UpdatedAt;
+                subjectOfClass.UpdatedAt = DateTime.Now;
                 subjectOfClass.UpdatedBy = _subjectOfClass.UpdatedBy;
                 subjectOfClass.IsDelete = _subjectOfClass.IsDelete;
                 return true;

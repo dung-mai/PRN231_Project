@@ -47,6 +47,7 @@ namespace DataAccess.Managers
             if (account != null)
             {
                 account.IsDelete = true;
+                account.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -69,7 +70,7 @@ namespace DataAccess.Managers
                 account.Address = _account.Middlename;
                 account.Image = _account.Middlename;
                 account.Status = _account.Status;
-                account.UpdatedAt = _account.UpdatedAt;
+                account.UpdatedAt = DateTime.Now;
                 account.UpdatedBy = _account.UpdatedBy;
                 account.IsDelete = _account.IsDelete;
                 return true;

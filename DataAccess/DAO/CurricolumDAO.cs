@@ -42,6 +42,7 @@ namespace DataAccess.DAO
             if (curricolum != null)
             {
                 curricolum.IsDelete = true;
+                curricolum.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -55,7 +56,7 @@ namespace DataAccess.DAO
             {
                 curricolum.CurricolumName = _curricolum.CurricolumName;
                 curricolum.MajorId = _curricolum.MajorId;
-                curricolum.UpdatedAt = _curricolum.UpdatedAt;
+                curricolum.UpdatedAt = DateTime.Now;
                 curricolum.UpdatedBy = _curricolum.UpdatedBy;
                 curricolum.IsDelete = _curricolum.IsDelete;
                 return true;
