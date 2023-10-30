@@ -107,6 +107,7 @@ namespace DataAccess.DAO
             if (studyCourse != null)
             {
                 studyCourse.IsDelete = true;
+                studyCourse.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -121,7 +122,7 @@ namespace DataAccess.DAO
                 studyCourse.Rollnumber = _studyCourse.Rollnumber;
                 studyCourse.SubjectOfClassId = _studyCourse.SubjectOfClassId;
                 studyCourse.TryTime = _studyCourse.TryTime;
-                studyCourse.UpdatedAt = _studyCourse.UpdatedAt;
+                studyCourse.UpdatedAt = DateTime.Now;
                 studyCourse.UpdatedBy = _studyCourse.UpdatedBy;
                 studyCourse.IsDelete = _studyCourse.IsDelete;
                 return true;
