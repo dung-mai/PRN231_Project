@@ -20,7 +20,6 @@ namespace FAPAplicationAPI.Controllers
 
         // GET: api/Role
         [HttpGet]
-        [EnableQuery]
         public ActionResult<IQueryable<RoleResponseDTO>> GetRole()
         {
             return Ok(_roleRepository.GetRoles());

@@ -1,0 +1,278 @@
+﻿@page
+@using ProjectPRN_FAP.Bussiness.DTO
+@model ProjectPRN_FAP.Pages.Admin.UserPage.StudentModel
+@{
+    Layout = "_LayoutAdmin";
+}
+<!-- Button trigger modal create Subject -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createStudentModel">
+    Create Student
+</button>
+
+<!-- Modal Create Subject -->
+<div class="modal fade" id="createStudentModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="createStudent">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Student</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Email</p>
+                    <input type="text" name="studentEmail" class="w-100" />
+                    <br />
+
+                    <p>Student Code</p>
+                    <input type="text" name="studentCode" class="w-100" />
+                    <br />
+
+                    <p>Name</p>
+                    <input type="text" name="studentName" class="w-100" />
+                    <br />
+
+                    <p>Gender</p>
+                    <select name="studentGender" >
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <br />
+
+                    <p>Phone</p>
+                    <input type="tel" name="studentPhone" class="w-100" />
+                    <br />
+
+                    <p>Password</p>
+                    <input type="text" name="studentPassword" class="w-100" />
+                    <br />
+
+                    <p>DateOfBirth</p>
+                    <input type="date" name="studentDob" class="w-100" />
+                    <br />
+
+                    <p>Campus</p>
+                    <input type="text" name="studentCampus" class="w-100" />
+                    <br />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Student Code</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Password</th>
+                <th>DateOfBirth</th>
+                <th>Campus</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StudentDTO sDTO in Model.studentDTOs)
+            {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.StudentCode</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.Email</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.Name</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">
+                            @(sDTO.User.Gender == true ? "Nam" : "Nữ")
+                        </p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.Phone</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.Password</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@sDTO.User.Campus</p>
+                    </td>
+
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                            onclick="openPopupDelete('@sDTO.UserId', '@sDTO.StudentId')">
+                            Delete
+                        </button>
+                    </td>
+
+                    <td>
+                        @*openPopup(studentEmail,studentCode,studentName,studentGender,studentPhone, studentPassword, studentDob, studentCampus, studentId, userId)*@
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                            onclick="openPopup('@sDTO.User.Email','@sDTO.StudentCode','@sDTO.User.Name','@sDTO.User.Gender','@sDTO.User.Phone','@sDTO.User.Password','@sDTO.User.DateOfBirth','@sDTO.User.Campus','@sDTO.StudentId','@sDTO.UserId')">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Update Subject -->
+<div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Update" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Semester</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateStudentModal')"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Email</p>
+                    <input id="studentUpdateEmail" disabled type="text" name="studentEmail" class="w-100" />
+                    <br />
+
+                    <p>Student Code</p>
+                    <input id="studentUpdateCode" type="text" name="studentCode" class="w-100" />
+                    <br />
+
+                    <p>Name</p>
+                    <input id="studentUpdateName" type="text" name="studentName" class="w-100" />
+                    <br />
+
+                    <p>Gender</p>
+                    <select id="studentUpdateGender" name="studentGender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <br />
+
+                    <p>Phone</p>
+                    <input id="studentUpdatePhone" type="tel" name="studentPhone" class="w-100" />
+                    <br />
+
+                    <p>Password</p>
+                    <input id="studentUpdatePassword" type="text" name="studentPassword" class="w-100" />
+                    <br />
+
+                    <p>DateOfBirth</p>
+                    <input id="studentUpdateDob" type="date" name="studentDob" class="w-100" />
+                    <br />
+
+                    <p>Campus</p>
+                    <input id="studentUpdateCampus" type="text" name="studentCampus" class="w-100" />
+                    <br />
+                    <input id="studentUpdateUserId" type="hidden" name="userId" class="w-100" />
+                    <input id="studentUpdateStudentId" type="hidden" name="studentId" class="w-100" />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateStudentModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Delete Subject -->
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Semester</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteSubjectModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteSubjectid" type="hidden" name="subjectId" />
+                    <p> Do you want delete this Subject ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('deleteSubjectModal')">Cancle</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+    function openPopup(studentEmail, studentCode, studentName, studentGender, studentPhone, studentPassword, studentDob, studentCampus, studentId, userId) {
+        var inputMail = document.getElementById("studentUpdateEmail");
+        inputMail.value = studentEmail;
+
+
+        var inputStudentCode = document.getElementById("studentUpdateCode");
+        inputStudentCode.value = studentCode;
+
+        var inputName = document.getElementById("studentUpdateName");
+        inputName.value = studentName;
+
+
+        var inputGender = document.getElementById("studentUpdateGender");
+        for (var i = 0; i < inputGender.options.length; i++) {
+            if (inputGender.options[i].value.toUpperCase() == studentGender.toUpperCase()) {
+               
+                inputGender.options[i].selected = true;
+                break;
+            }
+        }
+
+        var inputPhone = document.getElementById("studentUpdatePhone");
+        inputPhone.value = studentPhone;
+
+        var inputPassword = document.getElementById("studentUpdatePassword");
+        inputPassword.value = studentPassword;
+
+        var inputDob = document.getElementById("studentUpdateDob");
+        inputDob.value = formatDate(new Date(studentDob));
+
+
+        var inputCampus = document.getElementById("studentUpdateCampus");
+        inputCampus.value = studentCampus;
+
+        var inputuserId = document.getElementById("studentUpdateUserId");
+        inputuserId.value = userId;
+
+        var inputstudentId = document.getElementById("studentUpdateStudentId");
+        inputstudentId.value = studentId;
+
+        $('#updateStudentModal').modal('show');
+    }
+
+    function openPopupDelete(subjectId) {
+        var inputId = document.getElementById("deleteSubjectid");
+        inputId.value = subjectId;
+        $('#deleteSubjectModal').modal('show');
+    }
+
+
+</script>

@@ -56,31 +56,31 @@ namespace Bussiness.Mapping
             CreateMap<SubjectResult, SubjectResultUpdateDTO>().ReverseMap();
             CreateMap<Account, AccountResponseDTO>().ReverseMap();
             CreateMap<Account, AccountUpdateDTO>().ReverseMap();
-            CreateMap<Account, AccountResponseDTO>().ReverseMap();
+            CreateMap<Account, AccountCreateDTO>().ReverseMap();
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Class, ClassUpdateDTO>().ReverseMap();
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumUpdateDTO>().ReverseMap();
-            CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
+            CreateMap<Curricolum, CurricolumCreateDTO>().ReverseMap();
             CreateMap<Role, RoleResponseDTO>().ReverseMap();
             CreateMap<Role, RoleUpdateDTO>().ReverseMap();
-            CreateMap<Role, RoleResponseDTO>().ReverseMap();
+            CreateMap<Role, RoleAddDTO>().ReverseMap();
             CreateMap<StudyCourse, StudyCourseResponseDTO>().ReverseMap();
             CreateMap<StudyCourse, StudyCourseUpdateDTO>().ReverseMap();
-            CreateMap<StudyCourse, StudyCourseResponseDTO>().ReverseMap();
+            CreateMap<StudyCourse, StudyCourseCreateDTO>().ReverseMap();
             CreateMap<Subject, SubjectResponseDTO>().ReverseMap();
             CreateMap<Subject, SubjectUpdateDTO>().ReverseMap();
-            CreateMap<Subject, SubjectResponseDTO>().ReverseMap();
+            CreateMap<Subject, SubjectCreateDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumUpdateDTO>().ReverseMap();
-            CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
+            CreateMap<SubjectCurricolum, SubjectCreateDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassUpdateDTO>().ReverseMap();
-            CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
+            CreateMap<SubjectOfClass, SubjectOfClassCreateDTO>().ReverseMap();
             CreateMap<Teacher, TeacherResponseDTO>().ReverseMap();
             CreateMap<Teacher, TeacherUpdateDTO>().ReverseMap();
-            CreateMap<Teacher, TeacherResponseDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherAddDTO>().ReverseMap();
         }
 
     }

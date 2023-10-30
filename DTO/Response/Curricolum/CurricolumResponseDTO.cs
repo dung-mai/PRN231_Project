@@ -1,4 +1,5 @@
 ﻿using Bussiness.DTO;
+using DTO.Response.Major;
 
 namespace DTO.Response.Curricolum
 {
@@ -10,6 +11,6 @@ namespace DTO.Response.Curricolum
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
-        public virtual MajorDTO? Major { get; set; }
+        public virtual MajorResponseDTO? Major { get; set; }
     }
 }

@@ -9,37 +9,37 @@ namespace Repository.Repository
 {
     public class RoleRepository : IRoleRepository
     {
-        RoleDAO majorDAO;
+        RoleDAO roleDAO;
         IMapper _mapper;
 
         public RoleRepository(FAPDbContext context, IMapper mapper)
         {
-            majorDAO = new RoleDAO(context);
+            roleDAO = new RoleDAO(context);
             _mapper = mapper;
         }
 
-        public bool AddRole(RoleAddDTO major)
+        public bool AddRole(RoleAddDTO role)
         {
-            return majorDAO.AddRole(_mapper.Map<Role>(major));
+            return roleDAO.AddRole(_mapper.Map<Role>(role));
         }
 
         public bool DeleteRole(int id)
         {
-            return majorDAO.DeleteRole(id);
+            return roleDAO.DeleteRole(id);
         }
 
         public RoleResponseDTO? GetRoleById(int id)
         {
-            return _mapper.Map<RoleResponseDTO>(majorDAO.GetRoleById(id));
+            return _mapper.Map<RoleResponseDTO>(roleDAO.GetRoleById(id));
         }
         public List<RoleResponseDTO> GetRoles()
         {
-            return _mapper.Map<List<RoleResponseDTO>>(majorDAO.GetRoles());
+            return _mapper.Map<List<RoleResponseDTO>>(roleDAO.GetRoles());
         }
 
-        public bool UpdateRole(RoleUpdateDTO major)
+        public bool UpdateRole(RoleUpdateDTO role)
         {
-            return majorDAO.UpdateRole(_mapper.Map<Role>(major));
+            return roleDAO.UpdateRole(_mapper.Map<Role>(role));
         }
     }
 }

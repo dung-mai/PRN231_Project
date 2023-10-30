@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
@@ -13,6 +14,7 @@ namespace DataAccess.DAO
         public List<Curricolum> GetCurricolums()
         {
             return _context.Curricolums
+                .Include(c => c.Major)
                 .Where(c => !c.IsDelete)
                 .ToList();
         }
@@ -20,6 +22,7 @@ namespace DataAccess.DAO
         public Curricolum? GetCurricolum(int id)
         {
             return _context.Curricolums
+                .Include(c => c.Major)
                 .FirstOrDefault(c => c.Id == id && !c.IsDelete);
         }
 
@@ -47,7 +50,7 @@ namespace DataAccess.DAO
         public bool UpdateCurricolum(Curricolum _curricolum)
         {
             Curricolum? curricolum = _context.Curricolums
-                .FirstOrDefault(c => c.Id == _curricolum.Id && !c.IsDelete);
+                .FirstOrDefault(c => c.Id == _curricolum.Id);
             if (curricolum != null)
             {
                 curricolum.CurricolumName = _curricolum.CurricolumName;
