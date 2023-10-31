@@ -20,14 +20,23 @@
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                    <p>Year</p>
+                    <input required asp-for="SemesterAdd.Year" type="number" min="1900" max="9999" step="1" class="w-100" />
+                    <span asp-validation-for="SemesterAdd.Year" class="text-danger"></span>
                     <p>Semester Name</p>
-                    <input type="text" name="semesterName"  class="w-100"/>
+                    <select asp-for="SemesterAdd.SemesterName"  class="w-100">
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Fall">Fall</option>
+                    </select>
                     <br/>
                     <p>Start Date</p>
-                    <input type="date" name="semesterStartDate" class="w-100" />
+                    <input required asp-for="SemesterAdd.StartDate" type="date" class="w-100" />
+                    <span asp-validation-for="SemesterAdd.StartDate" class="text-danger"></span>
                     <br />
                     <p>End Date</p>
-                    <input type="date" name="semesterEndDate"  class="w-100"/>
+                    <input required asp-for="SemesterAdd.EndDate" type="date" class="w-100" />
+                    <span asp-validation-for="SemesterAdd.EndDate" class="text-danger"></span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -104,14 +113,18 @@
                 </div>
                 <div class="modal-body">
                     <p>Year</p>
-                    <input id="updateYear" type="text" name="Year" class="w-100" />
-                    <p>Semester Name</p>
-                    <input id="updateSemesterName" type="text" name="semesterName" class="w-100" />
+                    <input asp-for="SemesterUpdate.Year" id="updateYear" type="text"  class="w-100" />
+                    <p>SemesterName</p>
+                    <select id="updateSemesterName" asp-for="SemesterUpdate.SemesterName" class="w-100">
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Fall">Fall</option>
+                    </select>
                     <p>Semester Start Date</p>
-                    <input id="updateSemesterStartDate" type="date" name="semesterStartDate" class="w-100" />
+                    <input asp-for="SemesterUpdate.StartDate" id="updateSemesterStartDate" type="date" class="w-100" />
                     <p>Semester End Date</p>
-                    <input id="updateSemesterEndDate" type="date" name="semesterEndDate" class="w-100" />
-                    <input id="updateSemesterid" type="hidden" name="semesterId" />
+                    <input asp-for="SemesterUpdate.EndDate" id="updateSemesterEndDate" type="date"  class="w-100" />
+                    <input asp-for="SemesterUpdate.Id" id="updateSemesterid" type="hidden"  />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closePopup('updateSemesterModal')">Close</button>
@@ -155,7 +168,13 @@
         inputYear.value = year;
         
         var inputName = document.getElementById("updateSemesterName");
-        inputName.value = semesterName;
+        for (var i = 0; i < inputName.options.length; i++) {
+            if (inputName.options[i].value.toUpperCase() == semesterName.toUpperCase()) {
+
+                inputName.options[i].selected = true;
+                break;
+            }
+        }
        
         var inputStartDate = document.getElementById("updateSemesterStartDate");
         inputStartDate.value = formatDate(new Date(startDate));

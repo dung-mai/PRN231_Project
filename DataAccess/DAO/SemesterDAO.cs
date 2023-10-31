@@ -83,8 +83,7 @@ namespace DataAccess.Managers
                     semesterUpdate.SemesterName = semester.SemesterName;
                     semesterUpdate.StartDate = semester.StartDate;
                     semesterUpdate.EndDate = semester.EndDate;
-                    semesterUpdate.UpdatedAt = semester.UpdatedAt;
-                    semesterUpdate.UpdatedAt = semester.UpdatedAt;
+                    semesterUpdate.UpdatedAt = DateTime.Now;
                     semesterUpdate.UpdatedBy = semester.UpdatedBy;
                     semesterUpdate.IsDelete = semester.IsDelete;
                     _context.Semesters.Update(semesterUpdate);
