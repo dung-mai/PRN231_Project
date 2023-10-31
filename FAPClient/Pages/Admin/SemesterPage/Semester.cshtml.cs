@@ -1,9 +1,12 @@
+using BusinessObject.Models;
+using DTO.Request.Semester;
 using DTO.Response.Semester;
 using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ProjectPRN_FAP.Pages.Admin
 {
@@ -12,22 +15,25 @@ namespace ProjectPRN_FAP.Pages.Admin
     {
 
         private readonly HttpClient client;
-        private string MajorApiUrl = "";
+        private string SemesterApiUrl = "";
 
         public List<SemesterResponseDTO> Semesters { get; set; }
+        public SemesterAddDTO SemesterAdd { get; set; } = default!;
+        [BindProperty]
+        public SemesterUpdateDTO SemesterUpdate { get; set; } = default!;
         public SemesterModel()
         {
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            MajorApiUrl = $"{Configuration.ApiURL}/Semesters";
+            SemesterApiUrl = $"{Configuration.ApiURL}/Semesters";
             Semesters = new List<SemesterResponseDTO>();
         }
 
 
         private async Task GetData()
         {
-            HttpResponseMessage responseMessage = await client.GetAsync(MajorApiUrl);
+            HttpResponseMessage responseMessage = await client.GetAsync(SemesterApiUrl);
             string strData = await responseMessage.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
@@ -46,34 +52,37 @@ namespace ProjectPRN_FAP.Pages.Admin
             return Page();
         }
 
-        public void OnPost(String semesterName, DateTime semesterStartDate, DateTime semesterEndDate)
+        public async Task<IActionResult> OnPost(SemesterAddDTO SemesterAdd)
         {
-            //SemesterDTO semester = new SemesterDTO()
-            //{
-            //    SemesterName = semesterName,
-            //    StartDate = semesterStartDate,
-            //    EndDate = semesterEndDate,
-            //};
-            //_semesterRepository.Create(semester);
-            //GetData();
+
+            if (!ModelState.IsValid || SemesterAdd == null)
+            {
+                return Page();
+            }
+            var response = client.PostAsJsonAsync(SemesterApiUrl, SemesterAdd).Result;
+            var check = response.IsSuccessStatusCode;
+            await GetData();
+            return Page();
         }
 
-        public void OnPostUpdate(String semesterName, DateTime semesterStartDate, DateTime semesterEndDate, int semesterId)
+        public async Task<IActionResult> OnPostUpdate(SemesterUpdateDTO SemesterUpdate)
         {
-            //SemesterDTO semester = _semesterRepository.GetById(semesterId);
-            //semester.SemesterName = semesterName;
-            //semester.StartDate = semesterStartDate;
-            //semester.EndDate = semesterEndDate;
-            //_semesterRepository.Update(semester);
-            //GetData();
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            var response = client.PutAsJsonAsync($"{SemesterApiUrl}/{SemesterUpdate.Id}", SemesterUpdate).Result;
+            var check = response.IsSuccessStatusCode;
+            await GetData();
+            return Page();
 
         }
 
-        public void OnPostDelete(int semesterId)
+        public async Task OnPostDelete(int semesterId)
         {
-            //SemesterDTO semester = _semesterRepository.GetById(semesterId);
-            //_semesterRepository.Delete(semester);
-            //GetData();
+            var response = client.DeleteAsync($"{SemesterApiUrl}/{semesterId}").Result;
+            var check = response.IsSuccessStatusCode;
+            await GetData();
 
         }
     }
