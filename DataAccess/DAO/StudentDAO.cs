@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace DataAccess.Managers
 {
@@ -7,7 +8,7 @@ namespace DataAccess.Managers
     {
         FAPDbContext _context;
         public StudentDAO(FAPDbContext context)
-        { 
+        {
             _context = context;
         }
 
@@ -28,12 +29,12 @@ namespace DataAccess.Managers
 
         public Student? GetStudentById(string rollNumber)
         {
-            return _context.Students.FirstOrDefault(s => s.Rollnumber == rollNumber && s.IsDelete == false);
+            return _context.Students.Include(s => s.Account).FirstOrDefault(s => s.Rollnumber == rollNumber && s.IsDelete == false);
         }
 
         public List<Student> GetStudents()
         {
-            return _context.Students.Where(s => s.IsDelete == false).ToList();
+            return _context.Students.Include(s => s.Account).Where(s => s.IsDelete == false).ToList();
         }
 
         public Boolean AddStudent(Student student)
@@ -48,6 +49,16 @@ namespace DataAccess.Managers
             {
                 return false;
             }
+        }
+
+        public string GetRollNumber(string major, string course)
+        {
+            Student student = _context.Students.OrderBy(s => s.Rollnumber).LastOrDefault(s => s.Rollnumber.StartsWith($"{major}{course}"));
+            string pattern = Regex.Escape($"{major}{course}") + @"(\d+)";
+            Match match = Regex.Match(student.Rollnumber, pattern);
+            int cacSoConLai = Int32.Parse(match.Groups[1].Value) + 1;
+            string rollNumber = $"{cacSoConLai}".PadLeft(4, '0');
+            return $"{major}{course}{rollNumber}";
         }
 
         public Boolean DeleteStudent(string rollNumber)
