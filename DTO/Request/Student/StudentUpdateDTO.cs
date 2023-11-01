@@ -9,6 +9,7 @@ namespace DTO.Request.Student
     public class StudentUpdateDTO
     {
         public string Rollnumber { get; set; } = null!;
+        public string AcademicYear { get; set; } = null!;
         public int? MajorId { get; set; }
         public int? AccountId { get; set; }
         public DateTime? UpdatedAt { get; set; }
