@@ -1,0 +1,205 @@
+﻿@page "/admin/curricolum"
+@using DTO.Response.Curricolum;
+@model FAPClient.Pages.Admin.Curricolum.CurricolumViewModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<!-- Button trigger modal create Curricolum -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createCurricolumModal">
+    Create Curricolum
+</button>
+
+<!-- Modal Create Curricolum -->
+<div class="modal fade" id="createCurricolumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Create" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Curricolum</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Curricolum Name</label>
+                        <input asp-for="CurricolumCreate.CurricolumName" class="form-control" required />
+                        <span asp-validation-for="CurricolumCreate.CurricolumName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Major Name</label>
+                        <select asp-for="CurricolumCreate.MajorId" class="form-control" asp-items="ViewBag.Majors">
+                            <option>Choose a major</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <h4 class="">Add subjects</h4>
+                        <div class="">
+                            <div class="">
+                                <ul>
+                                    <li>
+                                        <span>Marxist philosophy</span> - <span>MLN111</span>
+                                        <input type="text" name="termNo"/>
+                                        <button>Remove</button>
+                                    </li>
+                                    <li>
+                                        <span>Marxist philosophy</span> - <span>MLN111</span>
+                                        <input type="text" name="termNo" />
+                                        <button>Remove</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="">
+                                <h4>Search subject</h4>
+                                <input/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- List table curricolum -->
+<div>
+
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Curricolum Name</th>
+                <th>Major Name</th>
+                <th>Updated At</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (CurricolumResponseDTO curricolum in Model.Curricolums)
+            {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@curricolum.CurricolumName</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@curricolum?.Major?.MajorName</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@curricolum.UpdatedAt</p>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopupDelete('@curricolum.Id')">
+                            Delete
+                        </button>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopup('@curricolum.CurricolumName','@curricolum.Major.MajorName','@curricolum.Id')">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+<!-- Modal Update Curricolum -->
+<div class="modal fade" id="updateCurricolumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Update" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Curricolum</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateCurricolumModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Curricolum Name</label>
+                        <input id="updateCurricolumName" asp-for="CurricolumUpdate.CurricolumName" class="form-control" required />
+                        <span asp-validation-for="CurricolumUpdate.CurricolumName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Major Name</label>
+                        <select id="updateMajorId" asp-for="CurricolumUpdate.MajorId" class="form-control" asp-items="ViewBag.Majors"></select>
+                    </div>
+                    <input id="updateCurricolumId" asp-for="CurricolumUpdate.Id" type="hidden"/>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateCurricolumModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Delete Curricolum -->
+<div class="modal fade" id="deleteCurricolumModal" tabindex="-1" aria-labelledby="deleteCurricolumModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Curricolum</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteCurricolumModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteCurricolumid" type="hidden" name="curricolumId" />
+                    <p> Do you want Delete this Curricolum ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('deleteCurricolumModal')">Cancle</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+    function openPopup(curricolumName, majorName, curricolumId) {
+        var inputName = document.getElementById("updateCurricolumName");
+        inputName.value = curricolumName;
+
+        var inputMajorName = document.getElementById("updateMajorId");
+        for (var i = 0; i < inputMajorName.options.length; i++) {
+            if (inputMajorName.options[i].text.toUpperCase() == majorName.toUpperCase()) {
+
+                inputMajorName.options[i].selected = true;
+                break;
+            }
+        }
+        var inputId = document.getElementById("updateCurricolumId");
+        inputId.value = curricolumId;
+
+        $('#updateCurricolumModal').modal('show');
+    }
+
+    function openPopupDelete(curricolumId) {
+        var inputId = document.getElementById("deleteCurricolumid");
+        inputId.value = curricolumId;
+        $('#deleteCurricolumModal').modal('show');
+    }
+
+
+</script>

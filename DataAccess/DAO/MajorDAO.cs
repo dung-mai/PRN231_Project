@@ -43,13 +43,14 @@ namespace DataAccess.DAO
                 if (majorUpdate != null)
                 {
                     majorUpdate.IsDelete = true;
+                    majorUpdate.UpdatedAt = DateTime.Now;
                     _context.Majors.Update(majorUpdate);
                     _context.SaveChanges();
                     return true;
                 }
                 return false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -64,7 +65,7 @@ namespace DataAccess.DAO
                 {
                     majorUpdate.MajorName = major.MajorName;
                     majorUpdate.MajorCode = major.MajorCode;
-                    majorUpdate.UpdatedAt = major.UpdatedAt;
+                    majorUpdate.UpdatedAt = DateTime.Now;
                     majorUpdate.UpdatedBy = major.UpdatedBy;
                     majorUpdate.IsDelete = major.IsDelete;
                     _context.Majors.Update(majorUpdate);

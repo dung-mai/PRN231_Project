@@ -37,6 +37,7 @@ namespace DataAccess.DAO
             Class? classToDeleted = _context.Classes.FirstOrDefault(c => c.Id == classId && !c.IsDelete);
             if (classToDeleted != null)
             {
+                classToDeleted.UpdatedAt = DateTime.Now;
                 classToDeleted.IsDelete = true;
                 return true;
             }
@@ -51,7 +52,7 @@ namespace DataAccess.DAO
             {
                 oldClass.ClassName = _class.ClassName;
                 oldClass.SemesterId = _class.SemesterId;
-                oldClass.UpdatedAt = _class.UpdatedAt;
+                oldClass.UpdatedAt = DateTime.Now;
                 oldClass.UpdatedBy = _class.UpdatedBy;
                 oldClass.IsDelete = _class.IsDelete;
                 return true;

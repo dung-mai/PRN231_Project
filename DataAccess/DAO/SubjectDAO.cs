@@ -40,6 +40,7 @@ namespace DataAccess.DAO
             if (subject != null)
             {
                 subject.IsDelete = true;
+                subject.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
@@ -57,7 +58,7 @@ namespace DataAccess.DAO
                 subject.NumOfCredits = _subject.NumOfCredits;
                 subject.TermNo = _subject.TermNo;
                 subject.Status = _subject.Status;
-                subject.UpdatedAt = _subject.UpdatedAt;
+                subject.UpdatedAt = DateTime.Now;
                 subject.UpdatedBy = _subject.UpdatedBy;
                 subject.IsDelete = _subject.IsDelete;
                 return true;

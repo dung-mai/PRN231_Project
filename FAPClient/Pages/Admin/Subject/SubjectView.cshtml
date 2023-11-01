@@ -1,0 +1,208 @@
+﻿@page "/admin/subject"
+@using DTO.Response.Subject;
+@model FAPClient.Pages.Admin.Subject.SubjectViewModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<!-- Button trigger modal create Subject -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createSubjectModal">
+    Create Subject
+</button>
+
+<!-- Modal Create Subject -->
+<div class="modal fade" id="createSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Create" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Subject</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="SubjectCreate.SubjectName" class="control-label"></label>
+                        <input asp-for="SubjectCreate.SubjectName" class="form-control" required />
+                        <span asp-validation-for="SubjectCreate.SubjectName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectCreate.SubjectCode" class="control-label"></label>
+                        <input asp-for="SubjectCreate.SubjectCode" class="form-control" required />
+                        <span asp-validation-for="SubjectCreate.SubjectCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectCreate.DateOfIssues" class="control-label"></label>
+                        <input asp-for="SubjectCreate.DateOfIssues" type="date" class="form-control" required />
+                        <span asp-validation-for="SubjectCreate.DateOfIssues" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectCreate.NumOfCredits" class="control-label"></label>
+                        <input asp-for="SubjectCreate.NumOfCredits" class="form-control" required />
+                        <span asp-validation-for="SubjectCreate.NumOfCredits" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- List table subject -->
+<div>
+
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Subject Name</th>
+                <th>Major Code</th>
+                <th>Number Of Credits</th>
+                <th>Date of Issues</th>
+                <th>Updated At</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SubjectResponseDTO subject in Model.Subjects)
+            {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@subject.SubjectName</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@subject.SubjectCode</p>
+                    </td>
+                    <td>
+                        <p class="fw-normal mb-1">@subject.NumOfCredits</p>
+                    </td>
+                    <td>
+                        <p class="fw-normal mb-1">@(subject.DateOfIssues != null ? ((DateTime)subject.DateOfIssues).ToString("dd/MM/yyyy") : "")</p>
+                    </td>
+                    <td>
+                        <p class="fw-normal mb-1">@subject.UpdatedAt</p>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopupDelete('@subject.Id')">
+                            Delete
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                onclick="openPopup('@subject.SubjectName','@subject.SubjectCode', '@subject.NumOfCredits', '@subject.DateOfIssues', '@subject.Id')">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+<!-- Modal Update Subject -->
+<div class="modal fade" id="updateSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Update" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Subject</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateSubjectModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="SubjectUpdate.SubjectName" class="control-label"></label>
+                        <input id="updateSubjectName" asp-for="SubjectUpdate.SubjectName" class="form-control" required />
+                        <span asp-validation-for="SubjectUpdate.SubjectName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectUpdate.SubjectCode" class="control-label"></label>
+                        <input id="updateSubjectCode" asp-for="SubjectUpdate.SubjectCode" class="form-control" required />
+                        <span asp-validation-for="SubjectUpdate.SubjectCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectUpdate.DateOfIssues" class="control-label"></label>
+                        <input id="updateSubjectDateOfIssues" asp-for="SubjectUpdate.DateOfIssues" type="date" class="form-control" required />
+                        <span asp-validation-for="SubjectUpdate.DateOfIssues" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectUpdate.NumOfCredits" class="control-label"></label>
+                        <input id="updateSubjectNumOfCredits" asp-for="SubjectUpdate.NumOfCredits" class="form-control" required />
+                        <span asp-validation-for="SubjectUpdate.NumOfCredits" class="text-danger"></span>
+                    </div>
+                    <input id="updateSubjectId" asp-for="SubjectUpdate.Id" type="hidden" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateSubjectModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Delete Subject -->
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Subject</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteSubjectModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteSubjectid" type="hidden" name="subjectId" />
+                    <p> Do you want Delete this Subject ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('deleteSubjectModal')">Cancle</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+    function openPopup(subjectName, subjectCode, numOfCredits, dateOfIssues, subjectId) {
+        var inputName = document.getElementById("updateSubjectName");
+        inputName.value = subjectName;
+
+        var inputSubjectCode = document.getElementById("updateSubjectCode");
+        inputSubjectCode.value = subjectCode;
+
+        var inputSubjectDateOfIssues = document.getElementById("updateSubjectDateOfIssues");
+        inputSubjectDateOfIssues.value = formatDate(new Date(dateOfIssues));
+        var inputSubjectNumOfCredits = document.getElementById("updateSubjectNumOfCredits");
+        inputSubjectNumOfCredits.value = numOfCredits;
+
+        var inputId = document.getElementById("updateSubjectId");
+        inputId.value = subjectId;
+
+        $('#updateSubjectModal').modal('show');
+    }
+
+    function openPopupDelete(subjectId) {
+        var inputId = document.getElementById("deleteSubjectid");
+        inputId.value = subjectId;
+        $('#deleteSubjectModal').modal('show');
+    }
+
+
+</script>
