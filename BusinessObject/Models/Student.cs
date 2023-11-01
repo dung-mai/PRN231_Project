@@ -13,6 +13,8 @@ namespace BusinessObject.Models
         [MaxLength(9)]
         [Key]
         public string Rollnumber { get; set; } = null!;
+        [MaxLength(5)]
+        public string AcademicYear { get; set; } = null!;
         public int? MajorId { get; set; }
         public int? AccountId { get; set; }
         public DateTime? UpdatedAt { get; set; }

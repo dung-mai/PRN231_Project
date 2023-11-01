@@ -228,6 +228,11 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .HasColumnName("majorCode");
 
+                entity.Property(e => e.StudentIdentityCode)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("studentIdentityCode");
+
                 entity.Property(e => e.MajorName)
                     .HasMaxLength(50)
                     .IsUnicode(false)
@@ -292,6 +297,11 @@ namespace BusinessObject.Models
                     .HasMaxLength(9)
                     .IsUnicode(false)
                     .HasColumnName("rollnumber");
+
+                entity.Property(e => e.AcademicYear)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("academicYear");
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
 
