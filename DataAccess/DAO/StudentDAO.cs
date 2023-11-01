@@ -90,7 +90,8 @@ namespace DataAccess.Managers
                 {
                     studentUpdate.MajorId = student.MajorId;
                     studentUpdate.AccountId = student.AccountId;
-                    studentUpdate.UpdatedAt = student.UpdatedAt;
+                    studentUpdate.AcademicYear = student.AcademicYear;
+                    studentUpdate.UpdatedAt = DateTime.Now;
                     studentUpdate.UpdatedBy = student.UpdatedBy;
                     studentUpdate.IsDelete = student.IsDelete;
                     _context.Students.Update(studentUpdate);
