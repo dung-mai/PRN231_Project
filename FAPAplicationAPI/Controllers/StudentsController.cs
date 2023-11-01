@@ -1,4 +1,6 @@
-﻿using DTO.Request.Student;
+﻿using DTO.Request.Account;
+using DTO.Request.Student;
+using DTO.Response.Account;
 using DTO.Response.Student;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,12 @@ namespace FAPAplicationAPI.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public StudentsController(IStudentRepository studentRepository)
+        public StudentsController(IStudentRepository studentRepository, IAccountRepository accountRepository)
         {
             _studentRepository = studentRepository;
+            _accountRepository = accountRepository;
         }
 
         // GET: api/Student
@@ -44,6 +48,13 @@ namespace FAPAplicationAPI.Controllers
         [HttpPost]
         public IActionResult PostStudent(StudentAddDTO student)
         {
+            if (_accountRepository.CreateAccountStudent(student.Account))
+            {
+                return Problem("Account information error");
+            }
+            AccountResponseDTO? accountResponseDTO = _accountRepository.GetAccountLastIndex();
+            student.AccountId = accountResponseDTO?.Id;
+
             if (_studentRepository.AddStudent(student))
             {
                 return NoContent();

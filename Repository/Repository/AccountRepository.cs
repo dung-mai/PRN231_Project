@@ -25,6 +25,12 @@ namespace Repository.Repository
             return account is null ? null : _mapper.Map<AccountResponseDTO>(account);
         }
 
+        public AccountResponseDTO? GetAccountLastIndex()
+        {
+            AccountDAO manager = new AccountDAO(_context);
+            return _mapper.Map<AccountResponseDTO>(manager.GetAccountLastIndex());
+        }
+
         public bool DeleteAccount(int id)
         {
             try
@@ -81,6 +87,34 @@ namespace Repository.Repository
             {
                 AccountDAO accountDAO = new AccountDAO(_context);
                 bool result = accountDAO.UpdateAccount(_mapper.Map<Account>(account));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool CreateAccountStudent(AccountCreateStudentDTO account)
+        {
+            try
+            {
+                AccountDAO accountDAO = new AccountDAO(_context);
+                Account accStudent = _mapper.Map<Account>(account);
+                accStudent.Email = "abc@fpt.edu.vn";
+                accStudent.Password = "123";
+                accStudent.Roleid = 3;
+                accStudent.Status = 1;
+                accStudent.IsDelete = false;
+                bool result = accountDAO.AddAccount(accStudent);
                 if (result)
                 {
                     _context.SaveChanges();

@@ -65,6 +65,7 @@ namespace DataAccess.DAO
                 {
                     majorUpdate.MajorName = major.MajorName;
                     majorUpdate.MajorCode = major.MajorCode;
+                    majorUpdate.StudentIdentityCode = major.StudentIdentityCode;
                     majorUpdate.UpdatedAt = DateTime.Now;
                     majorUpdate.UpdatedBy = major.UpdatedBy;
                     majorUpdate.IsDelete = major.IsDelete;

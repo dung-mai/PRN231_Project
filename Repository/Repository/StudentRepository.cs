@@ -49,6 +49,6 @@ namespace Repository.Repository
         //    Student? student = manager.GetStudentWithGradeResults(accountId);
         //    return student is null ? null : _mapper.Map<StudentDTO>(student);
         //}
-
+     
     }
 }

@@ -31,6 +31,11 @@ namespace DataAccess.Managers
                 .FirstOrDefault(a => a.Id == id && !a.IsDelete);
         }
 
+        public Account? GetAccountLastIndex()
+        {
+            return _context.Accounts.LastOrDefault();
+        }
+
         public bool AddAccount(Account account)
         {
             if (account != null)
