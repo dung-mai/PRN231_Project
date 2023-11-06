@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using DataAccess.DAO;
 using DataAccess.Managers;
 using DTO.Request.Student;
+using DTO.Response.Major;
 using DTO.Response.Student;
 using Repository.IRepository;
 
@@ -11,17 +12,21 @@ namespace Repository.Repository
     public class StudentRepository : IStudentRepository
     {
         StudentDAO studentDAO;
+        MajorDAO majorDAO;
         IMapper _mapper;
 
         public StudentRepository(FAPDbContext context, IMapper mapper)
         {
             studentDAO = new StudentDAO(context);
+            majorDAO = new MajorDAO(context);
             _mapper = mapper;
         }
 
         public bool AddStudent(StudentAddDTO student)
         {
-            return studentDAO.AddStudent(_mapper.Map<Student>(student));
+            Student s = _mapper.Map<Student>(student);
+            s.Account = null;
+            return studentDAO.AddStudent(_mapper.Map<Student>(s));
         }
 
         public bool DeleteStudent(string roleNumber)
@@ -29,10 +34,21 @@ namespace Repository.Repository
             return studentDAO.DeleteStudent(roleNumber);
         }
 
+        public string GetRoleNumber(string major, string course)
+        {
+            return studentDAO.GetRollNumber(major, course);
+        }
+
         public StudentResponseDTO? GetStudentById(string roleNumber)
         {
             return _mapper.Map<StudentResponseDTO>(studentDAO.GetStudentById(roleNumber));
         }
+
+        public StudentResponseDTO? GetStudentLastIndex()
+        {
+            return _mapper.Map<StudentResponseDTO>(studentDAO.GetStudentLastIndex());
+        }
+
         public List<StudentResponseDTO> GetStudents()
         {
             return _mapper.Map<List<StudentResponseDTO>>(studentDAO.GetStudents());

@@ -1,6 +1,7 @@
 using Bussiness.DTO;
 using DTO.Request.Account;
 using DTO.Request.Student;
+using DTO.Response.Major;
 using DTO.Response.Student;
 using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace ProjectPRN_FAP.Pages.Admin.Student
     {
         private readonly HttpClient client;
         private string StudentApiUrl = "";
+        private string MajorApiUrl = "";
 
         public List<StudentResponseDTO> Students { get; set; }
-        public StudentAddDTO StudentAdd { get; set; } = default!;
-        public AccountCreateDTO AccountCreate { get; set; } = default!;
+        public List<MajorResponseDTO> Majors { get; set; }
         [BindProperty]
+        public StudentAddDTO StudentAdd { get; set; } = default!;
+        
         public StudentUpdateDTO StudentUpdate { get; set; } = default!;
         public ManageStudentModel()
         {
@@ -26,7 +29,9 @@ namespace ProjectPRN_FAP.Pages.Admin.Student
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             StudentApiUrl = $"{Configuration.ApiURL}/Students";
+            MajorApiUrl = $"{Configuration.ApiURL}/Majors";
             Students = new List<StudentResponseDTO>();
+            Majors = new List<MajorResponseDTO>();
         }
 
 
@@ -43,6 +48,14 @@ namespace ProjectPRN_FAP.Pages.Admin.Student
                 var resultList = JsonSerializer.Deserialize<List<StudentResponseDTO>>(strData, options);
                 Students = resultList ?? new List<StudentResponseDTO>();
             }
+
+            responseMessage = await client.GetAsync(MajorApiUrl);
+            strData = await responseMessage.Content.ReadAsStringAsync();
+            if (!string.IsNullOrEmpty(strData))
+            {
+                var resultList = JsonSerializer.Deserialize<List<MajorResponseDTO>>(strData, options);
+                Majors = resultList ?? new List<MajorResponseDTO>();
+            }
         }
 
         public async Task<IActionResult> OnGet()
@@ -51,35 +64,25 @@ namespace ProjectPRN_FAP.Pages.Admin.Student
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(StudentAddDTO StudentAdd)
+        public async Task<IActionResult> OnPostAdd(StudentAddDTO StudentAdd)
         {
-
-            if (!ModelState.IsValid || StudentAdd == null)
-            {
-                return Page();
-            }
-            var response = client.PostAsJsonAsync(StudentApiUrl, StudentAdd).Result;
-            var check = response.IsSuccessStatusCode;
+            
+            var response = await client.PostAsJsonAsync(StudentApiUrl, StudentAdd);
+            var check = response.Content;
             await GetData();
             return Page();
         }
 
-        public async Task<IActionResult> OnPostUpdate(StudentUpdateDTO StudentUpdate)
+        public async Task OnPostUpdate(StudentUpdateDTO StudentUpdate)
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-            var response = client.PutAsJsonAsync($"{StudentApiUrl}/{StudentUpdate.Rollnumber}", StudentUpdate).Result;
+            var response = await client.PutAsJsonAsync($"{StudentApiUrl}/{StudentUpdate.Rollnumber}", StudentUpdate);
             var check = response.IsSuccessStatusCode;
             await GetData();
-            return Page();
-
         }
 
-        public async Task OnPostDelete(int semesterId)
+        public async Task OnPostDelete(string rollnumber)
         {
-            var response = client.DeleteAsync($"{StudentApiUrl}/{semesterId}").Result;
+            var response = await client.DeleteAsync($"{StudentApiUrl}/{rollnumber}");
             var check = response.IsSuccessStatusCode;
             await GetData();
 

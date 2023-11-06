@@ -1,7 +1,9 @@
 ﻿using DTO.Request.Account;
 using DTO.Request.Student;
 using DTO.Response.Account;
+using DTO.Response.Major;
 using DTO.Response.Student;
+using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -15,11 +17,13 @@ namespace FAPAplicationAPI.Controllers
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly IMajorRepository _majorRepository;
 
-        public StudentsController(IStudentRepository studentRepository, IAccountRepository accountRepository)
+        public StudentsController(IStudentRepository studentRepository, IAccountRepository accountRepository, IMajorRepository majorRepository)
         {
             _studentRepository = studentRepository;
             _accountRepository = accountRepository;
+            _majorRepository = majorRepository;
         }
 
         // GET: api/Student
@@ -38,7 +42,7 @@ namespace FAPAplicationAPI.Controllers
             {
                 return BadRequest();
             }
-
+            _accountRepository.UpdateAccountStudent(student.Account);
             _studentRepository.UpdateStudent(student);
             return NoContent();
         }
@@ -48,7 +52,22 @@ namespace FAPAplicationAPI.Controllers
         [HttpPost]
         public IActionResult PostStudent(StudentAddDTO student)
         {
-            if (_accountRepository.CreateAccountStudent(student.Account))
+            MajorResponseDTO major = _majorRepository.GetMajorById((int)student.MajorId);
+            string rollnumber = _studentRepository.GetRoleNumber(major.StudentIdentityCode, student.AcademicYear);
+            string[] middleName = student.Account.Middlename.Trim().Split(' ');
+            string firstName = Common.RemoveDiacritics(student.Account.Firstname.ToLower());
+            string lastname = Common.RemoveDiacritics(student.Account.Lastname.Substring(0, 1).ToLower());
+            string middleCut = "";
+            foreach (string s in middleName)
+            {
+                middleCut += Common.RemoveDiacritics(s.Substring(0, 1).ToLower());
+            }
+            student.Account.Email = $"{firstName}" +
+                $"{lastname}" +
+                $"{middleCut}" +
+                $"{rollnumber.ToLower()}@fpt.edu.vn";
+            student.Rollnumber = rollnumber;
+            if (!_accountRepository.CreateAccountStudent(student.Account))
             {
                 return Problem("Account information error");
             }
@@ -61,7 +80,7 @@ namespace FAPAplicationAPI.Controllers
             }
             else
             {
-                return Problem("Problem when Adding Student");
+                return Problem("Problem when Adding Student"); 
             }
         }
 
@@ -74,9 +93,11 @@ namespace FAPAplicationAPI.Controllers
             {
                 return NotFound();
             }
-
+            _accountRepository.DeleteAccount((int)student.AccountId);
             _studentRepository.DeleteStudent(rollnumber);
             return NoContent();
         }
+
+
     }
 }

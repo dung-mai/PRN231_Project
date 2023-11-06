@@ -1,5 +1,6 @@
-﻿@*@page "/admin/student"
+﻿@page "/admin/student"
 @model ProjectPRN_FAP.Pages.Admin.Student.ManageStudentModel
+@using DTO.Response.Major
 @using DTO.Response.Student;
 @{
     Layout = "_LayoutAdmin";
@@ -13,29 +14,46 @@
 <!-- Modal Create Student -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form asp-page="/Admin/StudentPage/Student" method="post">
+        <form asp-page-handler="Add" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Create Student</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>First Name</p>
-                    <input required asp-for="AccountCreate.Firstname" type="text" class="w-100" /><p>First Name</p>
-                    <p>Middle Name</p>
-                    <input required asp-for="AccountCreate.Middlename" type="text" class="w-100" /><p>First Name</p>
-                    <p>Last Name</p>
-                    <input required asp-for="AccountCreate.Lastname" type="text" class="w-100" />
-                    <p>Phone nummber</p>
-                    <input required asp-for="AccountCreate.Phonenumber" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Major</p>
+                    <select asp-for="StudentAdd.MajorId" class="w-100">
+                        @foreach (MajorResponseDTO m in Model.Majors)
+                        {
+                            <option value="@m.Id">@m.MajorName</option>
+                        }
+                    </select>
+                    <p class="mb-0 mt-3">Academic Year</p>
+                    <input required asp-for="StudentAdd.AcademicYear" type="number" class="w-100" />
+                    <p class="mb-0 mt-3">First Name</p>
+                    <input required asp-for="StudentAdd.Account.Firstname" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Middle Name</p>
+                    <input required asp-for="StudentAdd.Account.Middlename" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Last Name</p>
+                    <input required asp-for="StudentAdd.Account.Lastname" type="text" class="w-100" />
+
+                    <p class="mb-0 mt-3">Phone nummber</p>
+                    <input required asp-for="StudentAdd.Account.Phonenumber" type="text" class="w-100" />
                     <br />
-                    <p>start date</p>
-                    <input required asp-for="studentadd.startdate" type="date" class="w-100" />
-                    <span asp-validation-for="studentadd.startdate" class="text-danger"></span>
-                    <br />
-                    <p>end date</p>
-                    <input required asp-for="studentadd.enddate" type="date" class="w-100" />
-                    <span asp-validation-for="studentadd.enddate" class="text-danger"></span>
+                    <p class="mb-0 mt-3">Gender</p>
+                    <select asp-for="StudentAdd.Account.Gender" class="w-100">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <p class="mb-0 mt-3">Id Card</p>
+                    <input required asp-for="StudentAdd.Account.IdCard" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Dob</p>
+                    <input required asp-for="StudentAdd.Account.Dob" type="date" class="w-100" />
+                    <p class="mb-0 mt-3">Address</p>
+                    <input required asp-for="StudentAdd.Account.Address" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Image</p>
+                    <input required asp-for="StudentAdd.Account.Image" type="text" class="w-100" />
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -106,11 +124,10 @@
                     </td>
 
                     <td>
-                        @*openPopup(studentEmail,studentCode,studentName,studentGender,studentPhone, studentPassword, studentDob, studentCampus, studentId, userId)*@
-                       @* <button type="button" class="btn btn-link btn-sm btn-rounded"
-                            onclick="openPopup('@sDTO.Account.Email','@sDTO.StudentCode','@sDTO.Account.Name','@sDTO.Account.Gender','@sDTO.Account.Phone','@sDTO.Account.Password','@sDTO.Account.DateOfBirth','@sDTO.Account.Campus','@sDTO.StudentId','@sDTO.AccountId')">
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                            onclick="openPopup('@sDTO.Account.Phonenumber','@sDTO.Account.Gender','@sDTO.Account.Address','@sDTO.Account.Image','@sDTO.MajorId','@sDTO.Rollnumber','@sDTO.Account.Id')">
                             Update
-                        </button>*@
+                        </button>
                     </td>
                 </tr>
 
@@ -122,7 +139,7 @@
 
 
 <!-- Modal Update Student -->
-@*<div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form asp-page-handler="Update" method="post">
             <div class="modal-content">
@@ -131,19 +148,27 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateStudentModal')"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Year</p>
-                    <input asp-for="StudentUpdate.Year" id="updateYear" type="text" class="w-100" />
-                    <p>StudentName</p>
-                    <select id="updateStudentName" asp-for="StudentUpdate.StudentName" class="w-100">
-                        <option value="Spring">Spring</option>
-                        <option value="Summer">Summer</option>
-                        <option value="Fall">Fall</option>
+                    <p class="mb-0">Major</p>
+                    <select id="updateMajor" asp-for="StudentUpdate.MajorId" class="w-100">
+                        @foreach (MajorResponseDTO m in Model.Majors)
+                        {
+                            <option value="@m.Id">@m.MajorName</option>
+                        }
                     </select>
-                    <p>Student Start Date</p>
-                    <input asp-for="StudentUpdate.StartDate" id="updateStudentStartDate" type="date" class="w-100" />
-                    <p>Student End Date</p>
-                    <input asp-for="StudentUpdate.EndDate" id="updateStudentEndDate" type="date" class="w-100" />
-                    <input asp-for="StudentUpdate.Id" id="updateStudentid" type="hidden" />
+                    <p class="mb-0 mt-3">Phone nummber</p>
+                    <input id="updatePhone" required asp-for="StudentUpdate.Account.Phonenumber" type="text" class="w-100" />
+                    <br />
+                    <p class="mb-0 mt-3">Gender</p>
+                    <select id="updateGender" asp-for="StudentUpdate.Account.Gender" class="w-100">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <p class="mb-0 mt-3">Address</p>
+                    <input required id="updateAddress" asp-for="StudentUpdate.Account.Address" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Image</p>
+                    <input required id="updateImage" asp-for="StudentUpdate.Account.Image" type="text" class="w-100" />
+                    <input hidden id="updateAccountId" asp-for="StudentUpdate.Account.Id" type="text" class="w-100" />
+                    <input hidden id="updateRollnumber" asp-for="StudentUpdate.Rollnumber" type="text" class="w-100" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closePopup('updateStudentModal')">Close</button>
@@ -165,8 +190,9 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteStudentModal')"></button>
                 </div>
                 <div class="modal-body">
-                    <input id="deleteStudentid" type="hidden" name="semesterId" />
-                    <p> Do you want Delete this Student ?</p>
+                    <input hidden id="deleteAccountId" name="accountId" type="text" class="w-100" />
+                    <input hidden id="deleteRollnumber" name="rollnumber" type="text" class="w-100" />
+                    <p class="mb-0 mt-3"> Do you want Delete this Student ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closePopup('deleteStudentModal')">Cancle</button>
@@ -175,41 +201,50 @@
             </div>
         </form>
     </div>
-</div>*@
+</div>
 
 <script>
     $('#tablePagnation').DataTable({
         "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
     });
 
-    function openPopup(year, semesterName, startDate, endDate, semesterId) {
-        var inputYear = document.getElementById("updateYear");
-        inputYear.value = year;
+    function openPopup(phonenumber, gender, address, image, majorId, rollnumber, accountId) {
+        var inputPhone = document.getElementById("updatePhone");
+        inputPhone.value = phonenumber;
 
-        var inputName = document.getElementById("updateStudentName");
-        for (var i = 0; i < inputName.options.length; i++) {
-            if (inputName.options[i].value.toUpperCase() == semesterName.toUpperCase()) {
+        var inputGender = document.getElementById("updateGender");
+        for (var i = 0; i < inputGender.options.length; i++) {
+            if (inputGender.options[i].value.toUpperCase() == gender.toUpperCase()) {
+                inputGender.options[i].selected = true;
+                break;
+            }
+        }
+        var inputAddress = document.getElementById("updateAddress");
+        inputAddress.value = address;
 
-                inputName.options[i].selected = true;
+        var inputImage = document.getElementById("updateImage");
+        inputImage.value = image;
+
+        var inputMajor = document.getElementById("updateMajor");
+        for (var i = 0; i < inputMajor.options.length; i++) {
+            if (inputMajor.options[i].value == majorId) {
+                inputMajor.options[i].selected = true;
                 break;
             }
         }
 
-        var inputStartDate = document.getElementById("updateStudentStartDate");
-        inputStartDate.value = formatDate(new Date(startDate));
-
-        var inputEndDate = document.getElementById("updateStudentEndDate");
-        inputEndDate.value = formatDate(new Date(endDate));
-
-        var inputId = document.getElementById("updateStudentid");
-        inputId.value = semesterId;
-
+        var inputRoll = document.getElementById("updateRollnumber");
+        inputRoll.value = rollnumber;
+        var inputAccountId = document.getElementById("updateAccountId");
+        inputAccountId.value = accountId;
         $('#updateStudentModal').modal('show');
     }
 
-    function openPopupDelete(semesterId) {
-        var inputId = document.getElementById("deleteStudentid");
-        inputId.value = semesterId;
+    function openPopupDelete(accountId, rollnumber) {
+        var inputRoll = document.getElementById("deleteRollnumber");
+        inputRoll.value = rollnumber;
+        var inputAccountId = document.getElementById("deleteAccountId");
+        inputAccountId.value = accountId;
         $('#deleteStudentModal').modal('show');
     }
 

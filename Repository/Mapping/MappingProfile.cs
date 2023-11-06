@@ -51,6 +51,7 @@ namespace Bussiness.Mapping
             CreateMap<Semester, SemesterResponseDTO>().ReverseMap();
             CreateMap<Student, StudentAddDTO>().ReverseMap();
             CreateMap<Student, StudentUpdateDTO>().ReverseMap();
+            CreateMap<Student, StudentUpdateDTO>().ReverseMap();
             CreateMap<Student, StudentResponseDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultResponseDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultAddDTO>().ReverseMap();
@@ -59,6 +60,7 @@ namespace Bussiness.Mapping
             CreateMap<Account, AccountUpdateDTO>().ReverseMap();
             CreateMap<Account, AccountCreateDTO>().ReverseMap();
             CreateMap<Account, AccountCreateStudentDTO>().ReverseMap();
+            CreateMap<Account, AccountUpdateStudentDTO>().ReverseMap();
             CreateMap<AccountCreateDTO, AccountCreateStudentDTO>().ReverseMap();
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Class, ClassUpdateDTO>().ReverseMap();
