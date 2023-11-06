@@ -108,12 +108,39 @@ namespace Repository.Repository
             try
             {
                 AccountDAO accountDAO = new AccountDAO(_context);
-                Account accStudent = _mapper.Map<Account>(account);
-                accStudent.Password = "123";
-                accStudent.Roleid = 3;
-                accStudent.Status = 1;
-                accStudent.IsDelete = false;
-                bool result = accountDAO.AddAccount(accStudent);
+                Account accTeacher = _mapper.Map<Account>(account);
+                accTeacher.Password = "123";
+                accTeacher.Roleid = 3;
+                accTeacher.Status = 1;
+                accTeacher.IsDelete = false;
+                bool result = accountDAO.AddAccount(accTeacher);
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool CreateAccountTeacher(AccountCreateTeacherDTO account)
+        {
+            try
+            {
+                AccountDAO accountDAO = new AccountDAO(_context);
+                Account accTeacher = _mapper.Map<Account>(account);
+                accTeacher.Password = "123";
+                accTeacher.Roleid = 2;
+                accTeacher.Status = 1;
+                accTeacher.IsDelete = false;
+                bool result = accountDAO.AddAccount(accTeacher);
                 if (result)
                 {
                     _context.SaveChanges();
@@ -131,6 +158,28 @@ namespace Repository.Repository
         }
 
         public bool UpdateAccountStudent(AccountUpdateStudentDTO account)
+        {
+            try
+            {
+                AccountDAO accountDAO = new AccountDAO(_context);
+                bool result = accountDAO.UpdateAccountStudent(_mapper.Map<Account>(account));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateAccountTeacher(AccountUpdateTeacherDTO account)
         {
             try
             {

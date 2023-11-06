@@ -10,5 +10,7 @@ namespace Repository.IRepository
         bool DeleteTeacher(int id);
         bool UpdateTeacher(TeacherUpdateDTO teacher);
         List<TeacherResponseDTO> GetTeachers();
+
+        string GetTeacherCode(string namecut);
     }
 }

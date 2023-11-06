@@ -15,7 +15,14 @@ namespace FAPAplicationAPI.Utility
                 UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(c);
                 if (category != UnicodeCategory.NonSpacingMark)
                 {
-                    stringBuilder.Append(c);
+                    if (c == 'đ' || c == 'Đ')
+                    {
+                        stringBuilder.Append('d');
+                    }
+                    else
+                    {
+                        stringBuilder.Append(c);
+                    }
                 }
             }
 
