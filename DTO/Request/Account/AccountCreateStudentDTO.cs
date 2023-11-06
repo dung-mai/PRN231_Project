@@ -3,6 +3,7 @@
     public class AccountCreateStudentDTO
     {
         public string? Phonenumber { get; set; }
+        public string Email { get; set; } = "";
         public bool? Gender { get; set; }
         public string IdCard { get; set; } = null!;
         public DateTime? Dob { get; set; }

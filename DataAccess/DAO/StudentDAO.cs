@@ -37,6 +37,11 @@ namespace DataAccess.Managers
             return _context.Students.Include(s => s.Account).Where(s => s.IsDelete == false).ToList();
         }
 
+        public Student? GetStudentLastIndex()
+        {
+            return _context.Students.OrderBy(s => s.Rollnumber).Include(s => s.Account).LastOrDefault();
+        }
+
         public Boolean AddStudent(Student student)
         {
             try
@@ -53,7 +58,11 @@ namespace DataAccess.Managers
 
         public string GetRollNumber(string major, string course)
         {
-            Student student = _context.Students.OrderBy(s => s.Rollnumber).LastOrDefault(s => s.Rollnumber.StartsWith($"{major}{course}"));
+            Student? student = _context.Students.OrderBy(s => s.Rollnumber).LastOrDefault(s => s.Rollnumber.StartsWith($"{major}{course}"));
+            if(student == null)
+            {
+                return $"{major}{course}0001";
+            }
             string pattern = Regex.Escape($"{major}{course}") + @"(\d+)";
             Match match = Regex.Match(student.Rollnumber, pattern);
             int cacSoConLai = Int32.Parse(match.Groups[1].Value) + 1;
@@ -89,11 +98,8 @@ namespace DataAccess.Managers
                 if (studentUpdate != null)
                 {
                     studentUpdate.MajorId = student.MajorId;
-                    studentUpdate.AccountId = student.AccountId;
-                    studentUpdate.AcademicYear = student.AcademicYear;
                     studentUpdate.UpdatedAt = DateTime.Now;
                     studentUpdate.UpdatedBy = student.UpdatedBy;
-                    studentUpdate.IsDelete = student.IsDelete;
                     _context.Students.Update(studentUpdate);
                     _context.SaveChanges();
                     return true;

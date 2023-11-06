@@ -10,6 +10,7 @@ namespace Repository.IRepository
         AccountResponseDTO? GetAccount(int id);
         AccountResponseDTO? GetAccountLastIndex();
         bool UpdateAccount(AccountUpdateDTO account);
+        bool UpdateAccountStudent(AccountUpdateStudentDTO account); 
         bool SaveAccount(AccountCreateDTO account);
         bool CreateAccountStudent(AccountCreateStudentDTO account);
         bool DeleteAccount(int id);

@@ -33,7 +33,7 @@ namespace DataAccess.Managers
 
         public Account? GetAccountLastIndex()
         {
-            return _context.Accounts.LastOrDefault();
+            return _context.Accounts.OrderBy(a => a.Id).LastOrDefault();
         }
 
         public bool AddAccount(Account account)
@@ -61,7 +61,7 @@ namespace DataAccess.Managers
         public bool UpdateAccount(Account _account)
         {
             Account? account = _context.Accounts
-                .FirstOrDefault(a => a.Id == _account.Id && !a.IsDelete);
+                .FirstOrDefault(a => a.Id == _account.Id);
             if (account != null)
             {
                 account.Email = _account.Email;
@@ -72,12 +72,29 @@ namespace DataAccess.Managers
                 account.Dob = _account.Dob;
                 account.Firstname = _account.Firstname;
                 account.Lastname = _account.Lastname;
-                account.Address = _account.Middlename;
-                account.Image = _account.Middlename;
+                account.Address = _account.Address;
+                account.Image = _account.Image;
                 account.Status = _account.Status;
                 account.UpdatedAt = DateTime.Now;
                 account.UpdatedBy = _account.UpdatedBy;
                 account.IsDelete = _account.IsDelete;
+                return true;
+            }
+            return false;
+        }
+
+        public bool UpdateAccountStudent(Account _account)
+        {
+            Account? account = _context.Accounts
+                .FirstOrDefault(a => a.Id == _account.Id);
+            if (account != null)
+            {
+                account.Phonenumber = _account.Phonenumber;
+                account.Gender = _account.Gender;
+                account.Address = _account.Address;
+                account.Image = _account.Image;
+                account.Status = _account.Status;
+                account.UpdatedAt = DateTime.Now;
                 return true;
             }
             return false;
