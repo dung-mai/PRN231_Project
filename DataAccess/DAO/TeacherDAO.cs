@@ -1,4 +1,6 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace DataAccess.DAO
 {
@@ -13,18 +15,19 @@ namespace DataAccess.DAO
 
         public Teacher? GetTeacherById(int id)
         {
-            return _context.Teachers.FirstOrDefault(t => t.AccountId == id && t.IsDelete == false);
+            return _context.Teachers.Include(t=> t.Account).FirstOrDefault(t => t.AccountId == id && t.IsDelete == false);
         }
 
         public List<Teacher> GetTeachers()
         {
-            return _context.Teachers.Where(t => t.IsDelete == false).ToList();
+            return _context.Teachers.Include(t => t.Account).Where(t => t.IsDelete == false).ToList();
         }
 
         public Boolean AddTeacher(Teacher teacher)
         {
             try
             {
+                teacher.Account = null;
                 _context.Teachers.Add(teacher);
                 _context.SaveChanges();
                 return true;
@@ -76,6 +79,22 @@ namespace DataAccess.DAO
             {
                 return false;
             }
+        }
+
+        public string GetTeacherCode(string nameCut)
+        {
+            string pattern = @$"{nameCut}[^p]";
+            List<Teacher> teachers = _context.Teachers
+               .Include(t => t.Account)
+               .OrderBy(s => s.TeacherCode)
+               .ToList();
+            List<Teacher> test = teachers.Where(s => Regex.IsMatch(s.Account.Email, pattern)).ToList();
+            int count = test.Count;
+            if(count == 0 ){
+                return $"{nameCut}";
+            }
+            string teacherCode = $"{nameCut}{count}";
+            return teacherCode;
         }
     }
 }

@@ -1,0 +1,224 @@
+﻿@page "/admin/teacher"
+@using DTO.Response.Teacher;
+@model FAPClient.Pages.Admin.Teacher.ManageTeacherModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<!-- Button trigger modal create Teacher -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+    Create Teacher
+</button>
+
+
+<!-- Modal Create Teacher -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Add" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Teacher</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0 mt-3">First Name</p>
+                    <input required asp-for="TeacherAdd.Account.Firstname" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Middle Name</p>
+                    <input required asp-for="TeacherAdd.Account.Middlename" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Last Name</p>
+                    <input required asp-for="TeacherAdd.Account.Lastname" type="text" class="w-100" />
+
+                    <p class="mb-0 mt-3">Phone nummber</p>
+                    <input required asp-for="TeacherAdd.Account.Phonenumber" type="text" class="w-100" />
+                    <br />
+                    <p class="mb-0 mt-3">Gender</p>
+                    <select asp-for="TeacherAdd.Account.Gender" class="w-100">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <p class="mb-0 mt-3">Id Card</p>
+                    <input required asp-for="TeacherAdd.Account.IdCard" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Dob</p>
+                    <input required asp-for="TeacherAdd.Account.Dob" type="date" class="w-100" />
+                    <p class="mb-0 mt-3">Address</p>
+                    <input required asp-for="TeacherAdd.Account.Address" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Image</p>
+                    <input required asp-for="TeacherAdd.Account.Image" type="text" class="w-100" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- List table semester -->
+<div>
+
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Teacher Code</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Date Of Birth</th>
+                <th>Address</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (TeacherResponseDTO tDTO in Model.Teachers)
+            {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@tDTO.TeacherCode</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@tDTO.Account.Email</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@tDTO.Account.Fullname</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">
+                            @(tDTO.Account.Gender == true ? "Nam" : "Nữ")
+                        </p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@tDTO.Account.Phonenumber</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@(((DateTime)tDTO.Account.Dob).ToString("dd/MM/yyyy"))</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@tDTO.Account.Address</p>
+                    </td>
+
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                            onclick="openPopupDelete('@tDTO.AccountId')">
+                            Delete
+                        </button>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                            onclick="openPopup('@tDTO.Account.Phonenumber','@tDTO.Account.Gender','@tDTO.Account.Address','@tDTO.Account.Image','@tDTO.TeacherCode','@tDTO.Account.Id')">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Modal Update Teacher -->
+<div class="modal fade" id="updateTeacherModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Update" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Teacher</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateTeacherModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0 mt-3">Phone nummber</p>
+                    <input id="updatePhone" required asp-for="TeacherUpdate.Account.Phonenumber" type="text" class="w-100" />
+                    <br />
+                    <p class="mb-0 mt-3">Gender</p>
+                    <select id="updateGender" asp-for="TeacherUpdate.Account.Gender" class="w-100">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                    <p class="mb-0 mt-3">Address</p>
+                    <input required id="updateAddress" asp-for="TeacherUpdate.Account.Address" type="text" class="w-100" />
+                    <p class="mb-0 mt-3">Image</p>
+                    <input required id="updateImage" asp-for="TeacherUpdate.Account.Image" type="text" class="w-100" />
+                    <input hidden id="updateAccountId" asp-for="TeacherUpdate.Account.Id" type="text" class="w-100" />
+                    <input hidden id="updateRollnumber" asp-for="TeacherUpdate.AccountId" type="text" class="w-100" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateTeacherModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Delete Teacher -->
+<div class="modal fade" id="deleteTeacherModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-page-handler="Delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Teacher</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('deleteTeacherModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <input hidden id="deleteAccountId" name="accountId" type="text" class="w-100" />
+                    <p class="mb-0 mt-3"> Do you want Delete this Teacher ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup('deleteTeacherModal')">Cancle</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+    function openPopup(phonenumber, gender, address, image, rollnumber, accountId) {
+        var inputPhone = document.getElementById("updatePhone");
+        inputPhone.value = phonenumber;
+
+        var inputGender = document.getElementById("updateGender");
+        for (var i = 0; i < inputGender.options.length; i++) {
+            if (inputGender.options[i].value.toUpperCase() == gender.toUpperCase()) {
+                inputGender.options[i].selected = true;
+                break;
+            }
+        }
+        var inputAddress = document.getElementById("updateAddress");
+        inputAddress.value = address;
+
+        var inputImage = document.getElementById("updateImage");
+        inputImage.value = image;
+        var inputRoll = document.getElementById("updateRollnumber");
+        inputRoll.value = rollnumber;
+        var inputAccountId = document.getElementById("updateAccountId");
+        inputAccountId.value = accountId;
+        $('#updateTeacherModal').modal('show');
+    }
+
+    function openPopupDelete(accountId) {
+        var inputAccountId = document.getElementById("deleteAccountId");
+        inputAccountId.value = accountId;
+        $('#deleteTeacherModal').modal('show');
+    }
+
+
+</script>

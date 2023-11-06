@@ -20,6 +20,8 @@ namespace Repository.Repository
 
         public bool AddTeacher(TeacherAddDTO teacher)
         {
+            Teacher t = _mapper.Map<Teacher>(teacher);
+            t.Account = null;
             return teacherDAO.AddTeacher(_mapper.Map<Teacher>(teacher));
         }
 
@@ -32,6 +34,12 @@ namespace Repository.Repository
         {
             return _mapper.Map<TeacherResponseDTO>(teacherDAO.GetTeacherById(id));
         }
+
+        public string GetTeacherCode(string namecut)
+        {
+            return teacherDAO.GetTeacherCode(namecut);
+        }
+
         public List<TeacherResponseDTO> GetTeachers()
         {
             return _mapper.Map<List<TeacherResponseDTO>>(teacherDAO.GetTeachers());

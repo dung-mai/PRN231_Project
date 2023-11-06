@@ -11,8 +11,10 @@ namespace Repository.IRepository
         AccountResponseDTO? GetAccountLastIndex();
         bool UpdateAccount(AccountUpdateDTO account);
         bool UpdateAccountStudent(AccountUpdateStudentDTO account); 
+        bool UpdateAccountTeacher(AccountUpdateTeacherDTO account); 
         bool SaveAccount(AccountCreateDTO account);
         bool CreateAccountStudent(AccountCreateStudentDTO account);
+        bool CreateAccountTeacher(AccountCreateTeacherDTO account);
         bool DeleteAccount(int id);
     }
 }
