@@ -16,6 +16,7 @@ namespace BusinessObject.Models
         [MaxLength(5)]
         public string AcademicYear { get; set; } = null!;
         public int? MajorId { get; set; }
+        public int? CurricolumId { get; set; }
         public int? AccountId { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
@@ -23,6 +24,7 @@ namespace BusinessObject.Models
 
         public virtual Account? Account { get; set; }
         public virtual Major? Major { get; set; }
+        public virtual Curricolum? Curricolum { get; set; }
         public virtual ICollection<StudyCourse> StudyCourses { get; set; }
     }
 }

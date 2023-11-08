@@ -1,5 +1,7 @@
 ﻿using Bussiness.DTO;
+using DTO.Request.SubjectCurricolum;
 using DTO.Response.Major;
+using DTO.Response.SubjectCurricolum;
 
 namespace DTO.Response.Curricolum
 {
@@ -12,5 +14,8 @@ namespace DTO.Response.Curricolum
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
         public virtual MajorResponseDTO? Major { get; set; }
+
+        public List<SubjectCurricolumResponseDTO> Subjects { get; set; } = new List<SubjectCurricolumResponseDTO>();
+
     }
 }

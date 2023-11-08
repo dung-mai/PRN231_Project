@@ -9,6 +9,7 @@ namespace Repository.IRepository
         SubjectCurricolumResponseDTO? GetSubjectCurricolum(int id);
         bool UpdateSubjectCurricolum(SubjectCurricolumUpdateDTO subjectCurricolum);
         bool SaveSubjectCurricolum(SubjectCurricolumCreateDTO subjectCurricolum);
+        bool SaveSubjectCurricolumRange(List<SubjectCurricolumCreateDTO> subjectCurricolums);
         bool DeleteSubjectCurricolum(int id);
     }
 }

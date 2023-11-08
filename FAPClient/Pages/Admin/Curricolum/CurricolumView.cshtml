@@ -12,7 +12,7 @@
 
 <!-- Modal Create Curricolum -->
 <div class="modal fade" id="createCurricolumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 900px">
         <form asp-page-handler="Create" method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -22,37 +22,46 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label">Curricolum Name</label>
+                    <div class="input-group w-50">
+                        <label class="input-group-text" style="min-width: 150px">Curricolum Name</label>
                         <input asp-for="CurricolumCreate.CurricolumName" class="form-control" required />
                         <span asp-validation-for="CurricolumCreate.CurricolumName" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">Major Name</label>
-                        <select asp-for="CurricolumCreate.MajorId" class="form-control" asp-items="ViewBag.Majors">
+                    <div class="input-group w-50 mt-2">
+                        <label class="input-group-text" style="min-width: 150px">Major Name</label>
+                        <select asp-for="CurricolumCreate.MajorId" class="form-select" asp-items="ViewBag.Majors">
                             <option>Choose a major</option>
                         </select>
                     </div>
                     <div class="">
-                        <h4 class="">Add subjects</h4>
-                        <div class="">
+                        <h4 class="mt-3">Add subjects</h4>
+                        <div class="d-flex align-items-start justify-content-between">
                             <div class="">
-                                <ul>
-                                    <li>
-                                        <span>Marxist philosophy</span> - <span>MLN111</span>
-                                        <input type="text" name="termNo"/>
-                                        <button>Remove</button>
-                                    </li>
-                                    <li>
-                                        <span>Marxist philosophy</span> - <span>MLN111</span>
-                                        <input type="text" name="termNo" />
-                                        <button>Remove</button>
-                                    </li>
-                                </ul>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject Code</th>
+                                            <th>Subject Name</th>
+                                            <th>Term No</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="subject-to-add">
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="">
+                            <div class="ms-2">
                                 <h4>Search subject</h4>
-                                <input/>
+                                <div class="search-form">
+                                    <input type="text" name="search-subject" placeholder="Subject Code" />
+                                    <span id="search-subject-btn" class="btn btn-outline-secondary">Search</span>
+                                </div>
+                                <div>
+                                    <table class="table">
+                                        <tbody id="display-search-result">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,8 +84,8 @@
                 <th>Curricolum Name</th>
                 <th>Major Name</th>
                 <th>Updated At</th>
-                <th>Delete</th>
                 <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -94,7 +103,11 @@
                     <td>
                         <p class="fw-normal mb-1">@curricolum.UpdatedAt</p>
                     </td>
-
+                    <td>
+                        <a href="/admin/curricolum/update/@curricolum.Id" class="btn btn-link btn-sm btn-rounded">
+                            Update
+                        </a>
+                    </td>
                     <td>
                         <button type="button" class="btn btn-link btn-sm btn-rounded"
                                 onclick="openPopupDelete('@curricolum.Id')">
@@ -102,12 +115,6 @@
                         </button>
                     </td>
 
-                    <td>
-                        <button type="button" class="btn btn-link btn-sm btn-rounded"
-                                onclick="openPopup('@curricolum.CurricolumName','@curricolum.Major.MajorName','@curricolum.Id')">
-                            Update
-                        </button>
-                    </td>
                 </tr>
 
             }
@@ -115,40 +122,6 @@
     </table>
 
 </div>
-
-
-<!-- Modal Update Curricolum -->
-<div class="modal fade" id="updateCurricolumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form asp-page-handler="Update" method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update Curricolum</h5>
-                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onclick="closePopup('updateCurricolumModal')"></button>
-                </div>
-                <div class="modal-body">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label class="control-label">Curricolum Name</label>
-                        <input id="updateCurricolumName" asp-for="CurricolumUpdate.CurricolumName" class="form-control" required />
-                        <span asp-validation-for="CurricolumUpdate.CurricolumName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Major Name</label>
-                        <select id="updateMajorId" asp-for="CurricolumUpdate.MajorId" class="form-control" asp-items="ViewBag.Majors"></select>
-                    </div>
-                    <input id="updateCurricolumId" asp-for="CurricolumUpdate.Id" type="hidden"/>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closePopup('updateCurricolumModal')">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 
 <!-- Modal Delete Curricolum -->
 <div class="modal fade" id="deleteCurricolumModal" tabindex="-1" aria-labelledby="deleteCurricolumModalLabel" aria-hidden="true">
@@ -172,10 +145,12 @@
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
     $('#tablePagnation').DataTable({
         "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
     });
+
+    let subjectOfCurricolums = [];
 
     function openPopup(curricolumName, majorName, curricolumId) {
         var inputName = document.getElementById("updateCurricolumName");
@@ -200,6 +175,73 @@
         inputId.value = curricolumId;
         $('#deleteCurricolumModal').modal('show');
     }
+    function displaySubjectList(data) {
+        $('#display-search-result').html(`
+                    ${data.map((item) =>
+            `<tr>
+                                <td>${item.subjectCode}</td>
+                                <td style="display: inline-block;
+                                        max-width: 350px">${item.subjectName}</td>
+                                <td>
+                                    <button type="button" onclick="addSubject(${item.id}, '${item.subjectCode}', '${item.subjectName}')">+</button>
+                                </td>
+                        </tr>`
+        )
+                .join("")}
+            `);
+    }
+
+    const searchSubjectBtn = document.querySelector('#search-subject-btn');
+    searchSubjectBtn.addEventListener('click', (e) => {
+        const searchSubjectInput = document.querySelector('input[name="search-subject"]');
+        const apiUrl = `http://localhost:5199/api/Subjects?$filter=contains(SubjectCode,'${searchSubjectInput.value}')`;
+        const data = callAjax(apiUrl, displaySubjectList);
+    });
+
+    const renderSubjectList = () => {
+        $('#subject-to-add').html(`
+                    ${subjectOfCurricolums.map((item, index) =>
+            `<tr>
+                            <td>${item.subjectCode}</td>
+                            <td>${item.subjectName}</td>
+                            <td>
+                                <input type="text" name="CurricolumCreate.Subjects[${index}].TermNo" style="width: 60px" />
+                                <input type="hidden" name="CurricolumCreate.Subjects[${index}].SubjectId"  value="${item.id}"/>
+                            </td>
+                            <td>
+                                <button type="button" onclick="removeSubject(${item.id})">X</button>
+                            </td>
+                        </tr>`
+        ).join("")}
+            `);
+    }
+
+    function addSubject(subjectId, code, name) {
+        const newItem = { id: subjectId, subjectCode: code, subjectName: name };
+        if (subjectOfCurricolums.findIndex(s => s.id == subjectId) < 0) {
+            $('#subject-to-add').append(`<tr>
+                        <td>${newItem.subjectCode}</td>
+                        <td>${newItem.subjectName}</td>
+                    <td>
+                        <input type="text" name="CurricolumCreate.Subjects[${subjectOfCurricolums.length}].TermNo" style="width: 60px" required/>
+                        <input type="hidden" name="CurricolumCreate.Subjects[${subjectOfCurricolums.length}].SubjectId" value="${newItem.id}"/>
+                    </td>
+                    <td>
+                        <button type="button" onclick="removeSubject(${subjectOfCurricolums.length})">X</button>
+                    </td>
+                </tr>`);
+            subjectOfCurricolums.push(newItem);
+        } else {
+            console.log("This subject already exists");
+        }
+
+    }
+
+    function removeSubject(id) {
+        subjectOfCurricolums = subjectOfCurricolums.filter(item => item.id != id);
+        renderSubjectList();
+    }
+
 
 
 </script>

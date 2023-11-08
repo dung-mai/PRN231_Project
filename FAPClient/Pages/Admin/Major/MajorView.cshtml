@@ -25,6 +25,8 @@
                     <br />
                     <p>Major Code</p>
                     <input type="text" name="MajorCode" class="w-100 form-control" required/>
+                    <p>Student Number Major Code</p>
+                    <input type="text" name="StudentIdentityCode" class="w-100 form-control" required/>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -43,6 +45,7 @@
             <tr>
                 <th>Major Name</th>
                 <th>Major Code</th>
+                <th>Student Identity Code</th>
                 <th>Updated At</th>
                 <th>Delete</th>
                 <th>Edit</th>
@@ -55,11 +58,12 @@
                     <td>
                         <p class="fw-normal mb-1">@major.MajorName</p>
                     </td>
-
                     <td>
                         <p class="fw-normal mb-1">@major.MajorCode</p>
                     </td>
-
+                    <td>
+                        <p class="fw-normal mb-1">@major.StudentIdentityCode</p>
+                    </td>
                     <td>
                         <p class="fw-normal mb-1">@major.UpdatedAt</p>
                     </td>
@@ -73,7 +77,7 @@
 
                     <td>
                         <button type="button" class="btn btn-link btn-sm btn-rounded"
-                                onclick="openPopup('@major.MajorName','@major.MajorCode','@major.Id')">
+                                onclick="openPopup('@major.MajorName','@major.MajorCode','@major.StudentIdentityCode','@major.Id')">
                             Update
                         </button>
                     </td>
@@ -100,6 +104,8 @@
                     <input id="updateMajorName" type="text" name="MajorName" class="w-100 form-control" />
                     <p>Major Code</p>
                     <input id="updateMajorCode" type="text" name="MajorCode" class="w-100 form-control" />
+                    <p>Student Identity Code</p>
+                    <input id="updateStudentIdentityCode" type="text" name="StudentIdentityCode" class="w-100 form-control" />
                     <input id="updateMajorId" type="hidden" name="Id" />
 
                 </div>
@@ -140,12 +146,14 @@
         "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
     });
 
-    function openPopup(majorName, majorCode, majorId) {
+    function openPopup(majorName, majorCode, studentIdentityCode, majorId) {
         var inputName = document.getElementById("updateMajorName");
         inputName.value = majorName;
 
         var inputMajorCode = document.getElementById("updateMajorCode");
         inputMajorCode.value = majorCode;
+        var inputStudentIdentityCode = document.getElementById("updateStudentIdentityCode");
+        inputStudentIdentityCode.value = studentIdentityCode;
 
         var inputId = document.getElementById("updateMajorId");
         inputId.value = majorId;

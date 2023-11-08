@@ -15,6 +15,8 @@ namespace DataAccess.DAO
         {
             return _context.Curricolums
                 .Include(c => c.Major)
+                .Include(c => c.SubjectCurricolums.Where(c => !c.IsDelete))
+                    .ThenInclude(sc => sc.Subject)
                 .Where(c => !c.IsDelete)
                 .ToList();
         }
@@ -62,6 +64,12 @@ namespace DataAccess.DAO
                 return true;
             }
             return false;
+        }
+
+        public int GetLastInsertCurricolum()
+        {
+            Curricolum? curricolum = _context.Curricolums.OrderBy(c => c.Id).LastOrDefault();
+            return curricolum != null ? curricolum.Id : 0;
         }
     }
 }
