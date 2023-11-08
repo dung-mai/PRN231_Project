@@ -9,6 +9,7 @@ namespace BusinessObject.Models
         public Semester()
         {
             Classes = new HashSet<Class>();
+            Curricolums = new HashSet<Curricolum>();
         }
 
         [Key]
@@ -23,5 +24,6 @@ namespace BusinessObject.Models
         public bool IsDelete { get; set; } = false;
 
         public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<Curricolum> Curricolums { get; set; }
     }
 }

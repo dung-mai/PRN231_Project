@@ -98,6 +98,7 @@ namespace DataAccess.Managers
                 if (studentUpdate != null)
                 {
                     studentUpdate.MajorId = student.MajorId;
+                    studentUpdate.CurricolumId = student.CurricolumId;
                     studentUpdate.UpdatedAt = DateTime.Now;
                     studentUpdate.UpdatedBy = student.UpdatedBy;
                     _context.Students.Update(studentUpdate);

@@ -144,6 +144,11 @@ namespace BusinessObject.Models
                     .WithMany(p => p.Curricolums)
                     .HasForeignKey(d => d.MajorId)
                     .HasConstraintName("FK_Curricolum_Major");
+
+                entity.HasOne(d => d.StartSemester)
+                    .WithMany(p => p.Curricolums)
+                    .HasForeignKey(d => d.StartSemeterId)
+                    .HasConstraintName("FK_Curricolum_Semester");
             });
 
             modelBuilder.Entity<DetailScore>(entity =>

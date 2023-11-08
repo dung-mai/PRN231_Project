@@ -58,6 +58,7 @@ namespace DataAccess.DAO
             {
                 curricolum.CurricolumName = _curricolum.CurricolumName;
                 curricolum.MajorId = _curricolum.MajorId;
+                curricolum.StartSemeterId = _curricolum.StartSemeterId;
                 curricolum.UpdatedAt = DateTime.Now;
                 curricolum.UpdatedBy = _curricolum.UpdatedBy;
                 curricolum.IsDelete = _curricolum.IsDelete;
