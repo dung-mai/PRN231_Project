@@ -11,10 +11,12 @@ namespace FAPAplicationAPI.Controllers
     public class CurricolumsController : ControllerBase
     {
         private readonly ICurricolumRepository _curricolumRepository;
+        private readonly ISubjectCurricolumRepository _subjectCurricolumRepository;
 
-        public CurricolumsController(ICurricolumRepository curricolumRepository)
+        public CurricolumsController(ICurricolumRepository curricolumRepository, ISubjectCurricolumRepository subjectCurricolumRepository)
         {
             _curricolumRepository = curricolumRepository;
+            _subjectCurricolumRepository = subjectCurricolumRepository;
         }
 
         // GET: api/Curricolums
@@ -50,7 +52,11 @@ namespace FAPAplicationAPI.Controllers
             {
                 return BadRequest();
             }
-
+            foreach (var item in curricolum.Subjects)
+            {
+                item.CurricolumId = curricolum.Id;
+                item.Status = true;
+            }
             if (_curricolumRepository.UpdateCurricolum(curricolum))
             {
                 return NoContent();
@@ -68,6 +74,13 @@ namespace FAPAplicationAPI.Controllers
         {
             if (_curricolumRepository.SaveCurricolum(curricolum))
             {
+                int insertedCurricolumId = _curricolumRepository.GetRecentlyAddCurricolum();
+                foreach (var item in curricolum.Subjects)
+                {
+                    item.CurricolumId = insertedCurricolumId;
+                    item.Status = true;
+                }
+                _subjectCurricolumRepository.SaveSubjectCurricolumRange(curricolum.Subjects);
                 return NoContent();
             }
             else

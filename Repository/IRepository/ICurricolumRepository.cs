@@ -7,6 +7,7 @@ namespace Repository.IRepository
     {
         IQueryable<CurricolumResponseDTO> GetCurricolums();
         CurricolumResponseDTO? GetCurricolum(int id);
+        int GetRecentlyAddCurricolum();
         bool UpdateCurricolum(CurricolumUpdateDTO curricolum);
         bool SaveCurricolum(CurricolumCreateDTO curricolum);
         bool DeleteCurricolum(int id);

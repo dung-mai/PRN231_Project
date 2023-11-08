@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="~/css/mdb.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/js/mdb.min.js"></script>
+    <script src="~/js/site.js"></script>
 
     <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- MDB DataTables plugin -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.2/datatables.min.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.2/datatables.min.js"></script>
@@ -29,6 +31,8 @@
         <!-- Sidebar -->
         <div class="container-fluid">
             <div class="row flex-nowrap">
+                @await Html.PartialAsync("_Notification")
+
                 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                         

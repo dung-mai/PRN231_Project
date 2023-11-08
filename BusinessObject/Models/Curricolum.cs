@@ -7,6 +7,7 @@ namespace BusinessObject.Models
         public Curricolum()
         {
             SubjectCurricolums = new HashSet<SubjectCurricolum>();
+            Students = new HashSet<Student>();
         }
         [Key]
         public int Id { get; set; }
@@ -19,5 +20,6 @@ namespace BusinessObject.Models
 
         public virtual Major? Major { get; set; }
         public virtual ICollection<SubjectCurricolum> SubjectCurricolums { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
     }
 }

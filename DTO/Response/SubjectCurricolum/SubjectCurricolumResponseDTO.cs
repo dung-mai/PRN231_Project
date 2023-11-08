@@ -1,4 +1,6 @@
-﻿namespace DTO.Response.SubjectCurricolum
+﻿using DTO.Response.Subject;
+
+namespace DTO.Response.SubjectCurricolum
 {
     public class SubjectCurricolumResponseDTO
     {
@@ -10,5 +12,7 @@
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
+
+        public SubjectResponseDTO? Subject { get; set; }
     }
 }

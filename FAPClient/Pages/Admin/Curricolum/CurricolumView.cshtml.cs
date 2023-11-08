@@ -1,4 +1,5 @@
 using DTO.Request.Curricolum;
+using DTO.Request.SubjectCurricolum;
 using DTO.Response.Curricolum;
 using DTO.Response.Major;
 using FAPAplicationAPI.Utility;
@@ -47,7 +48,7 @@ namespace FAPClient.Pages.Admin.Curricolum
             return Page();
         }
 
-        public async Task<IActionResult> OnPostCreate(CurricolumResponseDTO CurricolumCreate)
+        public async Task<IActionResult> OnPostCreate(CurricolumCreateDTO CurricolumCreate)
         {
             CurricolumCreate.UpdatedAt = DateTime.Now;
             CurricolumApiUrl = $"{Configuration.ApiURL}/Curricolums";
@@ -61,24 +62,6 @@ namespace FAPClient.Pages.Admin.Curricolum
             else
             {
                 TempData["error"] = "Add curricolum fail!";
-                return Page();
-            }
-        }
-
-        public async Task<IActionResult> OnPostUpdate(CurricolumUpdateDTO CurricolumUpdate)
-        {
-            CurricolumUpdate.UpdatedAt = DateTime.Now;
-            CurricolumApiUrl = $"{Configuration.ApiURL}/Curricolums/{CurricolumUpdate.Id}";
-            var response = client.PutAsJsonAsync(CurricolumApiUrl, CurricolumUpdate).Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["success"] = "Update curricolum successfully!";
-                return RedirectToPage("CurricolumView");
-            }
-            else
-            {
-                TempData["error"] = "Update curricolum fail!";
                 return Page();
             }
         }

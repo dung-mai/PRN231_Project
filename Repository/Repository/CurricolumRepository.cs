@@ -4,6 +4,7 @@ using DataAccess.DAO;
 using DTO.Request.Curricolum;
 using DTO.Response.Curricolum;
 using Repository.IRepository;
+using System.ComponentModel.DataAnnotations;
 
 namespace Repository.Repository
 {
@@ -46,6 +47,12 @@ namespace Repository.Repository
             return curricolums.Select(c => _mapper.Map<CurricolumResponseDTO>(c)).AsQueryable();
         }
 
+        public int GetRecentlyAddCurricolum()
+        {
+            CurricolumDAO curricolumDAO = new CurricolumDAO(_context);
+            return curricolumDAO.GetLastInsertCurricolum();
+        }
+
         public bool SaveCurricolum(CurricolumCreateDTO curricolum)
         {
             try
@@ -73,7 +80,35 @@ namespace Repository.Repository
             try
             {
                 CurricolumDAO curricolumDAO = new CurricolumDAO(_context);
+                SubjectCurricolumDAO subjectCurricolumDAO = new SubjectCurricolumDAO(_context);
                 bool result = curricolumDAO.UpdateCurricolum(_mapper.Map<Curricolum>(curricolum));
+
+                var oldSubjectList = subjectCurricolumDAO.GetSubjectCurricolumsById(curricolum.Id);
+                var newSubjectList = curricolum.Subjects;
+                if (oldSubjectList.Count > 0 && newSubjectList.Count > 0)
+                {
+                    foreach (var oldSubject in oldSubjectList)
+                    {
+                        var subject = newSubjectList.FirstOrDefault(s => s.Id == oldSubject.Id);
+                        if (subject != null) //update change subject
+                        {
+                            subjectCurricolumDAO.UpdateSubjectCurricolum(_mapper.Map<SubjectCurricolum>(subject));
+                        }
+                        else //remove subject
+                        {
+                            subjectCurricolumDAO.DeleteSubjectCurricolum(oldSubject.Id);
+                        }
+                    }
+
+                    foreach (var newSubject in newSubjectList)
+                    {
+                        if (newSubject.Id == 0) //update change subject
+                        {
+                            subjectCurricolumDAO.AddSubjectCurricolum(_mapper.Map<SubjectCurricolum>(newSubject));
+                        }
+                    }
+                }
+
                 if (result)
                 {
                     _context.SaveChanges();

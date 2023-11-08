@@ -1,4 +1,6 @@
-﻿namespace DTO.Request.SubjectCurricolum
+﻿using DTO.Response.Subject;
+
+namespace DTO.Request.SubjectCurricolum
 {
     public class SubjectCurricolumCreateDTO
     {

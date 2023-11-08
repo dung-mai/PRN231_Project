@@ -68,6 +68,28 @@ namespace Repository.Repository
             }
         }
 
+        public bool SaveSubjectCurricolumRange(List<SubjectCurricolumCreateDTO> subjectCurricolums)
+        {
+            try
+            {
+                SubjectCurricolumDAO subjectCurricolumDAO = new SubjectCurricolumDAO(_context);
+                bool result = subjectCurricolumDAO.AddSubjectCurricolumRange(_mapper.Map<List<SubjectCurricolum>>(subjectCurricolums));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public bool UpdateSubjectCurricolum(SubjectCurricolumUpdateDTO subjectCurricolum)
         {
             try

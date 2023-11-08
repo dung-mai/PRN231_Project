@@ -62,5 +62,22 @@ namespace DataAccess.DAO
             }
             return false;
         }
+
+        public bool AddSubjectCurricolumRange(List<SubjectCurricolum> subjectCurricolums)
+        {
+            if (subjectCurricolums != null && subjectCurricolums.Count > 0)
+            {
+                _context.SubjectCurricolums.AddRange(subjectCurricolums);
+                return true;
+            }
+            return false;
+        }
+
+        public List<SubjectCurricolum> GetSubjectCurricolumsById(int id)
+        {
+            return _context.SubjectCurricolums
+                .Where(sc => !sc.IsDelete && sc.CurricolumId == id)
+                .ToList();
+        }
     }
 }

@@ -67,8 +67,12 @@ namespace Bussiness.Mapping
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Class, ClassUpdateDTO>().ReverseMap();
             CreateMap<Class, ClassCreateDTO>().ReverseMap();
-            CreateMap<Curricolum, CurricolumResponseDTO>().ReverseMap();
-            CreateMap<Curricolum, CurricolumUpdateDTO>().ReverseMap();
+            CreateMap<Curricolum, CurricolumResponseDTO>()
+                .ForMember(des => des.Subjects, opt => opt.MapFrom(src => src.SubjectCurricolums))
+                .ReverseMap();
+            CreateMap<Curricolum, CurricolumUpdateDTO>()
+                .ForMember(des => des.Subjects, opt => opt.MapFrom(src => src.SubjectCurricolums))
+                .ReverseMap();
             CreateMap<Curricolum, CurricolumCreateDTO>().ReverseMap();
             CreateMap<Role, RoleResponseDTO>().ReverseMap();
             CreateMap<Role, RoleUpdateDTO>().ReverseMap();
