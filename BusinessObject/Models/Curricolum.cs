@@ -14,11 +14,13 @@ namespace BusinessObject.Models
         [MaxLength(50)]
         public string? CurricolumName { get; set; }
         public int? MajorId { get; set; }
+        public int? StartSemeterId { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
 
         public virtual Major? Major { get; set; }
+        public virtual Semester? StartSemester { get; set; }
         public virtual ICollection<SubjectCurricolum> SubjectCurricolums { get; set; }
         public virtual ICollection<Student> Students { get; set; }
     }
