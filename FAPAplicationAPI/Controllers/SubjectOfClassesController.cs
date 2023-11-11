@@ -95,5 +95,7 @@ namespace FAPAplicationAPI.Controllers
                 return Problem("Problem when Delete SubjectOfClass");
             }
         }
+
+       
     }
 }

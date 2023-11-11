@@ -13,6 +13,7 @@ namespace Repository.IRepository
         bool DeleteStudent(string roleNumber);
         bool UpdateStudent(StudentUpdateDTO student);
         List<StudentResponseDTO> GetStudents();
+        List<StudentResponseDTO> GetStudentsByCurricoulmnId(int curricoulmnId);
         string GetRoleNumber(string major, string course);
     }
 }

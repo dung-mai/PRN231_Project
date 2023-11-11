@@ -95,6 +95,7 @@ namespace DataAccess.DAO
         {
             if (studyCourse != null)
             {
+                studyCourse.RollnumberNavigation = null;
                 _context.StudyCourses.Add(studyCourse);
                 return true;
             }

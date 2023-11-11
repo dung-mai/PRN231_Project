@@ -10,8 +10,10 @@ namespace Repository.IRepository
         bool IsTeachingClass(int classId, int teacherId);
         IQueryable<SubjectOfClassResponseDTO> GetSubjectOfClasses();
         SubjectOfClassResponseDTO? GetSubjectOfClass(int id);
+        SubjectOfClassResponseDTO? GetSubjectOfClassLastIndex();
         bool UpdateSubjectOfClass(SubjectOfClassUpdateDTO subjectOfClass);
         bool SaveSubjectOfClass(SubjectOfClassCreateDTO subjectOfClass);
+        bool SaveSubjectOfClassRes(SubjectOfClassResponseDTO subjectOfClassRes);
         bool DeleteSubjectOfClass(int id);
     }
 }

@@ -1,0 +1,128 @@
+﻿@page "/admin/class"
+@using DTO.Response.Class
+@using DTO.Response.Curricolum
+@using DTO.Response.Semester
+@using DTO.Response.StudyCourse
+@using DTO.Response.SubjectOfClass
+@model FAPClient.Pages.Admin.Class.AddClassModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<form>
+    <p>Semester</p>
+    <select name="semesterId">
+        @foreach (SemesterResponseDTO s in Model.Semesters)
+        {
+            <option value="@s.Id">@s.SemesterName</option>
+        }
+    </select>
+    <p>Curricolumn</p>
+    <select name="curricolumnId">
+        @foreach (CurricolumResponseDTO c in Model.Curricolums)
+        {
+            <option value="@c.Id">@c.CurricolumName</option>
+        }
+    </select>
+    <button type="submit">Create Class</button>
+</form>
+
+@if (Model.ClassReponseAddDTOs != null)
+{
+    <form asp-page-handler="AddClass" method="post">
+        <input type="hidden" name="ClassReponseAddDTOsJson" value="@System.Text.Json.JsonSerializer.Serialize(Model.ClassReponseAddDTOs)">
+        <button type="submit">Save Class</button>
+    </form>
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Class Name</th>
+                <th>Subject Code</th>
+                <th>Number Student</th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ClassReponseAddDTO c in Model.ClassReponseAddDTOs)
+            {
+                @foreach (SubjectOfClassResponseDTO sDTO in c.SubjectOfClasses)
+                {
+                    <tr>
+                        <td>
+                            <p class="fw-normal mb-1">@c.ClassName</p>
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">@sDTO.SubjectName</p>
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">@sDTO.StudyCourses.Count / 30</p>
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">
+                                <button onclick="openDetail(@System.Text.Json.JsonSerializer.Serialize(sDTO.StudyCourses))" class="btn btn-link">
+                                    Detail
+                                </button>
+                            </p>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex">
+        <table id="display-table" style="display:none" !important class="table align-middle mb-0 bg-white d-inline-block">
+            <thead class="bg-light">
+                <tr>
+                    <th>
+                        RollNumber
+                    </th>
+                    <th>
+                        StudentName
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="search-result">
+            </tbody>
+        </table>
+    </div>
+}
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+    function openDetail(data) {
+        console.log(data);
+        // Convert the list to an array of StudyCourseResponseDTO objects.
+        $("#search-result").html(
+            data.map((item) => `<tr>
+                                        <td>
+                                            <p class="fw-normal mb-1">
+                                                ${item.Rollnumber}
+                                            </p>
+                                        </td>
+                                        <td>
+                                             <p class="fw-normal mb-1">
+                                                    ${item.RollnumberNavigation.FullName}
+                                            </p>
+                                        </td>
+                                        <td>
+                                             <p class="fw-normal mb-1">
+                                        ${item.RollnumberNavigation.Email}
+                                            </p>
+                                        </td>
+                                    </tr>`
+            ).join("")
+        );
+    }
+
+
+
+
+</script>

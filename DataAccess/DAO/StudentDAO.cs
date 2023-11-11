@@ -32,6 +32,11 @@ namespace DataAccess.Managers
             return _context.Students.Include(s => s.Account).FirstOrDefault(s => s.Rollnumber == rollNumber && s.IsDelete == false);
         }
 
+        public List<Student>? GetStudentByCurricolumnId(int curricolumnId)
+        {
+            return _context.Students.Include(s => s.Account).Where(s => s.CurricolumId == curricolumnId && s.IsDelete == false).ToList();
+        }
+
         public List<Student> GetStudents()
         {
             return _context.Students.Include(s => s.Account).Where(s => s.IsDelete == false).ToList();

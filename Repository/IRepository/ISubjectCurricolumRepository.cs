@@ -1,4 +1,5 @@
 ﻿using DTO.Request.SubjectCurricolum;
+using DTO.Response.Semester;
 using DTO.Response.SubjectCurricolum;
 
 namespace Repository.IRepository
@@ -10,6 +11,7 @@ namespace Repository.IRepository
         bool UpdateSubjectCurricolum(SubjectCurricolumUpdateDTO subjectCurricolum);
         bool SaveSubjectCurricolum(SubjectCurricolumCreateDTO subjectCurricolum);
         bool SaveSubjectCurricolumRange(List<SubjectCurricolumCreateDTO> subjectCurricolums);
+        List<SubjectCurricolumResponseDTO> GetSubjectCurricolumniByTermNo(SemesterResponseDTO semesterStart, SemesterResponseDTO semesterNow, int curricolumnId);
         bool DeleteSubjectCurricolum(int id);
     }
 }

@@ -28,5 +28,17 @@ namespace FAPAplicationAPI.Utility
 
             return stringBuilder.ToString();
         }
+
+        public static string GetAllAfterSecondUnderscore(string str)
+        {
+            // Tìm vị trí của ký tự "_" thứ hai
+            int position = str.IndexOf("_", 2);
+
+            // Lấy tất cả ký tự sau vị trí của ký tự "_" thứ hai
+            string part = str.Substring(position + 1);
+            part = part.Substring(1, 2).PadLeft(2, '0');
+            // Trả về chuỗi
+            return part;
+        }
     }
 }

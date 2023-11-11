@@ -107,5 +107,33 @@ namespace Repository.Repository
                 return false;
             }
         }
+
+        public bool SaveSubjectOfClassRes(SubjectOfClassResponseDTO subjectOfClassRes)
+        {
+            try
+            {
+                SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
+                bool result = subjectOfClassDAO.AddSubjectOfClass(_mapper.Map<SubjectOfClass>(subjectOfClassRes));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public SubjectOfClassResponseDTO? GetSubjectOfClassLastIndex()
+        {
+            SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
+            return _mapper.Map<SubjectOfClassResponseDTO>(subjectOfClassDAO.GetSubjectOfClassLastIndex());
+        }
     }
 }

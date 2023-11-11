@@ -67,6 +67,7 @@ namespace Bussiness.Mapping
             CreateMap<Class, ClassResponseDTO>().ReverseMap();
             CreateMap<Class, ClassUpdateDTO>().ReverseMap();
             CreateMap<Class, ClassCreateDTO>().ReverseMap();
+            CreateMap<Class, ClassReponseAddDTO>().ReverseMap();
             CreateMap<Curricolum, CurricolumResponseDTO>()
                 .ForMember(des => des.Subjects, opt => opt.MapFrom(src => src.SubjectCurricolums))
                 .ReverseMap();
@@ -86,7 +87,15 @@ namespace Bussiness.Mapping
             CreateMap<SubjectCurricolum, SubjectCurricolumResponseDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumUpdateDTO>().ReverseMap();
             CreateMap<SubjectCurricolum, SubjectCurricolumCreateDTO>().ReverseMap();
-            CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>().ReverseMap();
+            CreateMap<SubjectOfClass, SubjectOfClassResponseDTO>()
+                .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(act => act.Subject.SubjectName))
+                .ForMember(dest => dest.SubjectCode, opt => opt.MapFrom(act => act.Subject.SubjectCode))
+                .ForMember(dest => dest.TeacherCode, opt => opt.MapFrom(act => act.Teacher.TeacherCode))
+                .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(act => $"{act.Teacher.Account.Firstname} {act.Teacher.Account.Middlename} {act.Teacher.Account.Lastname}"))
+                .ReverseMap();
+            CreateMap<Student, StudentResponseStudyCourseDTO>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(act => $"{act.Account.Firstname} {act.Account.Middlename} {act.Account.Lastname}"))
+                .ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassUpdateDTO>().ReverseMap();
             CreateMap<SubjectOfClass, SubjectOfClassCreateDTO>().ReverseMap();
             CreateMap<Teacher, TeacherResponseDTO>().ReverseMap();

@@ -4,6 +4,7 @@ using Bussiness.DTO;
 using DataAccess.DAO;
 using DTO.Request.StudyCourse;
 using DTO.Response.StudyCourse;
+using DTO.Response.SubjectOfClass;
 using Repository.IRepository;
 
 namespace Repository.Repository
@@ -120,6 +121,28 @@ namespace Repository.Repository
             {
                 StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
                 bool result = studyCourseDAO.UpdateStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
+                if (result)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool SaveStudyCourseRes(StudyCourseResponseDTO studyCourse)
+        {
+            try
+            {
+                StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+                bool result = studyCourseDAO.AddStudyCourse(_mapper.Map<StudyCourse>(studyCourse));
                 if (result)
                 {
                     _context.SaveChanges();
