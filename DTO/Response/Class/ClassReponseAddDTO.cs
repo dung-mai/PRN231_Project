@@ -1,9 +1,8 @@
 ﻿using Bussiness.DTO;
-using DTO.Response.SubjectOfClass;
 
 namespace DTO.Response.Class
 {
-    public class ClassReponseAddDTO
+    public class ClassResponseDTO
     {
         public int Id { get; set; }
         public string? ClassName { get; set; }
@@ -12,6 +11,6 @@ namespace DTO.Response.Class
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
 
-        public virtual ICollection<SubjectOfClassResponseDTO>? SubjectOfClasses { get; set; }
+        public virtual SemesterDTO? Semester { get; set; }
     }
 }

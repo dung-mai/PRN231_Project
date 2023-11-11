@@ -1,5 +1,6 @@
 ﻿using DTO.Request.StudyCourse;
 using DTO.Response.StudyCourse;
+using DTO.Response.SubjectOfClass;
 
 namespace Repository.IRepository
 {
@@ -14,6 +15,8 @@ namespace Repository.IRepository
         StudyCourseResponseDTO? GetStudyCourse(int id);
         bool UpdateStudyCourse(StudyCourseUpdateDTO studyCourse);
         bool SaveStudyCourse(StudyCourseCreateDTO studyCourse);
+        bool SaveStudyCourseRes(StudyCourseResponseDTO studyCourse);
+
         bool DeleteStudyCourse(int id);
     }
 }

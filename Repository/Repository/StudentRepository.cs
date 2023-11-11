@@ -54,6 +54,11 @@ namespace Repository.Repository
             return _mapper.Map<List<StudentResponseDTO>>(studentDAO.GetStudents());
         }
 
+        public List<StudentResponseDTO> GetStudentsByCurricoulmnId(int curricoulmnId)
+        {
+            return _mapper.Map<List<StudentResponseDTO>>(studentDAO.GetStudentByCurricolumnId(curricoulmnId));
+        }
+
         public bool UpdateStudent(StudentUpdateDTO student)
         {
             return studentDAO.UpdateStudent(_mapper.Map<Student>(student));

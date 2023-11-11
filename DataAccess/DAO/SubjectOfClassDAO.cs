@@ -55,10 +55,20 @@ namespace DataAccess.DAO
                 .FirstOrDefault(sc => sc.Id == id && !sc.IsDelete);
         }
 
+        public SubjectOfClass? GetSubjectOfClassLastIndex()
+        {
+            return _context.SubjectOfClasses
+                .OrderBy(sc => sc.Id).LastOrDefault();
+        }
+
         public bool AddSubjectOfClass(SubjectOfClass subjectOfClass)
         {
             if (subjectOfClass != null)
             {
+                subjectOfClass.StudyCourses = null;
+                subjectOfClass.Class = null;
+                subjectOfClass.Teacher = null;
+                subjectOfClass.Subject = null;
                 _context.SubjectOfClasses.Add(subjectOfClass);
                 return true;
             }

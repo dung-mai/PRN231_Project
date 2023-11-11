@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using System.Text.RegularExpressions;
 
 namespace DataAccess.DAO
 {
@@ -22,10 +23,16 @@ namespace DataAccess.DAO
             return _context.Classes.FirstOrDefault(c => c.Id == id && !c.IsDelete);
         }
 
+        public Class? GetClassLastIndex()
+        {
+            return _context.Classes.OrderBy(c => c.Id).LastOrDefault();
+        }
+
         public bool AddClass(Class newclass)
         {
             if (newclass != null)
             {
+                newclass.SubjectOfClasses = null;
                 _context.Classes.Add(newclass);
                 return true;
             }
@@ -58,6 +65,61 @@ namespace DataAccess.DAO
                 return true;
             }
             return false;
+        }
+
+        public List<Class> AddClass(int numberOfClass, string className, int semesterId)
+        {
+            List<Class> classes = new List<Class>();
+            Class? @class = _context.Classes.OrderBy(s => s.Id).LastOrDefault(s => s.ClassName.StartsWith($"{className}"));
+            if (@class == null)
+            {
+                string firstClass = $"{className}01";
+                Class newClass = new Class()
+                {
+                    ClassName = $"{firstClass}",
+                    SemesterId = semesterId,
+                    UpdatedAt = DateTime.Now,
+                    UpdatedBy = 0,
+                    IsDelete = false,
+                };
+                classes.Add(newClass);
+                for (int i = 0; i < numberOfClass-1; i++)
+                {
+                    string hauTo = $"{i + 2}".PadLeft(2, '0');
+                    newClass = new Class()
+                    {
+                        ClassName = $"{className}{hauTo}",
+                        SemesterId = semesterId,
+                        UpdatedAt = DateTime.Now,
+                        UpdatedBy = 0,
+                        IsDelete = false,
+                    };
+                    classes.Add(newClass);
+                }
+
+            }
+            else
+            {
+                string pattern = Regex.Escape($"{className}") + @"(\d+)";
+                Match match = Regex.Match(@class.ClassName, pattern);
+                int cacSoConLai = Int32.Parse(match.Groups[1].Value) + 1;
+                for (int i = 0; i < numberOfClass; i++)
+                {
+                    string hauTo = $"{cacSoConLai}".PadLeft(2, '0');
+                    Class newClass = new Class()
+                    {
+                        ClassName = $"{className}{hauTo}",
+                        SemesterId = semesterId,
+                        UpdatedAt = DateTime.Now,
+                        UpdatedBy = 0,
+                        IsDelete = false,
+                    };
+                    cacSoConLai++;
+                    classes.Add(newClass);
+                }
+
+            }
+            return classes;
         }
     }
 }

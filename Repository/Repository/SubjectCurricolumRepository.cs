@@ -2,6 +2,7 @@
 using BusinessObject.Models;
 using DataAccess.DAO;
 using DTO.Request.SubjectCurricolum;
+using DTO.Response.Semester;
 using DTO.Response.SubjectCurricolum;
 using Repository.IRepository;
 
@@ -37,6 +38,14 @@ namespace Repository.Repository
         {
             SubjectCurricolumDAO subjectCurricolumDAO = new SubjectCurricolumDAO(_context);
             return _mapper.Map<SubjectCurricolumResponseDTO>(subjectCurricolumDAO.GetSubjectCurricolum(id));
+        }
+
+        public List<SubjectCurricolumResponseDTO> GetSubjectCurricolumniByTermNo(SemesterResponseDTO semesterStart, SemesterResponseDTO semesterNow, int curricolumnId)
+        {
+            SubjectCurricolumDAO subjectCurricolumDAO = new SubjectCurricolumDAO(_context);
+            Semester semesterS = _mapper.Map<Semester>(semesterStart);
+            Semester semesterN = _mapper.Map<Semester>(semesterNow);
+            return _mapper.Map<List<SubjectCurricolumResponseDTO>>(subjectCurricolumDAO.GetSubjectCurricolumniByTermNo(semesterS, semesterN, curricolumnId));
         }
 
         public IQueryable<SubjectCurricolumResponseDTO> GetSubjectCurricolums()
