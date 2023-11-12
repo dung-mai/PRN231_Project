@@ -7,6 +7,7 @@ namespace DTO.Response.SubjectOfClass
         public int? Id { get; set; } = 0;
         public int? TeacherId { get; set; }
         public int? ClassId { get; set; }
+        public string? ClassName { get; set; }
         public int? SubjectId { get; set; }
         public string? SubjectName { get; set; }
         public string? SubjectCode { get; set; }
