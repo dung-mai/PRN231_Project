@@ -1,0 +1,52 @@
+﻿@page "/teacher/class"
+@using DTO.Response.SubjectOfClass
+@model FAPClient.Pages.Teacher.Class.ListClassModel
+@{
+    Layout = "_LayoutTeacher";
+}
+
+<div>
+    <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Class</th>
+                <th>Subject</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Update Score</th>
+                <th>View Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SubjectOfClassResponseDTO cs in Model.SubjectOfClasses)
+            {
+                <tr>
+                    <td>
+                        <p class="fw-normal mb-1">@cs.ClassName</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@cs.SubjectName - @cs.SubjectCode</p>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1">@(cs.StartDate.HasValue ? cs.StartDate.Value.ToString("dd/MM/yyyy") : "") </p>
+                    </td>
+                    <td>
+                        <p class="fw-normal mb-1">@(cs.EndDate.HasValue ? cs.EndDate.Value.ToString("dd/MM/yyyy") : "") </p>
+                    </td>
+
+                    <td>
+                        <a asp-page="/Teacher/Class/ViewDetailScore" asp-route-classSubjectId="@cs.Id" asp-route-subjectId="@cs.SubjectId">Update score</a>
+                    </td>
+
+                    <td>
+                        <a asp-page="/Teacher/Class/ViewClassSubjectResult" asp-route-classSubjectId="@cs.Id" asp-route-subjectId="@cs.SubjectId">View Score </a>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

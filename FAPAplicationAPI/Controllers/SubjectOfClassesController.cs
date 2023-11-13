@@ -96,6 +96,21 @@ namespace FAPAplicationAPI.Controllers
             }
         }
 
-       
+        [HttpGet]
+        [Route("GetByTeacherId")]
+        public IActionResult GetBySubjectOfClassTeacherId(int teacherId)
+        {
+            var listSubjectOfClass = _subjectOfClassRepository.GetTeachingClass(teacherId);
+            if(listSubjectOfClass == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(listSubjectOfClass);
+            }
+        }
+
+
     }
 }

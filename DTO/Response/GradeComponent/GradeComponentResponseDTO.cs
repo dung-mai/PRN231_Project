@@ -2,7 +2,7 @@
 {
     public class GradeComponentResponseDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? SubjectId { get; set; }
         public string? GradeCategory { get; set; }
         public string? GradeItem { get; set; }

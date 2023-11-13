@@ -25,6 +25,13 @@ namespace FAPAplicationAPI.Controllers
             return Ok(_studyCourseRepository.GetStudyCourses());
         }
 
+        [HttpGet]
+        [Route("GetStudyCoursesByRollnumber")]
+        public IActionResult GetStudyCoursesByRollnumber(string rollnumber)
+        {
+            return Ok(_studyCourseRepository.GetStudyCourseByStudentRollnumber(rollnumber));
+        }
+
         //// GET: api/StudyCourses/5
         //[HttpGet("{id}")]
         //public async Task<ActionResult<StudyCourse>> GetStudyCourse(int id)

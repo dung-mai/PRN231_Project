@@ -85,6 +85,33 @@ namespace DataAccess.DAO
                 .ToList();
         }
 
+        public List<StudyCourse> GetStudyCoursesBySubjectOfClassId(int subjectOfClassId)
+        {
+            return _context.StudyCourses
+                .Include(sc => sc.RollnumberNavigation)
+                .ThenInclude(rn => rn.Account)
+                .Where(sc => sc.SubjectOfClassId == subjectOfClassId)
+                .ToList();
+        }
+
+        public List<StudyCourse> GetStudyCourseByStudentRollnumber(string rolenumber)
+        {
+            return _context.StudyCourses
+
+                                        .Include(course => course.SubjectResults)
+                                            .ThenInclude(sr => sr.DetailScores)
+                                        .Include(course => course.RollnumberNavigation)
+                                            .ThenInclude(student => student.Account)
+                                        .Include(course => course.SubjectOfClass)
+                                            .ThenInclude(course => course.Subject)
+                                        .Include(course => course.SubjectOfClass)
+                                            .ThenInclude(course => course.Class)
+                                        .Include(course => course.SubjectOfClass)
+                                            .ThenInclude(course => course.Teacher)
+                                            .ThenInclude(teacher => teacher.Account)
+                                       .Where(course => course.Rollnumber.ToLower() == rolenumber.ToLower()).ToList();
+        }
+
         public StudyCourse? GetStudyCourse(int id)
         {
             return _context.StudyCourses

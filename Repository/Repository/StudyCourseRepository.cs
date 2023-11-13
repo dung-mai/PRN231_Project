@@ -158,5 +158,11 @@ namespace Repository.Repository
                 return false;
             }
         }
+
+        public List<StudyCourseResponseAllDTO> GetStudyCourseByStudentRollnumber(string rolenumber)
+        {
+            StudyCourseDAO studyCourseDAO = new StudyCourseDAO(_context);
+            return _mapper.Map<List<StudyCourseResponseAllDTO>>(studyCourseDAO.GetStudyCourseByStudentRollnumber(rolenumber));
+        }
     }
 }

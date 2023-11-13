@@ -26,6 +26,13 @@ namespace FAPAplicationAPI.Controllers
             return Ok(_subjectRepository.GetSubjects());
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<IQueryable<SubjectResponseDTO>> GetSubjects(int id)
+        {
+            return Ok(_subjectRepository.GetSubject(id));
+        }
+
         //// GET: api/Subjects/5
         //[HttpGet("{id}")]
         //public async Task<ActionResult<Subject>> GetSubject(int id)

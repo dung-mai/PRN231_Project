@@ -29,6 +29,7 @@ builder.Services.AddScoped<ISubjectOfClassRepository, SubjectOfClassRepository>(
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISubjectResultRepository, SubjectResultRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<IClassGradeRepository, ClassGradeRepository>();
 builder.Services.AddControllers().AddOData(option => option.Select()
 .Filter().OrderBy().Expand().SetMaxTop(100)
 .Expand());

@@ -10,6 +10,7 @@ namespace Repository.IRepository
         DetailScoreResponseDTO? GetDetailScoreById(int id);
         bool DeleteDetailScore(int id);
         bool UpdateDetailScore(DetailScoreUpdateDTO detailScore);
+        bool UpdateDetailScoreMark(DetailScoreUpdateMarkDTO detailScore);
         List<DetailScoreResponseDTO> GetDetailScores();
 
         List<DetailScoreResponseDTO> FillIdAndCommentData(List<DetailScoreResponseDTO> detailScores, int classId, int itemId);

@@ -9,6 +9,7 @@ namespace Repository.IRepository
         SubjectResultResponseDTO? GetSubjectResultById(int id);
         bool DeleteSubjectResult(int id);
         bool UpdateSubjectResult(SubjectResultUpdateDTO subjectResult);
+        bool UpdateSubjectResultMark(SubjectResultResponseDTO subjectResult);
         List<SubjectResultResponseDTO> GetSubjectResults();
     }
 }

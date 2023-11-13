@@ -68,5 +68,13 @@ namespace Repository.Repository
         {
             return _mapper.Map<List<DetailScoreResponseDTO>>(detailScoreDAO.GetDetailScores());
         }
+
+        public bool UpdateDetailScoreMark(DetailScoreUpdateMarkDTO detailScore)
+        {
+            DetailScoreResponseDTO d = GetDetailScoreById((int)detailScore.Id);
+            int gId = (int)d.GradeComponentId;
+            int sId = (int)d.SubjectResultId;
+            return detailScoreDAO.UpdateDetailScoreMark(_mapper.Map<DetailScore>(detailScore), gId, sId);
+        }
     }
 }
