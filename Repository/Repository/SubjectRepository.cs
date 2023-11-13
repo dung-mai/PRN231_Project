@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
 using DataAccess.DAO;
+using DataAccess.Managers;
 using DTO.Request.Subject;
 using DTO.Response.Subject;
 using Repository.IRepository;
@@ -33,9 +34,15 @@ namespace Repository.Repository
             }
         }
 
+        public int GetRecentlyAddSubject()
+        {
+            SubjectDAO subjectDAO = new SubjectDAO(_context);
+            return subjectDAO.GetLastInsertSubject();
+        }
+
         public SubjectResponseDTO? GetSubject(int id)
         {
-                SubjectDAO subjectDAO = new SubjectDAO(_context);
+            SubjectDAO subjectDAO = new SubjectDAO(_context);
             return _mapper.Map<SubjectResponseDTO>(subjectDAO.GetSubject(id));
         }
 
@@ -50,6 +57,7 @@ namespace Repository.Repository
         {
             try
             {
+                subject.GradeComponents = new List<DTO.Request.GradeComponent.GradeComponentAddDTO>();
                 SubjectDAO subjectDAO = new SubjectDAO(_context);
                 bool result = subjectDAO.AddSubject(_mapper.Map<Subject>(subject));
                 if (result)
@@ -62,7 +70,7 @@ namespace Repository.Repository
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -74,6 +82,50 @@ namespace Repository.Repository
             {
                 SubjectDAO subjectDAO = new SubjectDAO(_context);
                 bool result = subjectDAO.UpdateSubject(_mapper.Map<Subject>(subject));
+
+                GradeComponentDAO gradeComponentDAO = new(_context);
+                var oldGradeList = gradeComponentDAO.GetGradeComponentsBySubject(subject.Id);
+                var newGradeList = subject.GradeComponents;
+                if (oldGradeList.Count > 0)
+                {
+                    foreach (var oldGradeComponent in oldGradeList)
+                    {
+                        if (!oldGradeComponent.GradeItem.Equals("Final Exam Resit"))
+                        {
+                            var gradeComponent = newGradeList.FirstOrDefault(gc => gc.Id == oldGradeComponent.Id);
+                            if (gradeComponent != null) //update change gradeComponent
+                            {
+                                gradeComponentDAO.UpdateGradeComponent(_mapper.Map<GradeComponent>(gradeComponent));
+                            }
+                            else //remove gradeComponent
+                            {
+                                gradeComponentDAO.DeleteGradeComponent(oldGradeComponent.Id);
+                            }
+                        }
+                    }
+                }
+                if (newGradeList.Count > 0)
+                {
+                    foreach (var newGradeComponent in newGradeList)
+                    {
+                        if (newGradeComponent.Id == 0) //update change subject
+                        {
+                            if (!newGradeComponent.GradeItem.Equals("Final Exam Resit"))
+                            {
+                                gradeComponentDAO.AddGradeComponent(_mapper.Map<GradeComponent>(newGradeComponent));
+                            }
+                            else
+                            {
+                                var gradeComponent = oldGradeList.FirstOrDefault(gc => gc.GradeItem.Equals("Final Exam Resit"));
+                                if (gradeComponent == null)
+                                {
+                                    gradeComponentDAO.AddGradeComponent(_mapper.Map<GradeComponent>(newGradeComponent));
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (result)
                 {
                     _context.SaveChanges();
@@ -84,7 +136,7 @@ namespace Repository.Repository
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

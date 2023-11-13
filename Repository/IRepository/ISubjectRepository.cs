@@ -10,5 +10,6 @@ namespace Repository.IRepository
         bool UpdateSubject(SubjectUpdateDTO subject);
         bool SaveSubject(SubjectCreateDTO subject);
         bool DeleteSubject(int id);
+        int GetRecentlyAddSubject();
     }
 }

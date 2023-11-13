@@ -4,49 +4,113 @@
 @{
     Layout = "_LayoutAdmin";
 }
+<style>
+    input[readonly] {
+        background-color: transparent;
+        border: 0;
+        font-size: 1em;
+    }
+</style>
 
 <!-- Button trigger modal create Subject -->
-<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createSubjectModal">
+<button type="button" class="btn btn-primary mb-3" data-mdb-toggle="modal" data-mdb-target="#createSubjectModal">
     Create Subject
 </button>
 
 <!-- Modal Create Subject -->
 <div class="modal fade" id="createSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form asp-page-handler="Create" method="POST">
+        <form asp-page-handler="Create" method="POST" id="create-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="modal-content">
+            <div class="modal-content" style="width:650px">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Create Subject</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group w-50">
-                        <label asp-for="SubjectCreate.SubjectName" class="control-label"></label>
+                    <div class="input-group w-75">
+                        <label asp-for="SubjectCreate.SubjectName" style="min-width: 130px" class="control-label"></label>
                         <input asp-for="SubjectCreate.SubjectName" class="form-control" required />
                         <span asp-validation-for="SubjectCreate.SubjectName" class="text-danger"></span>
                     </div>
-                    <div class="input-group w-50">
-                        <label asp-for="SubjectCreate.SubjectCode" class="control-label"></label>
+                    <div class="input-group mt-2 w-50">
+                        <label asp-for="SubjectCreate.SubjectCode" style="min-width: 130px" class="control-label"></label>
                         <input asp-for="SubjectCreate.SubjectCode" class="form-control" required />
                         <span asp-validation-for="SubjectCreate.SubjectCode" class="text-danger"></span>
                     </div>
-                    <div class="input-group w-50">
-                        <label asp-for="SubjectCreate.DateOfIssues" class="control-label"></label>
+                    <div class="input-group mt-2 w-50">
+                        <label asp-for="SubjectCreate.DateOfIssues" style="min-width: 130px" class="control-label">Date of Issues</label>
                         <input asp-for="SubjectCreate.DateOfIssues" type="date" class="form-control" required />
                         <span asp-validation-for="SubjectCreate.DateOfIssues" class="text-danger"></span>
                     </div>
-                    <div class="input-group w-50">
-                        <label class="control-label">No Credit</label>
+                    <div class="input-group mt-2 w-50">
+                        <label asp-for="SubjectCreate.NumOfCredits" style="min-width: 130px" class="control-label">No Credit</label>
                         <input asp-for="SubjectCreate.NumOfCredits" class="form-control" required />
                         <span asp-validation-for="SubjectCreate.NumOfCredits" class="text-danger"></span>
                     </div>
 
+                    <div class="create-table mt-5">
+                        <h5 class="h6">GRADE COMPONENTS</h5>
+                        <div>
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="display: inline-block;margin-right: 10px;width:195px">
+                                            @*<input type="text" name="categoryItem" class="form-control" required placeholder="category item" />*@
+                                            <select name="gradeCategory" class="form-select" onchange="$('#grade-item-input').val(this.value)">
+                                                <option>Choose a category item</option>
+                                                <option value="Assignment">Assignment</option>
+                                                <option value="Progress Test">Progress Test</option>
+                                                <option value="Presentation">Presentation</option>
+                                                <option value="Lab">Lab</option>
+                                                <option value="Quiz">Quiz</option>
+                                                <option value="Participation">Participation</option>
+                                                <option value="Project">Project</option>
+                                                <option value="Group Project">Group Project</option>
+                                                <option value="CheckPoint">CheckPoint</option>
+                                                <option value="Group Contructivism">Group Contructivism</option>
+                                                <option value="Practical Exam">Pratical Exam</option>
+                                                <option value="Final Exam">Final Exam</option>
+                                            </select>
+                                        </td>
+                                        <td style="display: inline-block;margin-right: 10px;width:195px">
+                                            <input type="text" name="gradeItem" class="form-control" placeholder="grade item" id="grade-item-input" />
+                                        </td>
+                                        <td style="display: inline-block;margin-right: 20px;width: 110px">
+                                            <input type="number" name="weight" class="form-control" placeholder="weight" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-primary" onclick="addGradeComponent()">+</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="mt-4 ms-2 text-secondary">Preview</h5>
+                            <div class="message-area">
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-secondary">Category Item</th>
+                                        <th class="text-secondary">Grade Item</th>
+                                        <th class="text-secondary">Percentage</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-grade-component">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary submit-button">Create</button>
                 </div>
             </div>
         </form>
@@ -93,7 +157,9 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-link btn-sm btn-rounded"
-                                onclick="openPopupDelete('@subject.Id')">Delete</button>
+                                onclick="openPopupDelete('@subject.Id')">
+                            Delete
+                        </button>
                     </td>
                 </tr>
 
@@ -136,5 +202,122 @@
         $('#deleteSubjectModal').modal('show');
     }
 
+    let gradeComponents = [];
+
+    $(document).ready(() => {
+        gradeComponents.push({ categoryItem: 'Final Exam', gradeItem: 'Final Exam', weight: '' });
+        renderGradeComponentList();
+    });
+
+    function getDataFromTable() {
+        gradeComponents = Array.from(document.querySelectorAll('#list-grade-component tr')).map(tr => {
+            const list = tr.querySelectorAll('input');
+            const categoryItem = list[0].value;
+            const gradeItem = list[1].value;
+            const weight = parseInt(list[2].value);
+            return {categoryItem, gradeItem, weight };
+        });
+    }
+
+    function validateGradeComponent() {
+        getDataFromTable();
+        let maxPercentage = 0;
+        let hasFinalExam = false;
+        gradeComponents.forEach(item => {
+            if (item.weight > 100 || item.weight <= 0) {
+                return { status: false, message: "Phần trăm điểm phải lớn hơn 0 và nhỏ hơn 100" };
+            }
+            maxPercentage += item.weight;
+            if (item.categoryItem == 'Final Exam') {
+                hasFinalExam = true;
+            }
+        });
+
+        if (maxPercentage != 100) {
+            return { status: false, message: "Tổng điểm số không hợp lệ, vui lòng kiểm tra lại" };
+        }
+
+        if (!hasFinalExam) {
+            return { status: false, message: "Thiếu Final Exam" };
+        }
+        return { status: true, message: "Tổng điểm hợp lệ" };
+    }
+
+    function displayMessage(message) {
+        $('.message-area').html(`
+                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <span class="alert-message">${message}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+    }
+
+    const submitBtn = document.querySelector('.submit-button');
+    submitBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        const isValidGradeComponents = validateGradeComponent();
+        if (!isValidGradeComponents.status) {
+            displayMessage(isValidGradeComponents.message);
+        } else {
+            $('#create-form').submit();
+        }
+    });
+
+    function addGradeComponent() {
+        getDataFromTable();
+        const gradeCategory = document.querySelector('select[name="gradeCategory"]').value;
+        const gradeItem = document.querySelector('input[name="gradeItem"]').value;
+        const weight = parseInt(document.querySelector('input[name="weight"]').value);
+
+        const newIndex = $('#list-grade-component tr').length;
+        const newItem = {categoryItem: gradeCategory, gradeItem: gradeItem, weight: weight };
+        const existingList = gradeComponents.filter(item => item.gradeItem.includes(newItem.gradeItem));
+        if (existingList.length > 0) {
+            if (existingList.length == 1) {
+                const existingItemIndex = gradeComponents.findIndex(item => item.gradeItem.includes(newItem.gradeItem));
+                gradeComponents[existingItemIndex].gradeItem = `${newItem.gradeItem} 1`;
+                document.querySelectorAll('#list-grade-component tr')[existingItemIndex]
+                    .querySelector(`input[name="SubjectCreate.GradeComponents[${existingItemIndex}].GradeItem"]`).value = `${newItem.gradeItem} 1`;
+
+                newItem.gradeItem = `${newItem.gradeItem} 2`;
+            } else {
+                newItem.gradeItem = `${newItem.gradeItem} ${existingList.length + 1}`;
+            }
+        }
+
+        const practicalExamIndex = gradeComponents.findIndex((component => component.categoryItem === 'Practical Exam'));
+        if (practicalExamIndex !== -1) {
+            gradeComponents.splice(gradeComponents.length - 2, 0, newItem);
+        } else {
+            gradeComponents.splice(gradeComponents.length - 1, 0, newItem);
+        }
+        renderGradeComponentList();
+    }
+
+    function removeGradeComponent(index) {
+        getDataFromTable();
+        gradeComponents.splice(index, 1);
+        renderGradeComponentList();
+    }
+
+    const renderGradeComponentList = () => {
+        $('#list-grade-component').html(gradeComponents.map((item, index) =>
+            `<tr>
+                                                <td>
+                                                        <input type="text" name="SubjectCreate.GradeComponents[${index}].GradeCategory" readonly="true" value="${item.categoryItem}" required />
+                                                </td>
+                                                <td>
+                                                        <input type="text" name="SubjectCreate.GradeComponents[${index}].GradeItem" readonly="true" value="${item.gradeItem}" required/>
+                                                </td>
+                                                <td>
+                                                        <input type="number" name="SubjectCreate.GradeComponents[${index}].Weight" value="${item.weight}" required min="1" max="100"/>
+                                                </td>
+                                                <td>
+                                                        <button type="button" onclick="removeGradeComponent(${index})">X</button>
+                                                </td>
+                                            </tr>`
+        ).join("")
+        );
+    }
 
 </script>

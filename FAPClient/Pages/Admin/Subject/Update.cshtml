@@ -3,7 +3,13 @@
 @{
     Layout = "_LayoutAdmin";
 }
-
+<style>
+    input[readonly] {
+        background-color: transparent;
+        border: 0;
+        font-size: 1em;
+    }
+</style>
 <form method="post">
     <div class="modal-content">
         <div class="modal-header">
@@ -13,7 +19,6 @@
         <div class="modal-body">
             <div class="container">
                 <div class="row">
-
                     <div class="form col-5">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="input-group">
@@ -42,47 +47,46 @@
                     <div class="update-table col-6 p-0" style="margin-left: 60px;">
                         <h4 class="h5">Update grade components</h4>
                         <div>
-                            @*<select  class="form-select">
-                                <option>Choose a category item</option>
-                                <option value="">Assignment</option>
-                                <option value="">Progress Test</option>
-                                <option value="">Presentation</option>
-                                <option value="">Lab</option>
-                                <option value="">Quiz</option>
-                                <option value="">Participation</option>
-                                <option value="">Group Project</option>
-                                <option value="">Pratical Exam</option>
-                                <option value="">Final Exam</option>
-                            </select>*@
-                            <table>
+                            <table class="table">
                                 <thead>
-@*                                    <tr>
-                                        <th style="display: inline-block;margin-right: 10px; width:195px">Category Item</th>
-                                        <th style="display: inline-block; margin-right: 10px;width:195px">Grade Item</th>
-                                        <th style="display: inline-block;margin-right: 40px;width: 80px">Percentage</th>
-                                        <th></th>
-                                    </tr>*@
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td style="display: inline-block;margin-right: 10px;width:195px">
-                                            <input type="text" name="categoryItem" class="form-control" required placeholder="category item" />
+                                            @*<input type="text" name="categoryItem" class="form-control" required placeholder="category item" />*@
+                                            <select name="gradeCategory" class="form-select" onchange="$('#grade-item-input').val(this.value)">
+                                                <option>Choose a category item</option>
+                                                <option value="Assignment">Assignment</option>
+                                                <option value="Progress Test">Progress Test</option>
+                                                <option value="Presentation">Presentation</option>
+                                                <option value="Lab">Lab</option>
+                                                <option value="Quiz">Quiz</option>
+                                                <option value="Participation">Participation</option>
+                                                <option value="Project">Project</option>
+                                                <option value="Group Project">Group Project</option>
+                                                <option value="CheckPoint">CheckPoint</option>
+                                                <option value="Group Contructivism">Group Contructivism</option>
+                                                <option value="Practical Exam">Practical Exam</option>
+                                                <option value="Final Exam">Final Exam</option>
+                                            </select>
                                         </td>
                                         <td style="display: inline-block;margin-right: 10px;width:195px">
-                                            <input type="text" name="gradeItem" class="form-control" required placeholder="grade item" />
+                                            <input type="text" name="gradeItem" class="form-control" placeholder="grade item" id="grade-item-input" />
                                         </td>
-                                        <td style="display: inline-block;margin-right: 30px;width: 90px">
-                                            <input type="number" name="weight" class="form-control" placeholder="weight" required />
+                                        <td style="display: inline-block;margin-right: 30px;width: 110px">
+                                            <input type="number" name="weight" class="form-control" placeholder="weight" />
                                         </td>
                                         <td>
-                                            <button type="button" >+</button>
+                                            <button type="button" onclick="addGradeComponent()">+</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
 
-                            <h6>Preview</h6>
-                            <table>
+                            <h5 class="mt-5">Preview</h5>
+                            <div class="message-area">
+                            </div>
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Category Item</th>
@@ -91,21 +95,26 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="categoryItem" required />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="gradeItem" required />
-                                        </td>
-                                        <td>
-                                            <input type="number" name="weight" required />
-                                        </td>
-                                        <td>
-                                            <button type="button">+</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="list-grade-component">
+                                    @for (var i = 0; i < Model.SubjectUpdate.GradeComponents.Count; i++)
+                                    {
+                                        var item = Model.SubjectUpdate.GradeComponents[i];
+                                        <tr>
+                                            <td>
+                                                <input asp-for="SubjectUpdate.GradeComponents[i].GradeCategory" readonly="true" required />
+                                            </td>
+                                            <td>
+                                                <input asp-for="SubjectUpdate.GradeComponents[i].GradeItem" readonly="true" class="gradeItem" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="SubjectUpdate.GradeComponents[i].Weight" class="subjectId" type="number" min="1" max="100" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="SubjectUpdate.GradeComponents[i].Id" class="subjectId" type="hidden" />
+                                                <button type="button" onclick="removeGradeComponent(@i)">X</button>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -116,92 +125,127 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closePopup('updateSubjectModal')">Close</button>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary submit-button">Update</button>
+            <a href="/admin/subject" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </form>
 <script type="text/javascript">
-    let subjectOfCurricolums = [];
+    let gradeComponents = [];
     $(document).ready(() => {
-        subjectOfCurricolums = Array.from(document.querySelectorAll('#subject-to-add-update tr')).map(tr => {
-            const list = tr.querySelectorAll('td');
-            const subjectCode = list[0].innerHTML;
-            const subjectName = list[1].innerHTML;
-            const termNo = tr.querySelector('input[type="text"]').value;
-            const subjectId = parseInt(tr.querySelectorAll('input[type="hidden"]')[0].value);
-            const id = parseInt(tr.querySelectorAll('input[type="hidden"]')[1].value);
-            return { id, subjectId, subjectCode, termNo, subjectName };
-        });
+        getDataFromTable();
     });
 
-    function displaySubjectList(data) {
-        $('#display-search-result').html(`
-                                        ${data.map((item) =>
-            `<tr>
-                    <td>${item.subjectCode}</td>
-                    <td style="display: inline-block;max-width: 350px">${item.subjectName}</td>
-                    <td>
-                        <button type="button" onclick="addSubject(${item.id}, '${item.subjectCode}', '${item.subjectName}')">+</button>
-                    </td>
-                </tr>`
-        )
-                .join("")}
-                                `);
+    function getDataFromTable() {
+        gradeComponents = Array.from(document.querySelectorAll('#list-grade-component tr')).map(tr => {
+            const list = tr.querySelectorAll('input');
+            const categoryItem = list[0].value;
+            const gradeItem = list[1].value;
+            const weight = parseInt(list[2].value);
+            const id = parseInt(list[3].value);
+            return { id, categoryItem, gradeItem, weight };
+        });
     }
 
+    function validateGradeComponent() {
+        getDataFromTable();
+        let maxPercentage = 0;
+        let hasFinalExam = false;
+        gradeComponents.forEach(item => {
+            if (item.weight > 100 || item.weight <= 0) {
+                return { status: false, message: "Phần trăm điểm phải lớn hơn 0 và nhỏ hơn 100" };
+            }
+            maxPercentage += item.weight;
+            if (item.categoryItem == 'Final Exam') {
+                hasFinalExam = true;
+            }
+        });
 
-    const renderSubjectList = () => {
-        $('#subject-to-add-update').html(`
-                                        ${subjectOfCurricolums.map((item, index) =>
-            `<tr>
-                    <td>${item.subjectCode}</td>
-                    <td>${item.subjectName}</td>
-                    <td>
-                            <input type="text" name="CurricolumUpdate.Subjects[${index}].TermNo" value="${item.termNo}" style="width: 60px" onchange="updateSubjectTermNo(${index})"/>
-                        <input type="hidden" name="CurricolumUpdate.Subjects[${index}].SubjectId" value="${item.subjectId}"/>
-                        <input name="CurricolumUpdate.Subjects[${index}].Id" value="${item.id}" type="hidden"/>
-                    </td>
-                    <td>
-                         <button type="button" onclick="removeSubject(${item.subjectId})">X</button>
-                    </td>
-                </tr>`
-        ).join("")}
-            `);
-    }
-
-    function addSubject(subjectId, code, name) {
-        const newIndex = $('#subject-to-add-update tr').length;
-        const newItem = { subjectId: subjectId, subjectCode: code, subjectName: name, termNo: "", id: '' };
-        const isExist = Array.from(document.querySelectorAll('#subject-to-add-update input[type="hidden"].subjectId')).map(input => input.value).includes(`${newItem.subjectId}`);
-        console.log(isExist);
-        if (!isExist) {
-            $('#subject-to-add-update').append(`<tr>
-                                            <td>${newItem.subjectCode}</td>
-                                            <td>${newItem.subjectName}</td>
-                                        <td>
-                                                    <input type="text" name="CurricolumUpdate.Subjects[${newIndex}].TermNo" style="width: 60px" required onchange="updateSubjectTermNo(${newIndex})"/>
-                                            <input type="hidden" name="CurricolumUpdate.Subjects[${newIndex}].SubjectId" value="${newItem.subjectId}"/>
-                                            <input name="CurricolumUpdate.Subjects[${newIndex}].Id" value="${newItem.id}" type="hidden"/>
-                                        </td>
-                                        <td>
-                                                    <button type="button" onclick="removeSubject(${newItem.subjectId})">X</button>
-                                        </td>
-                                    </tr>`);
-            subjectOfCurricolums.push(newItem);
-        } else {
-            console.log("This subject already exists");
+        if (maxPercentage != 100) {
+            return { status: false, message: "Tổng điểm số không hợp lệ, vui lòng kiểm tra lại" };
         }
 
+        if (!hasFinalExam) {
+            return { status: false, message: "Thiếu Final Exam"};
+        }
+        return { status: true, message: "Tổng điểm hợp lệ"};
     }
 
-    function removeSubject(subjectId) {
-        subjectOfCurricolums = subjectOfCurricolums.filter(item => item.subjectId !== parseInt(subjectId));
-        renderSubjectList();
+    function displayMessage(message) {
+        $('.message-area').html(`
+                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <span class="alert-message">${message}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        `);
     }
 
-    function updateSubjectTermNo(index) {
-        console.log('update termNo sucessfully!');
-        subjectOfCurricolums[index].termNo = document.querySelectorAll('#subject-to-add-update tr')[index].querySelector('input[type="text"]').value;
+    const submitBtn = document.querySelector('.submit-button');
+    submitBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        const isValidGradeComponents = validateGradeComponent();
+        if (!isValidGradeComponents.status) {
+            displayMessage(isValidGradeComponents.message);
+        } else {
+            $('form').submit();
+        }
+    });
+
+    function addGradeComponent() {
+        getDataFromTable();
+        const gradeCategory = document.querySelector('select[name="gradeCategory"]').value;
+        const gradeItem = document.querySelector('input[name="gradeItem"]').value;
+        const weight = parseInt(document.querySelector('input[name="weight"]').value);
+
+        const newIndex = $('#list-grade-component tr').length;
+        const newItem = { id: '', categoryItem: gradeCategory, gradeItem: gradeItem, weight: weight };
+        const existingList = gradeComponents.filter(item => item.gradeItem.includes(newItem.gradeItem));
+        if (existingList.length > 0) {
+            if (existingList.length == 1) {
+                const existingItemIndex = gradeComponents.findIndex(item => item.gradeItem.includes(newItem.gradeItem));
+                gradeComponents[existingItemIndex].gradeItem = `${newItem.gradeItem} 1`;
+                document.querySelectorAll('#list-grade-component tr')[existingItemIndex]
+                    .querySelector(`input[name="SubjectUpdate.GradeComponents[${existingItemIndex}].GradeItem"]`).value = `${newItem.gradeItem} 1`;
+
+                newItem.gradeItem = `${newItem.gradeItem} 2`;
+            } else {
+                newItem.gradeItem = `${newItem.gradeItem} ${existingList.length + 1}`;
+            }
+        }
+
+        const practicalExamIndex = gradeComponents.findIndex((component => component.categoryItem === 'Practical Exam'));
+        if (practicalExamIndex !== -1) {
+            gradeComponents.splice(gradeComponents.length - 2, 0, newItem);
+        } else {
+            gradeComponents.splice(gradeComponents.length - 1, 0, newItem);
+        }
+        renderGradeComponentList();
+    }
+
+    function removeGradeComponent(index) {
+        getDataFromTable();
+        gradeComponents.splice(index, 1);
+        renderGradeComponentList();
+    }
+
+    const renderGradeComponentList = () => {
+        $('#list-grade-component').html(gradeComponents.map((item, index) =>
+            `<tr>
+                                                    <td>
+                                                                    <input type="text" name="SubjectUpdate.GradeComponents[${index}].GradeCategory" value="${item.categoryItem}" readonly="true" required />
+                                                    </td>
+                                                    <td>
+                                                            <input type="text" name="SubjectUpdate.GradeComponents[${index}].GradeItem" value="${item.gradeItem}" readonly="true" required/>
+                                                    </td>
+                                                    <td>
+                                                                <input type="number" name="SubjectUpdate.GradeComponents[${index}].Weight" value="${item.weight}" required min="1" max="100"/>
+                                                    </td>
+                                                    <td>
+                                                            <input name="SubjectUpdate.GradeComponents[${index}].Id" type="hidden" value="${item.id}" />
+                                                                <button type="button" onclick="removeGradeComponent(${index})">X</button>
+                                                    </td>
+                                                </tr>`
+        ).join("")
+        );
     }
 </script>

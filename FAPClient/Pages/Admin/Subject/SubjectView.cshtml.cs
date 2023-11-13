@@ -31,6 +31,12 @@ namespace FAPClient.Pages.Admin.Subject
 
         public async Task<IActionResult> OnGet()
         {
+            await GetData();
+            return Page();
+        }
+
+        private async Task GetData()
+        {
             HttpResponseMessage responseMessage = await client.GetAsync(SubjectApiUrl);
             string strData = await responseMessage.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
@@ -42,11 +48,9 @@ namespace FAPClient.Pages.Admin.Subject
                 var resultList = JsonSerializer.Deserialize<List<SubjectResponseDTO>>(strData, options);
                 Subjects = resultList ?? new List<SubjectResponseDTO>();
             }
-
-            return Page();
         }
 
-        public async Task<IActionResult> OnPostCreate(SubjectResponseDTO SubjectCreate)
+        public async Task<IActionResult> OnPostCreate(SubjectCreateDTO SubjectCreate)
         {
             SubjectCreate.UpdatedAt = DateTime.Now;
             SubjectApiUrl = $"{Configuration.ApiURL}/Subjects";
@@ -55,7 +59,7 @@ namespace FAPClient.Pages.Admin.Subject
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Add subject successfully!";
-                return RedirectToPage("SubjectView");
+                return Redirect("/admin/subject");
             }
             else
             {
@@ -73,7 +77,8 @@ namespace FAPClient.Pages.Admin.Subject
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update subject successfully!";
-                return RedirectToPage("SubjectView");
+                await GetData();
+                return Page();
             }
             else
             {
@@ -82,15 +87,14 @@ namespace FAPClient.Pages.Admin.Subject
             }
         }
 
-        public IActionResult OnPostDelete(int subjectId)
+        public async Task<IActionResult> OnPostDelete(int subjectId)
         {
             SubjectApiUrl = $"{Configuration.ApiURL}/Subjects/{subjectId}";
             var response = client.DeleteAsync(SubjectApiUrl).Result;
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Delete subject successfully!";
-                return RedirectToPage("SubjectView");
-
+                return Redirect("/admin/subject");
             }
             else
             {

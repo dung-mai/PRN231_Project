@@ -1,3 +1,4 @@
+using DTO.Request.GradeComponent;
 using DTO.Request.Subject;
 using DTO.Request.Subject;
 using FAPAplicationAPI.Utility;
@@ -40,6 +41,11 @@ namespace FAPClient.Pages.Admin.Subject
             {
                 var resultList = JsonSerializer.Deserialize<List<SubjectUpdateDTO>>(strData, options);
                 SubjectUpdate = (resultList != null && resultList.Count > 0) ? resultList[0] : null;
+                GradeComponentUpdateDTO? finalResit = SubjectUpdate.GradeComponents.FirstOrDefault(gc => gc.GradeItem == "Final Exam Resit");
+                if (finalResit != null)
+                {
+                    SubjectUpdate.GradeComponents.Remove(finalResit);
+                }
             }
 
             return Page();
