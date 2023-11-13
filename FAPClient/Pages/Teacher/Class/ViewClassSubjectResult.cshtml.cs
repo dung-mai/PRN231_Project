@@ -4,6 +4,7 @@ using DTO.Response.ClassGrade;
 using DTO.Response.Subject;
 using DTO.Response.SubjectResult;
 using FAPAplicationAPI.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace FAPClient.Pages.Teacher.Class
 {
+    [Authorize(Roles = "2")]
     public class ViewClassSubjectResultModel : PageModel
     {
         private readonly HttpClient client;

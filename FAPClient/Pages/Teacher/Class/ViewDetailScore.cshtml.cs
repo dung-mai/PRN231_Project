@@ -6,15 +6,19 @@ using DTO.Response.DetailScore;
 using DTO.Response.Subject;
 using DTO.Response.SubjectOfClass;
 using FAPAplicationAPI.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Data;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace FAPClient.Pages.Teacher.Class
 {
+    [Authorize(Roles = "2")]
     public class ViewDetailScoreModel : PageModel
     {
+        
         private readonly HttpClient client;
         private string ClassGradetApiUrl = "";
         private string SubjectApiUrl = "";

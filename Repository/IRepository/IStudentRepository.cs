@@ -8,6 +8,7 @@ namespace Repository.IRepository
         //StudentDTO? GetStudentWithGradeResults(int accountId);
         bool AddStudent(StudentAddDTO student);
         StudentResponseDTO? GetStudentById(string roleNumber);
+        StudentResponseDTO? GetStudentByAccountId(int accountId);
 
         StudentResponseDTO? GetStudentLastIndex();
         bool DeleteStudent(string roleNumber);

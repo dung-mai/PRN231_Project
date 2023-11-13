@@ -18,6 +18,11 @@ namespace DataAccess.Managers
                                     .FirstOrDefault(a => a.Email == email && !a.IsDelete);
         }
 
+        public Account? Login(string Email, string password)
+        {
+            return _context.Accounts.Include(a => a.Role)
+                .FirstOrDefault(a => a.Email == Email && a.Password == password && !a.IsDelete);
+        }
         public List<Account> GetAccounts()
         {
             return _context.Accounts

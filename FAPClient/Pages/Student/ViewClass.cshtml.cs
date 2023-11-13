@@ -5,14 +5,17 @@ using DTO.Response.StudyCourse;
 using DTO.Response.Subject;
 using DTO.Response.SubjectResult;
 using FAPAplicationAPI.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Data;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 
 namespace FAPClient.Pages.Student
 {
+    [Authorize(Roles = "3")]
     public class ViewClassModel : PageModel
     {
         private readonly HttpClient client;
@@ -36,8 +39,9 @@ namespace FAPClient.Pages.Student
 
         public async Task GetData()
         {
-            String rollNumber = "HE161396";
-            HttpResponseMessage responseMessage = await client.GetAsync($"{StudyCourseApiUrl}/GetStudyCoursesByRollnumber?rollnumber={rollNumber}");
+            ClaimsPrincipal claimUser = HttpContext.User;
+            var rollnumber = claimUser.FindFirstValue(ClaimTypes.SerialNumber);
+            HttpResponseMessage responseMessage = await client.GetAsync($"{StudyCourseApiUrl}/GetStudyCoursesByRollnumber?rollnumber={rollnumber}");
             string strData = await responseMessage.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {

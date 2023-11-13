@@ -31,6 +31,10 @@ namespace DataAccess.Managers
         {
             return _context.Students.Include(s => s.Account).FirstOrDefault(s => s.Rollnumber == rollNumber && s.IsDelete == false);
         }
+        public Student? GetStudentByAccountId(int accountId)
+        {
+            return _context.Students.Include(s => s.Account).FirstOrDefault(s => s.AccountId == accountId && s.IsDelete == false);
+        }
 
         public List<Student>? GetStudentByCurricolumnId(int curricolumnId)
         {

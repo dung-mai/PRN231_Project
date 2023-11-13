@@ -39,6 +39,11 @@ namespace Repository.Repository
             return studentDAO.GetRollNumber(major, course);
         }
 
+        public StudentResponseDTO? GetStudentByAccountId(int accountId)
+        {
+            return _mapper.Map<StudentResponseDTO>(studentDAO.GetStudentByAccountId(accountId));
+        }
+
         public StudentResponseDTO? GetStudentById(string roleNumber)
         {
             return _mapper.Map<StudentResponseDTO>(studentDAO.GetStudentById(roleNumber));

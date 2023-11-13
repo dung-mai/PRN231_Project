@@ -200,5 +200,11 @@ namespace Repository.Repository
                 return false;
             }
         }
+
+        public AccountResponseDTO Login(string email, string password)
+        {
+            AccountDAO accountDAO = new AccountDAO(_context);
+            return _mapper.Map<AccountResponseDTO>(accountDAO.Login(email, password));
+        }
     }
 }

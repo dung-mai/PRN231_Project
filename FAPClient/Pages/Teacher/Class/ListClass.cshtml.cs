@@ -3,13 +3,16 @@ using DTO.Response.Major;
 using DTO.Response.Student;
 using DTO.Response.SubjectOfClass;
 using FAPAplicationAPI.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace FAPClient.Pages.Teacher.Class
 {
+    [Authorize(Roles = "2")]
     public class ListClassModel : PageModel
     {
         private readonly HttpClient client;
@@ -29,8 +32,9 @@ namespace FAPClient.Pages.Teacher.Class
 
         private async Task GetData()
         {
-            int teacherId = 1007;
-            HttpResponseMessage responseMessage = await client.GetAsync($"{ClassOfSubjectApiUrl}/GetByTeacherId?teacherId={teacherId}");
+            ClaimsPrincipal claimUser = HttpContext.User;
+            var teacherId = claimUser.FindFirstValue(ClaimTypes.SerialNumber);
+            HttpResponseMessage responseMessage = await client.GetAsync($"{ClassOfSubjectApiUrl}/GetByTeacherId?teacherId={Int32.Parse(teacherId)}");
             string strData = await responseMessage.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
