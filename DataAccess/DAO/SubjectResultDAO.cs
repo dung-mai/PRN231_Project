@@ -15,6 +15,7 @@ namespace DataAccess.DAO
         public SubjectResult? GetSubjectResultById(int id)
         {
             return _context.SubjectResults
+                 .Include(sr => sr.DetailScores)
                 .Include(sr => sr.DetailScores)
                     .ThenInclude(dS => dS.GradeComponent)
                 .FirstOrDefault(sr => sr.Id == id);

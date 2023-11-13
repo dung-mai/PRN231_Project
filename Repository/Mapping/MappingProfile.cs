@@ -57,6 +57,7 @@ namespace Bussiness.Mapping
             CreateMap<SubjectResult, SubjectResultResponseDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultAddDTO>().ReverseMap();
             CreateMap<SubjectResult, SubjectResultUpdateDTO>().ReverseMap();
+            CreateMap<SubjectResult, SubjectResultStudentResponseDTO>().ReverseMap();
             CreateMap<Account, AccountResponseDTO>().ReverseMap();
             CreateMap<Account, AccountUpdateDTO>().ReverseMap();
             CreateMap<Account, AccountCreateDTO>().ReverseMap();
