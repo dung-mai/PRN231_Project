@@ -85,7 +85,7 @@ namespace Repository.Repository
 
                 var oldSubjectList = subjectCurricolumDAO.GetSubjectCurricolumsById(curricolum.Id);
                 var newSubjectList = curricolum.Subjects;
-                if (oldSubjectList.Count > 0 && newSubjectList.Count > 0)
+                if (oldSubjectList.Count > 0)
                 {
                     foreach (var oldSubject in oldSubjectList)
                     {
@@ -99,7 +99,9 @@ namespace Repository.Repository
                             subjectCurricolumDAO.DeleteSubjectCurricolum(oldSubject.Id);
                         }
                     }
-
+                }
+                if(newSubjectList.Count > 0)
+                {
                     foreach (var newSubject in newSubjectList)
                     {
                         if (newSubject.Id == 0) //update change subject

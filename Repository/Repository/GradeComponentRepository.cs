@@ -39,6 +39,21 @@ namespace Repository.Repository
             return _mapper.Map<List<GradeComponentResponseDTO>>(gradeComponentDAO.GetGradeComponents());
         }
 
+        public bool SaveGradeComponentRange(List<GradeComponentAddDTO> gradeComponents)
+        {
+            bool result = gradeComponentDAO.SaveGradeComponentRange(_mapper.Map<List<GradeComponent>>(gradeComponents));
+            int? subjectId = (gradeComponents != null && gradeComponents.Count > 0) ? gradeComponents[0].SubjectId : 0;
+            if(subjectId.HasValue)
+            {
+                GradeComponent? finalExam =  gradeComponentDAO.GetFinalExamOfSbject((int)subjectId); 
+                if(finalExam != null)
+                {
+                    gradeComponentDAO.SetFinalExamRef((int)subjectId, finalExam.Id);
+                }
+            }
+            return result;
+        }
+
         public bool UpdateGradeComponent(GradeComponentUpdateDTO gradeComponent)
         {
             return gradeComponentDAO.UpdateGradeComponent(_mapper.Map<GradeComponent>(gradeComponent));

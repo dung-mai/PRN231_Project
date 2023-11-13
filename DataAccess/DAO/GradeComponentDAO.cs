@@ -1,5 +1,4 @@
 ﻿using BusinessObject.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Managers
 {
@@ -25,7 +24,12 @@ namespace DataAccess.Managers
 
         public List<GradeComponent> GetGradeComponents()
         {
-            return _context.GradeComponents.Where(gc => gc.IsDelete == false).ToList();
+            return _context.GradeComponents.Where(gc => !gc.IsDelete).ToList();
+        }
+
+        public List<GradeComponent> GetGradeComponentsBySubject(int subjectId)
+        {
+            return _context.GradeComponents.Where(gc => !gc.IsDelete && gc.SubjectId == subjectId).ToList();
         }
 
         public Boolean AddGradeComponent(GradeComponent gradeComponent)
@@ -36,7 +40,7 @@ namespace DataAccess.Managers
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -88,6 +92,43 @@ namespace DataAccess.Managers
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+        public bool SaveGradeComponentRange(List<GradeComponent> gradeComponents)
+        {
+            try
+            {
+                _context.GradeComponents.AddRange(gradeComponents);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public GradeComponent? GetFinalExamOfSbject(int subjectId)
+        {
+            return _context.GradeComponents.FirstOrDefault(gc => gc.SubjectId == subjectId && gc.GradeCategory == "Final Exam" && gc.IsDelete == false);
+        }
+
+        public void SetFinalExamRef(int subjectId, int finalExamId)
+        {
+            try
+            {
+                GradeComponent? gradeComponentUpdate = _context.GradeComponents.FirstOrDefault(gc => gc.SubjectId == subjectId && gc.GradeCategory == "Final Exam Resit" && gc.IsDelete == false); ;
+                if (gradeComponentUpdate != null)
+                {
+                    gradeComponentUpdate.FinalScoreId = finalExamId;
+                    _context.GradeComponents.Update(gradeComponentUpdate);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

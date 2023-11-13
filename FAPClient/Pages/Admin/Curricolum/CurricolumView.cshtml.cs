@@ -2,6 +2,7 @@ using DTO.Request.Curricolum;
 using DTO.Request.SubjectCurricolum;
 using DTO.Response.Curricolum;
 using DTO.Response.Major;
+using DTO.Response.Semester;
 using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -45,6 +46,12 @@ namespace FAPClient.Pages.Admin.Curricolum
             }
 
             ViewData["Majors"] = new SelectList(await GetMajors(client), "Id", "MajorName");
+            List<SemesterResponseDTO> semesterResponses = await GetSemesters(client);
+            ViewData["Semesters"] = new SelectList(semesterResponses.Select(s => new
+            {
+                Id = s.Id,
+                Semester = s.SemesterName + " " + s.Year
+            }), "Id", "Semester");
             return Page();
         }
 
@@ -95,6 +102,20 @@ namespace FAPClient.Pages.Admin.Curricolum
             };
             var resultList = JsonSerializer.Deserialize<List<MajorResponseDTO>>(strData, options);
             return resultList ?? new List<MajorResponseDTO>();
+        }
+
+        public static async Task<List<SemesterResponseDTO>> GetSemesters(HttpClient client)
+        {
+            string SemesterApiUrl = $"{Configuration.ApiURL}/Semesters";
+
+            HttpResponseMessage responseMessage = await client.GetAsync(SemesterApiUrl);
+            string strData = await responseMessage.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            var resultList = JsonSerializer.Deserialize<List<SemesterResponseDTO>>(strData, options);
+            return resultList ?? new List<SemesterResponseDTO>();
         }
     }
 }

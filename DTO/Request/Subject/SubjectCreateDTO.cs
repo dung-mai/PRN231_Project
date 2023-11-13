@@ -1,4 +1,6 @@
-﻿namespace DTO.Request.Subject
+﻿using DTO.Request.GradeComponent;
+
+namespace DTO.Request.Subject
 {
     public class SubjectCreateDTO
     {
@@ -11,5 +13,7 @@
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
+
+        public List<GradeComponentAddDTO> GradeComponents { get; set; } = new List<GradeComponentAddDTO>();
     }
 }

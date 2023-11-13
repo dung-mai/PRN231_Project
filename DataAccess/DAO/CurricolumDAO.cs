@@ -15,6 +15,7 @@ namespace DataAccess.DAO
         {
             return _context.Curricolums
                 .Include(c => c.Major)
+                .Include(c => c.StartSemester)
                 .Include(c => c.SubjectCurricolums.Where(c => !c.IsDelete))
                     .ThenInclude(sc => sc.Subject)
                 .Where(c => !c.IsDelete)
