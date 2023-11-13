@@ -1,5 +1,6 @@
 using BusinessObject.Models;
 using DTO.Response.Major;
+using DTO.Response.Semester;
 using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -28,6 +29,12 @@ namespace FAPClient.Pages.Admin.Major
 
         public async Task<IActionResult> OnGet()
         {
+            await GetData();
+            return Page();
+        }
+
+        private async Task GetData()
+        {
             HttpResponseMessage responseMessage = await client.GetAsync(MajorApiUrl);
             string strData = await responseMessage.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
@@ -39,10 +46,9 @@ namespace FAPClient.Pages.Admin.Major
                 var resultList = JsonSerializer.Deserialize<List<MajorResponseDTO>>(strData, options);
                 Majors = resultList ?? new List<MajorResponseDTO>();
             }
-            return Page();
         }
 
-        public IActionResult OnPostCreate(MajorResponseDTO major)
+        public async Task<IActionResult> OnPostCreate(MajorResponseDTO major)
         {
             major.UpdatedAt = DateTime.Now;
             MajorApiUrl = $"{Configuration.ApiURL}/Majors";
@@ -50,7 +56,8 @@ namespace FAPClient.Pages.Admin.Major
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Add major successfully!";
-                return RedirectToPage("MajorView");
+                await GetData();
+                return Page();
             }
             else
             {
@@ -59,7 +66,7 @@ namespace FAPClient.Pages.Admin.Major
             }
         }
 
-        public IActionResult OnPostUpdate(MajorResponseDTO major)
+        public async Task<IActionResult> OnPostUpdate(MajorResponseDTO major)
         {
             major.UpdatedAt = DateTime.Now;
             MajorApiUrl = $"{Configuration.ApiURL}/Majors/{major.Id}";
@@ -67,6 +74,7 @@ namespace FAPClient.Pages.Admin.Major
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update major successfully!";
+                await GetData();
                 return RedirectToPage("MajorView");
             }
             else
@@ -76,13 +84,14 @@ namespace FAPClient.Pages.Admin.Major
             }
         }
 
-        public IActionResult OnPostDelete(int majorId)
+        public async Task<IActionResult> OnPostDelete(int majorId)
         {
             MajorApiUrl = $"{Configuration.ApiURL}/Majors/{majorId}";
             var response = client.DeleteAsync(MajorApiUrl).Result;
             if (response.IsSuccessStatusCode)
             {
                 TempData["success"] = "Delete major successfully!";
+                await GetData();
                 return RedirectToPage("MajorView");
 
             }

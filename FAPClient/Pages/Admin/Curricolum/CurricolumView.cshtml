@@ -6,7 +6,7 @@
 }
 
 <!-- Button trigger modal create Curricolum -->
-<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#createCurricolumModal">
+<button type="button" class="btn btn-primary mb-3" data-mdb-toggle="modal" data-mdb-target="#createCurricolumModal">
     Create Curricolum
 </button>
 
@@ -31,6 +31,11 @@
                         <label class="input-group-text" style="min-width: 150px">Major Name</label>
                         <select asp-for="CurricolumCreate.MajorId" class="form-select" asp-items="ViewBag.Majors">
                             <option>Choose a major</option>
+                        </select>
+                    </div>
+                    <div class="input-group w-50 mt-2">
+                        <label class="input-group-text" style="min-width: 150px">Start Semester</label>
+                        <select asp-for="CurricolumCreate.StartSemeterId" class="form-select" asp-items="ViewBag.Semesters">
                         </select>
                     </div>
                     <div class="">
@@ -83,6 +88,7 @@
             <tr>
                 <th>Curricolum Name</th>
                 <th>Major Name</th>
+                <th>Start Semester</th>
                 <th>Updated At</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -99,7 +105,9 @@
                     <td>
                         <p class="fw-normal mb-1">@curricolum?.Major?.MajorName</p>
                     </td>
-
+                    <td>
+                        <p class="fw-normal mb-1">@curricolum?.StartSemester?.SemesterName @curricolum?.StartSemester?.Year</p>
+                    </td>
                     <td>
                         <p class="fw-normal mb-1">@curricolum.UpdatedAt</p>
                     </td>

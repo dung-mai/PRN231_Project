@@ -68,5 +68,11 @@ namespace DataAccess.DAO
             }
             return false;
         }
+
+        public int GetLastInsertSubject()
+        {
+            Subject? subject = _context.Subjects.OrderBy(s => s.Id).LastOrDefault();
+            return subject != null ? subject.Id : 0;
+        }
     }
 }
