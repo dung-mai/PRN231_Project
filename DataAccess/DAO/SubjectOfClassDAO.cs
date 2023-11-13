@@ -53,6 +53,12 @@ namespace DataAccess.DAO
         public List<SubjectOfClass> GetSubjectOfClasses()
         {
             return _context.SubjectOfClasses
+                .Include(sc => sc.Subject)
+                .Include(sc => sc.Class)
+                .Include(sc => sc.Teacher)
+                .ThenInclude(sc => sc.Account)
+                .Include(sc => sc.StudyCourses)
+                .ThenInclude(sc => sc.RollnumberNavigation)
                 .Where(sc => !sc.IsDelete)
                 .ToList();
         }
@@ -102,12 +108,12 @@ namespace DataAccess.DAO
             if (subjectOfClass != null)
             {
                 subjectOfClass.TeacherId = _subjectOfClass.TeacherId;
-                subjectOfClass.SubjectId = _subjectOfClass.SubjectId;
-                subjectOfClass.ClassId = _subjectOfClass.ClassId;
-                subjectOfClass.StartDate = _subjectOfClass.StartDate;
-                subjectOfClass.EndDate = _subjectOfClass.EndDate;
+                subjectOfClass.SubjectId = _subjectOfClass.SubjectId != 0 ? _subjectOfClass.SubjectId : subjectOfClass.SubjectId;
+                subjectOfClass.ClassId = _subjectOfClass.ClassId != 0 ? _subjectOfClass.ClassId : subjectOfClass.ClassId;
+                //subjectOfClass.StartDate = _subjectOfClass.StartDate;
+                //subjectOfClass.EndDate = _subjectOfClass.EndDate;
                 subjectOfClass.UpdatedAt = DateTime.Now;
-                subjectOfClass.UpdatedBy = _subjectOfClass.UpdatedBy;
+                //subjectOfClass.UpdatedBy = _subjectOfClass.UpdatedBy;
                 subjectOfClass.IsDelete = _subjectOfClass.IsDelete;
                 return true;
             }

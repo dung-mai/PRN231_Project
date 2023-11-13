@@ -137,36 +137,37 @@ namespace FAPAplicationAPI.Controllers
             var listSubjectOfCurricolumn = _subjectCurricolumRepository.GetSubjectCurricolumniByTermNo(semesterStart, semesterNow, curricolumnId);
             List<ClassReponseAddDTO> classReponseAddDTO = new List<ClassReponseAddDTO>();
             int start = 0;
-            int end = 1;
+            int end = studentInClass;
             foreach (var cl in listClass)
             {
 
                 List<StudyCourseResponseDTO> studyCourseResponseDTOs = new List<StudyCourseResponseDTO>();
                 List<SubjectOfClassResponseDTO> subjectOfClassResponseDTO = new List<SubjectOfClassResponseDTO>();
+                if (end > listStudent.Count())
+                {
+                    end = listStudent.Count();
+                }
+                for (int j = start; j < end; j++)
+                {
+                    StudentResponseStudyCourseDTO student = new StudentResponseStudyCourseDTO()
+                    {
+                        Rollnumber = listStudent[j].Rollnumber,
+                        AccountId = listStudent[j].AccountId,
+                        FullName = listStudent[j].Account.Fullname,
+                        Email = listStudent[j].Account.Email,
+                    };
+                    StudyCourseResponseDTO studentCourse = new StudyCourseResponseDTO()
+                    {
+                        Rollnumber = listStudent[j].Rollnumber,
+                        RollnumberNavigation = student,
+                    };
+                    studyCourseResponseDTOs.Add(studentCourse);
+                }
+                start = end;
+                end += studentInClass;
                 foreach (var s in listSubjectOfCurricolumn)
                 {
-                    if (end > listStudent.Count())
-                    {
-                        end = listStudent.Count();
-                    }
-                    for (int j = start; j < end; j++)
-                    {
-                        StudentResponseStudyCourseDTO student = new StudentResponseStudyCourseDTO()
-                        {
-                            Rollnumber = listStudent[j].Rollnumber,
-                            AccountId = listStudent[j].AccountId,
-                            FullName = listStudent[j].Account.Fullname,
-                            Email = listStudent[j].Account.Email,
-                        };
-                        StudyCourseResponseDTO studentCourse = new StudyCourseResponseDTO()
-                        {
-                            Rollnumber = listStudent[j].Rollnumber,
-                            RollnumberNavigation = student,
-                        };
-                        studyCourseResponseDTOs.Add(studentCourse);
-                    }
-                    start = end;
-                    end++;
+                    
                     SubjectOfClassResponseDTO subjectOfClass = new SubjectOfClassResponseDTO()
                     {
                         ClassId = cl.Id,

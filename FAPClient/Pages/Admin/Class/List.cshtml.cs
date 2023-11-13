@@ -38,7 +38,7 @@ namespace FAPClient.Pages.Admin.Class
         public List<SubjectResponseDTO> SubjectList { get; set; }
         public List<SubjectOfClassResponseDTO> ClassSubjectList { get; set; }
 
-        public async Task<IActionResult> OnGet(int term, int courseId, int group)
+        public async Task<IActionResult> OnGet(int? term, int courseId, int? group)
         {
             //HttpResponseMessage responseMessage = await client.GetAsync(ClassApiUrl);
             //string strData = await responseMessage.Content.ReadAsStringAsync();
@@ -52,6 +52,22 @@ namespace FAPClient.Pages.Admin.Class
             //    Classes = resultList ?? new List<ClassResponseDTO>();
             //}
             await GetData();
+            if (!term.HasValue)
+            {
+                int? currentSemesterId = Semesters.OrderBy(s => s.Id).LastOrDefault()?.Id;
+                TermId = currentSemesterId.HasValue ? (int)currentSemesterId : 0;
+            }
+            else
+            {
+                TermId = (int)term;
+            }
+            SubjectId = courseId;
+            await GetSubjectClassList();
+            if (group.HasValue)
+            {
+                ClassSubjectId = (int)group;
+                SelectedClassSubject = ClassSubjectList.FirstOrDefault(c => c.Id == ClassSubjectId);
+            }
 
             return Page();
         }
@@ -75,6 +91,37 @@ namespace FAPClient.Pages.Admin.Class
             {
                 var resultList = JsonSerializer.Deserialize<List<SemesterResponseDTO>>(strData, options);
                 Semesters = resultList ?? new List<SemesterResponseDTO>();
+            }
+        }
+
+        private async Task GetSubjectClass()
+        {
+            string subjectOfClassApiUrl = $"{Configuration.ApiURL}/SubjectOfClasses/{ClassSubjectId}";
+            HttpResponseMessage responseMessage = await client.GetAsync(subjectOfClassApiUrl);
+            string strData = await responseMessage.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            if (!string.IsNullOrEmpty(strData))
+            {
+                SelectedClassSubject = JsonSerializer.Deserialize<SubjectOfClassResponseDTO>(strData, options);
+            }
+        }
+
+        private async Task GetSubjectClassList()
+        {
+            string subjectOfClassApiUrl = $"{Configuration.ApiURL}/SubjectOfClasses?$filter=subjectId eq {SubjectId}";
+            HttpResponseMessage responseMessage = await client.GetAsync(subjectOfClassApiUrl);
+            string strData = await responseMessage.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            if (!string.IsNullOrEmpty(strData))
+            {
+                var resultList = JsonSerializer.Deserialize<List<SubjectOfClassResponseDTO>>(strData, options);
+                ClassSubjectList = resultList ?? new List<SubjectOfClassResponseDTO>();
             }
         }
 

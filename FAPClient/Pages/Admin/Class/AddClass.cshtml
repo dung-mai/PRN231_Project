@@ -1,4 +1,4 @@
-﻿@page "/admin/class"
+﻿@page "/admin/class/create"
 @using DTO.Response.Class
 @using DTO.Response.Curricolum
 @using DTO.Response.Semester
@@ -14,7 +14,7 @@
     <select name="semesterId">
         @foreach (SemesterResponseDTO s in Model.Semesters)
         {
-            <option value="@s.Id">@s.SemesterName</option>
+            <option value="@s.Id">@s.SemesterName @s.Year</option>
         }
     </select>
     <p>Curricolumn</p>
