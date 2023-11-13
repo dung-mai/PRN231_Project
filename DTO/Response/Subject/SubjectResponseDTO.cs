@@ -1,5 +1,6 @@
 using DTO.Request.GradeComponent;
 using DTO.Request.SubjectCurricolum;
+using DTO.Response.GradeComponent;
 
 namespace DTO.Response.Subject
 {
@@ -16,6 +17,6 @@ namespace DTO.Response.Subject
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
 
-        public List<GradeComponentUpdateDTO> GradeComponents { get; set; } = new List<GradeComponentUpdateDTO>();
+        public virtual ICollection<GradeComponentResponseDTO>? GradeComponents { get; set; }
     }
 }
