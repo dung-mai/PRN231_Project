@@ -1,4 +1,4 @@
-﻿@page "/admin/classes"
+﻿@page "/admin/class"
 @using DTO.Response.Semester;
 @using DTO.Response.Subject;
 @using DTO.Response.SubjectOfClass;
@@ -6,6 +6,15 @@
 @{
     Layout = "_LayoutAdmin";
 }
+<style>
+    a {
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
 
 <h2>
     <span id="ctl00_mainContent_lblRollNumber">
@@ -16,6 +25,7 @@
         <tr>
             <th>Term</th>
             <th>Course</th>
+            <th>Group</th>
         </tr>
     </thead>
     <tbody>
@@ -174,14 +184,26 @@
         </tr>
         </tbody>
         </table>
-        </td>
-        </tr>
-        *@
-    </tbody>
-</table>
-
+--------------------------------------
 @if (Model.SelectedClassSubject != null)
 {
+    <div>
+        <h6 class="lecturer-name">Lecturer: @(Model.SelectedClassSubject.TeacherName ?? "Not yet")</h6>
+        <button class="btn btn-primary" type="button" onclick="openSearch()">Update</button>
+        <div class="search-teacher-area" style="display: none">
+            <h4>Search Teacher</h4>
+            <div class="search-form d-flex align-items-center">
+                <input type="text" style="line-height: 1.5; height: 35px;" name="teacherCode" placeholder="Teacher Code" />
+                <span id="search-subject-btn" class="btn btn-outline-secondary ms-2" onclick="searchTeacher()">Search</span>
+            </div>
+            <div>
+                <table class="table">
+                    <tbody id="display-search-result">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <div>
         <table class="w-75">
             <thead>
@@ -189,35 +211,18 @@
                     <th>INDEX</th>
                     <th>IMAGE</th>
                     <th>CODE</th>
-                    <th>SURNAME</th>
-                    <th>MIDDLE NAME</th>
-                    <th>GIVEN NAME</th>
+                    <th>FULL NAME</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td valign="top">
-                        <table>
-                            <thead>
-                            </thead>
-                            <tbody>
-                                @foreach (SubjectOfClassResponseDTO classSubject in Model.ClassSubjectList)
+                @for (int i = 0; i < Model?.SelectedClassSubject?.StudyCourses?.Count; i++)
                                 {
+                    var student = Model.SelectedClassSubject.StudyCourses.ToList()[i];
                                     <tr>
-                                        <td>
-                                            @if (classSubject.Id == Model.ClassSubjectId)
-                                            {
-                                                <b>
-                                                    @classSubject.ClassName
-                                                </b>
-                                            }
-                                            else
-                                            {
-                                                <a href="?term=@(Model.TermId)&courseId=@classSubject.SubjectId&group=@classSubject.Id">
-                                                    @classSubject.ClassName
-                                                </a>
-                                            }
-                                        </td>
+                        <td>@(i + 1)</td>
+                        <td><img src="image.jpg" style="width: 100px; height: 100px" /></td>
+                        <td>@student?.Rollnumber?.ToUpper()</td>
+                        <td>@student?.RollnumberNavigation?.FullName</td>
                                     </tr>
                                 }
                             </tbody>
@@ -228,4 +233,75 @@
         </table>
     </div>
 }
+
+<script type="text/javascript">
+    $(document).ready(() => {
+
+    });
+
+    function openSearch(){
+        const searchArea = document.querySelector('.search-teacher-area');
+        searchArea.style = "display: block";
+    }
+
+    function displayTeacherList(data) {
+        $('#display-search-result').html(`
+                                        ${data.map((item) =>
+            `<tr>
+                    <td>${item.teacherCode}</td>
+                    <td style="display: inline-block;max-width: 350px">${item.account.fullname}</td>
+                    <td>
+                                <button type="button" onclick="updateTeacher(${item.accountId}, '${item.teacherCode}')">Update</button>
+                    </td>
+                </tr>`
+        )
+                .join("")}
+        `);
+    }
+    function searchTeacher(){
+        const searchInput = document.querySelector('input[name="teacherCode"]');
+        const apiUrl = `http://localhost:5199/api/Teachers?$filter=contains(teacherCode,'${searchInput.value}')`;
+        callAjax(apiUrl, displayTeacherList);
+    }
+
+
+    function updateTeacher(teacherId, teacherCode) {
+        const apiUrl = `http://localhost:5199/api/SubjectOfClasses/${@Model?.ClassSubjectId}`;
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: apiUrl,
+            data: JSON.stringify({
+                id: @Model?.ClassSubjectId,
+                teacherId: teacherId,
+                classId: 0,
+                subjectId: 0,
+                startDate: "2023-11-13T15:53:23.806Z",
+                endDate: "2023-11-13T15:53:23.806Z",
+                updatedAt: "2023-11-13T15:53:23.806Z",
+                updatedBy: 0,
+                isDelete: false }),
+            success: function (data) {
+                alert('Update successfully!');
+                const searchArea = document.querySelector('.search-teacher-area');
+                const lecturer = document.querySelector('.lecturer-name');
+                searchArea.style = "display: none";
+                lecturer.innerHTML = `Lecturer: ${teacherCode}`;
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+            },
+        });
+    }
+
+    function callAjaxUpdate(apiUrl, successFunction, requestData) {
+        console.log(requestData);
+        let repsonseData;
+    
+    return repsonseData;
+}
+
+
+
+</script>
 

@@ -53,6 +53,7 @@ namespace FAPAplicationAPI.Controllers
 
             if (_subjectOfClassRepository.UpdateSubjectOfClass(subjectOfClass))
             {
+
                 return NoContent();
             }
             else
@@ -110,7 +111,6 @@ namespace FAPAplicationAPI.Controllers
                 return Ok(listSubjectOfClass);
             }
         }
-
 
     }
 }

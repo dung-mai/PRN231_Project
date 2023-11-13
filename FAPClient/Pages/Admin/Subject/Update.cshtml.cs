@@ -1,10 +1,8 @@
 using DTO.Request.GradeComponent;
 using DTO.Request.Subject;
-using DTO.Request.Subject;
 using FAPAplicationAPI.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
