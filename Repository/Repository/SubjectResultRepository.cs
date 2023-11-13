@@ -42,6 +42,11 @@ namespace Repository.Repository
             return _mapper.Map<List<SubjectResultResponseDTO>>(subjectResultDAO.GetSubjectResults());
         }
 
+        public SubjectResultStudentResponseDTO? GetSubjectResultStudentById(int id)
+        {
+            return _mapper.Map<SubjectResultStudentResponseDTO>(subjectResultDAO.GetSubjectResultById(id));
+        }
+
         public bool UpdateSubjectResult(SubjectResultUpdateDTO subjectResult)
         {
             return subjectResultDAO.UpdateSubjectResult(_mapper.Map<SubjectResult>(subjectResult));

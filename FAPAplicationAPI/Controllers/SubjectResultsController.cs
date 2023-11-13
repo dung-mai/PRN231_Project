@@ -29,7 +29,7 @@ namespace FAPAplicationAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSubjectResult(int id)
         {
-            return Ok(_subjectResultRepository.GetSubjectResultById(id));
+            return Ok(_subjectResultRepository.GetSubjectResultStudentById(id));
         }
 
 

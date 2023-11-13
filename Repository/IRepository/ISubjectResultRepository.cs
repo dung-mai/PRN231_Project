@@ -7,6 +7,7 @@ namespace Repository.IRepository
     {
         bool AddSubjectResult(SubjectResultAddDTO subjectResult);
         SubjectResultResponseDTO? GetSubjectResultById(int id);
+        SubjectResultStudentResponseDTO? GetSubjectResultStudentById(int id);
         bool DeleteSubjectResult(int id);
         bool UpdateSubjectResult(SubjectResultUpdateDTO subjectResult);
         bool UpdateSubjectResultMark(SubjectResultResponseDTO subjectResult);

@@ -1,4 +1,5 @@
 ﻿@page "/student/class"
+@using DTO.Response.DetailScore
 @using DTO.Response.StudyCourse
 @model FAPClient.Pages.Student.ViewClassModel
 @{
@@ -56,7 +57,7 @@
         </div>
         <div class="col-md-6">
             <div class="table-wrapper">
-                @*@if (Model.classTranscriptDTO != null)
+                @if (Model.SubjectResults != null)
                 {
                     <table id="tablePagnation1" class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
@@ -67,19 +68,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (int i = 0; i < Model.classTranscriptDTO.DetailScoreDTOs.Count; i++)
+                            @foreach(DetailScoreResponseDTO detailScore in Model.SubjectResults.DetailScores)
                             {
                                 <tr>
                                     <td>
-                                        <p class="fw-normal mb-1">@Model.subjectGradeDTOs[i].Grade.GradeName</p>
+                                        <p class="fw-normal mb-1">@detailScore.GradeComponent.GradeItem</p>
                                     </td>
 
                                     <td>
-                                        <p class="fw-normal mb-1">@Model.subjectGradeDTOs[i].Grade.Percent%</p>
+                                        <p class="fw-normal mb-1">@detailScore.GradeComponent.Weight%</p>
                                     </td>
 
                                     <td>
-                                        <p class="fw-normal mb-1">@Model.classTranscriptDTO.DetailScoreDTOs[i].Score</p>
+                                        <p class="fw-normal mb-1">@detailScore.Mark</p>
                                     </td>
 
                                 </tr>
@@ -93,7 +94,7 @@
                                     <p class="fw-normal mb-1"></p>
                                 </td>
                                 <td>
-                                    <p class="fw-normal mb-1">@Model.classTranscriptDTO.TranscriptDTO.TotalScore</p>
+                                    <p class="fw-normal mb-1">@Model.SubjectResults.AverageMark</p>
                                 </td>
                             </tr
                             <tr>
@@ -104,7 +105,7 @@
                                 <td>
 
                                 </td>
-                                @if(@Model.classTranscriptDTO.status){
+                                @if(@Model.SubjectResults.Status == 1){
                                      <td>
                                     <p class="text-success text-xl" style="font-size: 23px; font-weight: bold;">Passed</p>
                                 </td>
@@ -117,7 +118,7 @@
                             </tr>
                         </tbody>
                     </table>
-                }*@
+                }
 
             </div>
         </div>

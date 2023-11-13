@@ -16,13 +16,10 @@ namespace FAPClient.Pages.Student
     public class ViewClassModel : PageModel
     {
         private readonly HttpClient client;
-        private string ClassGradetApiUrl = "";
-        private string SubjectApiUrl = "";
         private string SubjectResultApiUrl = "";
         private string StudyCourseApiUrl = "";
-        public SubjectResultResponseDTO SubjectResults { get; set; }
+        public SubjectResultStudentResponseDTO SubjectResults { get; set; }
         public List<StudyCourseResponseAllDTO> StudyCourses { get; set; }
-        public List<SubjectResponseDTO> SubjectResponses { get; set; }
         public int SubjectId { get; set; }  
         public int SubjectGradeId { get; set; }
 
@@ -31,14 +28,10 @@ namespace FAPClient.Pages.Student
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            ClassGradetApiUrl = $"{Configuration.ApiURL}/ClassGrade";
-            SubjectApiUrl = $"{Configuration.ApiURL}/Subjects";
             SubjectResultApiUrl = $"{Configuration.ApiURL}/SubjectResults";
             StudyCourseApiUrl = $"{Configuration.ApiURL}/StudyCourses";
             SubjectGradeId = 0;
             SubjectId = 0;
-            SubjectResults = new SubjectResultResponseDTO();
-            SubjectResponses = new List<SubjectResponseDTO>();
         }
 
         public async Task GetData()
@@ -61,7 +54,7 @@ namespace FAPClient.Pages.Student
         {
             if (subjectResultId != 0)
             {
-                HttpResponseMessage responseMessage = await client.GetAsync($"{StudyCourseApiUrl}/SubjectResults/{subjectResultId}");
+                HttpResponseMessage responseMessage = await client.GetAsync($"{SubjectResultApiUrl}/{subjectResultId}");
                 string strData = await responseMessage.Content.ReadAsStringAsync();
                 var options = new JsonSerializerOptions
                 {
@@ -69,8 +62,8 @@ namespace FAPClient.Pages.Student
                 };
                 if (!string.IsNullOrEmpty(strData))
                 {
-                    var resultList = JsonSerializer.Deserialize<SubjectResultResponseDTO>(strData, options);
-                    SubjectResults = resultList ?? new SubjectResultResponseDTO();
+                    var resultList = JsonSerializer.Deserialize<SubjectResultStudentResponseDTO>(strData, options);
+                    SubjectResults = resultList ?? new SubjectResultStudentResponseDTO();
                 }
             }
             await GetData();
