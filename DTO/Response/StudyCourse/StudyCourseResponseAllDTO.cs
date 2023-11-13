@@ -1,9 +1,12 @@
 ﻿using Bussiness.DTO;
 using DTO.Response.Student;
+using DTO.Response.Subject;
+using DTO.Response.SubjectOfClass;
+using DTO.Response.SubjectResult;
 
 namespace DTO.Response.StudyCourse
 {
-    public class StudyCourseResponseDTO
+    public class StudyCourseResponseAllDTO
     {
         public int? Id { get; set; } = 0;
         public string? Rollnumber { get; set; }
@@ -13,5 +16,7 @@ namespace DTO.Response.StudyCourse
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
         public virtual StudentResponseStudyCourseDTO? RollnumberNavigation { get; set; }
+        public virtual SubjectOfClassResponseDTO? SubjectOfClass { get; set; }
+        public virtual ICollection<SubjectResultResponseDTO> SubjectResults { get; set; }
     }
 }

@@ -36,6 +36,14 @@ namespace DataAccess.DAO
                 .Where(sc => sc.TeacherId == teacherId && sc.Class.SemesterId == semesterId)
                 .ToList();
         }
+        public List<SubjectOfClass> GetTeachingClass(int teacherId)
+        {
+            return _context.SubjectOfClasses
+                .Include(sc => sc.Subject)
+                .Include(sc => sc.Class)
+                .Where(sc => sc.TeacherId == teacherId && !sc.IsDelete)
+                .ToList();
+        }
 
         public bool IsTeachingClass(int classId, int teacherId)
         {

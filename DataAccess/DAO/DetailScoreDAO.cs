@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace DataAccess.DAO
 {
@@ -16,6 +17,22 @@ namespace DataAccess.DAO
             return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).FirstOrDefault(ds => ds.Id == id && ds.IsDelete == false);
         }
 
+        public DetailScore? GetDetailScoreByGradeComponentIdSubjectResultId(int gradeComponentId, int subjectResultId)
+        {
+            return _context.DetailScores
+                .Include(ds => ds.GradeComponent)
+                .Include(ds => ds.SubjectResult)
+                .FirstOrDefault(ds => ds.GradeComponentId == gradeComponentId && ds.SubjectResultId == subjectResultId);
+
+        }
+
+        public List<DetailScore>? GetDetailScoreBySubjectResultId(int subjectResultId)
+        {
+            return _context.DetailScores
+                .Include(ds => ds.GradeComponent)
+                .Include(ds => ds.SubjectResult)
+                .Where(ds =>  ds.SubjectResultId == subjectResultId).ToList();
+        }
         public List<DetailScore> GetDetailScores()
         {
             return _context.DetailScores.Include(ds => ds.GradeComponent).Include(ds => ds.SubjectResult).Where(ds => ds.IsDelete == false).ToList();
@@ -78,7 +95,31 @@ namespace DataAccess.DAO
                 return false;
             }
         }
+        public Boolean UpdateDetailScoreMark(DetailScore detailScore, int gid, int sId)
+        {
+            try
+            {
+                DetailScore? detailScoreUpdate = GetGetDetailScoreById(detailScore.Id);
+                if (detailScoreUpdate != null)
+                {
+                    detailScoreUpdate.Mark = detailScore.Mark;
+                    detailScoreUpdate.Comment = detailScore.Comment;
 
+                    // Reassign the original values of GradeComponentId and SubjectResultId
+                    detailScoreUpdate.GradeComponentId = gid;
+                    detailScoreUpdate.SubjectResultId = sId;
+
+                    _context.DetailScores.Update(detailScoreUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
 
 
 
@@ -87,7 +128,7 @@ namespace DataAccess.DAO
 
         public void AddOrUpdateScore(DetailScore detailScoreInput)
         {
-            var detailScore =  _context.DetailScores
+            var detailScore = _context.DetailScores
                                 .FirstOrDefault(m => m.Id == detailScoreInput.Id);
 
             if (detailScore != null)
@@ -113,10 +154,11 @@ namespace DataAccess.DAO
         {
             return _context.DetailScores.FirstOrDefault(s => s.SubjectResult.StudyCourse.Rollnumber == rollnumber
                                                                 && s.SubjectResult.StudyCourse.SubjectOfClassId == classId
-                                                                && s.GradeComponentId == itemId );
+                                                                && s.GradeComponentId == itemId);
         }
 
-        public List<DetailScore> GetScoresByStudyResult(int studyCourse) {
+        public List<DetailScore> GetScoresByStudyResult(int studyCourse)
+        {
             return _context.DetailScores.Where(course => course.SubjectResult.StudyCourseId == studyCourse).ToList();
         }
     }

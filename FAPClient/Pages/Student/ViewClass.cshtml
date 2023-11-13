@@ -1,0 +1,132 @@
+﻿@page "/student/class"
+@using DTO.Response.StudyCourse
+@model FAPClient.Pages.Student.ViewClassModel
+@{
+    Layout = "_LayoutStudent";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-wrapper">
+                <h1>List Student</h1>
+                <table id="tablePagnation" class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Teacher</th>
+                            <th>Semester</th>
+                            <th>View Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (StudyCourseResponseAllDTO studyCourse in Model.StudyCourses)
+                        {
+                            <tr>
+                                <td>
+                                    <p class="fw-normal mb-1">@studyCourse.SubjectOfClass.ClassName</p>
+                                </td>
+
+                                <td>
+                                    <p class="fw-normal mb-1">@studyCourse.SubjectOfClass.SubjectName (@studyCourse.SubjectOfClass.SubjectCode)</p>
+                                </td>
+                                <td>
+                                    <p class="fw-normal mb-1">@studyCourse.SubjectOfClass.TeacherName</p>
+                                </td>
+
+                                <td>
+                                    <p class="fw-normal mb-1">@studyCourse.SubjectOfClass.StartDate - @studyCourse.SubjectOfClass.EndDate </p>
+                                </td>
+
+                                <td>
+                                    <form method="get">
+                                        <input type="hidden" name="subjectResultId" value="@studyCourse.SubjectResults.FirstOrDefault(s => s.StudyCourseId == studyCourse.Id).Id" />
+                                        <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                            View
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-wrapper">
+                @*@if (Model.classTranscriptDTO != null)
+                {
+                    <table id="tablePagnation1" class="table align-middle mb-0 bg-white">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Name</th>
+                                <td>Percent</td>
+                                <th>Score </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.classTranscriptDTO.DetailScoreDTOs.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="fw-normal mb-1">@Model.subjectGradeDTOs[i].Grade.GradeName</p>
+                                    </td>
+
+                                    <td>
+                                        <p class="fw-normal mb-1">@Model.subjectGradeDTOs[i].Grade.Percent%</p>
+                                    </td>
+
+                                    <td>
+                                        <p class="fw-normal mb-1">@Model.classTranscriptDTO.DetailScoreDTOs[i].Score</p>
+                                    </td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td>
+                                    <p class="fw-normal mb-1">Total score</p>
+                                </td>
+
+                                <td>
+                                    <p class="fw-normal mb-1"></p>
+                                </td>
+                                <td>
+                                    <p class="fw-normal mb-1">@Model.classTranscriptDTO.TranscriptDTO.TotalScore</p>
+                                </td>
+                            </tr
+                            <tr>
+                                <td>
+                                    <p class="fw-normal mb-1">Status</p>
+                                </td>
+
+                                <td>
+
+                                </td>
+                                @if(@Model.classTranscriptDTO.status){
+                                     <td>
+                                    <p class="text-success text-xl" style="font-size: 23px; font-weight: bold;">Passed</p>
+                                </td>
+                                }else{
+                                       <td>
+                                    <p class="text-danger" style="font-size: 23px; font-weight: bold;">Not passed</p>
+                                </td>
+                                }
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+                }*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#tablePagnation').DataTable({
+        "pagingType": "full_numbers" // "simple" option for 'Previous' and 'Next' buttons only
+    });
+
+</script>

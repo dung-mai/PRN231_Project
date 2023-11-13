@@ -6,7 +6,7 @@ namespace DTO.Response.SubjectResult
 {
     public class SubjectResultResponseDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? StudyCourseId { get; set; }
         public int? TeacherId { get; set; }
         public double? AverageMark { get; set; }

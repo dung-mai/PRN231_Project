@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
@@ -13,10 +14,27 @@ namespace DataAccess.DAO
 
         public SubjectResult? GetSubjectResultById(int id)
         {
-            return _context.SubjectResults.FirstOrDefault(sr => sr.Id == id);
+            return _context.SubjectResults
+                .Include(sr => sr.DetailScores)
+                    .ThenInclude(dS => dS.GradeComponent)
+                .FirstOrDefault(sr => sr.Id == id);
         }
 
+        //public List<SubjectResult>? GetSubjectResultRollNumber(string rollnumber)
+        //{
+        //    return _context.SubjectResults.Where(sr => sr.Roll == id);
+        //}
+
+        public SubjectResult? GetSubjectResultByStudyCourse(int studyCourseId)
+        {
+            return _context.SubjectResults.FirstOrDefault(sr => sr.StudyCourseId == studyCourseId);
+        }
         public List<SubjectResult> GetSubjectResults()
+        {
+            return _context.SubjectResults.Where(sr => sr.IsDelete == false).ToList();
+        }
+
+        public List<SubjectResult> GetSubjectResultsBy()
         {
             return _context.SubjectResults.Where(sr => sr.IsDelete == false).ToList();
         }
@@ -70,6 +88,30 @@ namespace DataAccess.DAO
                     subjectResultUpdate.UpdatedAt = subjectResult.UpdatedAt;
                     subjectResultUpdate.UpdatedBy = subjectResult.UpdatedBy;
                     subjectResultUpdate.IsDelete = subjectResult.IsDelete;
+                    _context.SubjectResults.Update(subjectResultUpdate);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+
+        public Boolean UpdateSubjectResultMark(SubjectResult subjectResult)
+        {
+            try
+            {
+                SubjectResult? subjectResultUpdate = GetSubjectResultById(subjectResult.Id);
+                subjectResultUpdate.StudyCourse = null;
+                subjectResultUpdate.Teacher = null;
+                if (subjectResultUpdate != null)
+                {
+                    subjectResultUpdate.AverageMark = subjectResult.AverageMark;
+                    subjectResultUpdate.Status = subjectResult.Status;
                     _context.SubjectResults.Update(subjectResultUpdate);
                     _context.SaveChanges();
                     return true;

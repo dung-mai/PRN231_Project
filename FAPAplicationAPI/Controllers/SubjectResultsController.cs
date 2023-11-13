@@ -26,6 +26,12 @@ namespace FAPAplicationAPI.Controllers
             return Ok(_subjectResultRepository.GetSubjectResults());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetSubjectResult(int id)
+        {
+            return Ok(_subjectResultRepository.GetSubjectResultById(id));
+        }
+
 
         [HttpPut("{id}")]
         public IActionResult PutSubjectResult(int id, SubjectResultUpdateDTO subjectResult)
@@ -36,6 +42,17 @@ namespace FAPAplicationAPI.Controllers
             }
 
             _subjectResultRepository.UpdateSubjectResult(subjectResult);
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("UpdateListSubjectResult")]
+        public IActionResult PutSubjectResult(List<SubjectResultResponseDTO> subjectResult)
+        {
+            foreach (var subjectR in subjectResult)
+            {
+                _subjectResultRepository.UpdateSubjectResultMark(subjectR);
+            }
             return NoContent();
         }
 

@@ -67,5 +67,19 @@ namespace FAPAplicationAPI.Controllers
             _detailScoreRepository.DeleteDetailScore(id);
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("UpdateListDetailScore")]
+        public IActionResult PutDetailScore(List<DetailScoreUpdateMarkDTO> detailScore)
+        {
+            foreach (var dS in detailScore)
+            {
+                if (!_detailScoreRepository.UpdateDetailScoreMark(dS))
+                {
+                    return Conflict();
+                };
+            }
+            return Ok();
+        }
     }
 }

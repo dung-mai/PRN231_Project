@@ -46,5 +46,10 @@ namespace Repository.Repository
         {
             return subjectResultDAO.UpdateSubjectResult(_mapper.Map<SubjectResult>(subjectResult));
         }
+
+        public bool UpdateSubjectResultMark(SubjectResultResponseDTO subjectResult)
+        {
+            return subjectResultDAO.UpdateSubjectResultMark(_mapper.Map<SubjectResult>(subjectResult));
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DTO.Request.StudyCourse;
 using DTO.Response.StudyCourse;
-using DTO.Response.SubjectOfClass;
 
 namespace Repository.IRepository
 {
@@ -8,6 +7,7 @@ namespace Repository.IRepository
     {
         StudyCourseResponseDTO? GetStudyCourseBySubject(int? semesterId, string rollnumber, int? courseId);
         List<StudyCourseResponseDTO> GetStudyCourseOfStudentBySemester(int semesterId, string rollNumber);
+        List<StudyCourseResponseAllDTO> GetStudyCourseByStudentRollnumber(string rolenumber);
         List<StudyCourseResponseDTO> GetStudyCourseByClass(int classId);
         List<StudyCourseResponseDTO> GetStudyCourseByStudent(int classId, string? rolenumber);
         //StudyCourseResponseDTO? GetSubjectClassById(int classId);

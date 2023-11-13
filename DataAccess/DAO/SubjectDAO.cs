@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
@@ -14,6 +15,7 @@ namespace DataAccess.DAO
         public List<Subject> GetSubjects()
         {
             return _context.Subjects
+                .Include(s => s.GradeComponents)
                 .Where(s => !s.IsDelete)
                 .ToList();
         }
@@ -21,6 +23,7 @@ namespace DataAccess.DAO
         public Subject? GetSubject(int id)
         {
             return _context.Subjects
+                .Include(s => s.GradeComponents)
                 .FirstOrDefault(s => s.Id == id && !s.IsDelete);
         }
 

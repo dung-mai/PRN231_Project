@@ -1,4 +1,6 @@
-﻿namespace DTO.Response.Subject
+﻿using DTO.Response.GradeComponent;
+
+namespace DTO.Response.Subject
 {
     public class SubjectResponseDTO
     {
@@ -12,5 +14,6 @@
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedBy { get; set; }
         public bool IsDelete { get; set; } = false;
+        public virtual ICollection<GradeComponentResponseDTO>? GradeComponents { get; set; }
     }
 }

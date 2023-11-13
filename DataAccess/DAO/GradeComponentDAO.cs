@@ -20,8 +20,10 @@ namespace DataAccess.Managers
 
         public GradeComponent? GetGradeComponentById(int id)
         {
-            return _context.GradeComponents.FirstOrDefault(gc => gc.Id == id && gc.IsDelete == false);
+            return _context.GradeComponents
+                .FirstOrDefault(gc => gc.Id == id && gc.IsDelete == false);
         }
+
 
         public List<GradeComponent> GetGradeComponents()
         {
