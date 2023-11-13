@@ -1,53 +1,62 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="mdl-js">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>
-        @ViewData["Title"] - FPT University Academic Portal
+        FPT University Academic Portal
     </title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FAPClient.styles.css" asp-append-version="true" />
+    <link rel="Stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
+    <link rel="Stylesheet" href="~/css/fu.css" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+          rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet" />
+    <link rel="Stylesheet" href="~/css/bootstrap.css" type="text/css">
+    <link rel="Stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    @*<link rel="Stylesheet" href="~/lib/bootstrap/dist/css/" type="text/css">*@
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">FAPClient</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - FAPClient - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
         </div>
-    </footer>
-
+        <div class="row">
+            <div class="col-md-12">
+                @*@{
+                    string email = Model.LoggedInAccount.Email;
+                    string[] parts = email.Split('@');
+                    string username = parts[0];
+                }*@
+                <div id="ctl00_divUser" style="float: right; margin-right: 16px;">
+                    @*<a href="?view=user">
+                        <span id="ctl00_lblLogIn" class="label label-success">@username</span>
+                    </a> | <a href="/login?handler=LogOut" class="label label-success">logout</a> |*@
+                    <span id="ctl00_lblCampusName" class="label label-success"> CAMPUS: FPTU-Hòa Lạc</span>
+                </div>
+                <ol class="breadcrumb">
+                    <li>
+                        <span id="ctl00_lblNavigation">
+                            <a href="/">Home</a>&nbsp;|&nbsp;<b>Grade-book</b>
+                        </span>
+                    </li>
+                </ol>
+                <main role="main" class="pb-3">
+                    <partial name="_Notification" />
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
