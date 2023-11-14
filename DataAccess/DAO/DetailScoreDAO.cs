@@ -161,5 +161,19 @@ namespace DataAccess.DAO
         {
             return _context.DetailScores.Where(course => course.SubjectResult.StudyCourseId == studyCourse).ToList();
         }
+
+        public bool AddDetailScoreRange(List<DetailScore> detailScores)
+        {
+            try
+            {
+                _context.DetailScores.AddRange(detailScores);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

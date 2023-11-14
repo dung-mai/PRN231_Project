@@ -66,6 +66,12 @@ namespace DataAccess.DAO
         public SubjectOfClass? GetSubjectOfClass(int id)
         {
             return _context.SubjectOfClasses
+                .Include(sc => sc.Subject)
+                .Include(sc => sc.Class)
+                .Include(sc => sc.Teacher)
+                .ThenInclude(sc => sc.Account)
+                .Include(sc => sc.StudyCourses)
+                .ThenInclude(sc => sc.RollnumberNavigation)
                 .FirstOrDefault(sc => sc.Id == id && !sc.IsDelete);
         }
 

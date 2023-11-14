@@ -32,7 +32,11 @@ namespace DataAccess.DAO
         }
         public List<SubjectResult> GetSubjectResults()
         {
-            return _context.SubjectResults.Where(sr => sr.IsDelete == false).ToList();
+            return _context.SubjectResults.Include(r => r.StudyCourse)
+                .ThenInclude(sc => sc.SubjectOfClass)
+                .ThenInclude(s2 => s2.Subject)
+                .ThenInclude(gc => gc.GradeComponents)
+                .Where(sr => sr.IsDelete == false).ToList();
         }
 
         public List<SubjectResult> GetSubjectResultsBy()
@@ -118,6 +122,20 @@ namespace DataAccess.DAO
                     return true;
                 }
                 return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AddSubjectResultRange(List<SubjectResult> subjectResults)
+        {
+            try
+            {
+                _context.SubjectResults.AddRange(subjectResults);
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception e)
             {

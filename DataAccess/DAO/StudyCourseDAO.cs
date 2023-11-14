@@ -81,6 +81,8 @@ namespace DataAccess.DAO
         public List<StudyCourse> GetStudyCourses()
         {
             return _context.StudyCourses
+                .Include(sc => sc.RollnumberNavigation)
+                .Include(sc => sc.SubjectOfClass)
                 .Where(sc => !sc.IsDelete)
                 .ToList();
         }

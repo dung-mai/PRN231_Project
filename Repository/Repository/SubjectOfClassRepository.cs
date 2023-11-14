@@ -141,5 +141,11 @@ namespace Repository.Repository
             SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
             return _mapper.Map<List<SubjectOfClassResponseDTO>>(subjectOfClassDAO.GetTeachingClass(teacherId));
         }
+
+        public SubjectOfClass? GetSubjectOfClassEntity(int id)
+        {
+            SubjectOfClassDAO subjectOfClassDAO = new SubjectOfClassDAO(_context);
+            return subjectOfClassDAO.GetSubjectOfClass(id);
+        }
     }
 }
