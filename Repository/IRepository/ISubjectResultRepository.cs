@@ -1,4 +1,6 @@
-﻿using DTO.Request.SubjectResult;
+﻿using BusinessObject.Models;
+using DTO.Request.SubjectResult;
+using DTO.Response.StudyCourse;
 using DTO.Response.SubjectResult;
 
 namespace Repository.IRepository
@@ -12,5 +14,6 @@ namespace Repository.IRepository
         bool UpdateSubjectResult(SubjectResultUpdateDTO subjectResult);
         bool UpdateSubjectResultMark(SubjectResultResponseDTO subjectResult);
         List<SubjectResultResponseDTO> GetSubjectResults();
+        void CreateResultOfClass(int subjectClassId);
     }
 }

@@ -1,4 +1,6 @@
-﻿using DTO.Request.SubjectOfClass;
+﻿using BusinessObject.Models;
+using DTO.Request.SubjectOfClass;
+using DTO.Response.StudyCourse;
 using DTO.Response.SubjectOfClass;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -11,10 +13,14 @@ namespace FAPAplicationAPI.Controllers
     public class SubjectOfClassesController : ControllerBase
     {
         private readonly ISubjectOfClassRepository _subjectOfClassRepository;
+        private readonly ISubjectResultRepository _subjectResultRepository;
+        private readonly IDetailScoreRepository _detailScoreRepository;
 
-        public SubjectOfClassesController(ISubjectOfClassRepository subjectOfClassRepository)
+        public SubjectOfClassesController(ISubjectOfClassRepository subjectOfClassRepository, ISubjectResultRepository subjectResultRepository, IDetailScoreRepository detailScoreRepository)
         {
             _subjectOfClassRepository = subjectOfClassRepository;
+            _subjectResultRepository = subjectResultRepository;
+            _detailScoreRepository = detailScoreRepository;
         }
 
         // GET: api/SubjectOfClasss
@@ -53,7 +59,8 @@ namespace FAPAplicationAPI.Controllers
 
             if (_subjectOfClassRepository.UpdateSubjectOfClass(subjectOfClass))
             {
-
+                List<StudyCourse> studyCourses = _subjectOfClassRepository.GetSubjectOfClassEntity(subjectOfClass.Id).StudyCourses.ToList();
+                _subjectResultRepository.CreateResultOfClass(subjectOfClass.Id);
                 return NoContent();
             }
             else
